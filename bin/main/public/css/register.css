@@ -1,0 +1,43 @@
+@charset 'utf-8';
+
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  align-items: center;
+}
+
+@media all and (max-width: 768px) {
+  div.my-container {
+    width: 90%;
+  }
+}
+
+@keyframes statusEntrance {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.register-message .alert {
+  display: none;
+}
+
+.register-message div.alert.activeStatus {
+  animation: statusEntrance 1s ease 0s 1 normal forwards;
+  display: block;
+}
+
+.my-container .hideElem {
+  display: none;
+}
+
+.my-container {
+  max-width: 576px;
+}

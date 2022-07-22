@@ -1,0 +1,243 @@
+package com.revature.ers.daos;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.revature.ers.models.ERSReimbursement;
+import com.revature.ers.models.ERSReimbursementStatus;
+import com.revature.ers.models.ERSReimbursementType;
+import com.revature.ers.models.ERSUsers;
+import com.revature.ers.utils.ConnectionUtil;
+
+public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
+
+	@Override
+	public ERSReimbursement addNewRequest(ERSReimbursement myReimb) {
+
+		try (Connection conn = ConnectionUtil.getConnection()) {
+
+			// TODO create roles table and return to this
+			String SQL = "INSERT INTO ers.ers_reimbursement\r\n"
+					+ "(reimb_amount, reimb_submitted, reimb_description, reimb_receipt, reimb_author, reimb_status_id, reimb_type_id)\r\n"
+					+ "VALUES(?, ?, ?, ?, ?, ?, ?)\r\n"
+					+ "RETURNING reimb_id, reimb_submitted, reimb_description, reimb_author, reimb_status_id, reimb_type_id";
+
+			PreparedStatement ps = conn.prepareStatement(SQL);
+
+			// Fill in values using PreparedStatement
+			ps.setDouble(1, myReimb.getReimb_amount());
+			ps.setTimestamp(2, myReimb.getReimb_submitted());
+			ps.setString(3, myReimb.getReimb_description());
+			ps.setBytes(4, myReimb.getReimb_receipt());
+			ps.setInt(5, myReimb.getReimb_author());
+			ps.setInt(6, myReimb.getReimb_status_id());
+			ps.setInt(7, myReimb.getReimb_type_id());
+
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				ERSReimbursement newReimb = new ERSReimbursement();
+				newReimb.setReimb_id(rs.getInt(1));
+				newReimb.setReimb_submitted(rs.getTimestamp(2));
+				newReimb.setReimb_description(rs.getString(3));
+				newReimb.setReimb_author(rs.getInt(4));
+				newReimb.setReimb_status_id(rs.getInt(5));
+				newReimb.setReimb_type_id(rs.getInt(6));
+				return newReimb;
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+
+		}
+		return null;
+	}
+
+	@Override
+	public ArrayList<ERSReimbursement> getReimbursementRequest(int reimb_status_id, int reimb_author) {
+
+		String SQL = "SELECT reimb_id, reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_author, reimb_resolver, ers.reimb_status_id, ert.reimb_type_id, ers.reimb_status, ert.reimb_type, eu.user_first_name, eu.user_last_name, eu.user_role_id, eu2.user_first_name AS resolver_first_name, eu2.user_last_name AS resolver_last_name, eu2.user_role_id AS resolver_role_id\r\n"
+				+ "FROM ers.ers_reimbursement er\r\n"
+				+ "LEFT JOIN ers.ers_reimbursement_status ers ON\r\n"
+				+ "er.reimb_status_id = ers.reimb_status_id\r\n"
+				+ "LEFT JOIN ers.ers_reimbursement_type ert ON\r\n"
+				+ "er.reimb_type_id = ert.reimb_type_id\r\n"
+				+ "LEFT JOIN ers.ers_users eu ON\r\n"
+				+ "er.reimb_author = eu.ers_users_id\r\n"
+				+ "LEFT JOIN ers.ers_users eu2 ON\r\n"
+				+ "er.reimb_resolver = eu2.ers_users_id\r\n"
+				+ "WHERE er.reimb_status_id = ?\r\n"
+				+ "AND er.reimb_author = ?\r\n"
+				+ "ORDER BY er.reimb_id ASC";
+		try (Connection conn = ConnectionUtil.getConnection()) {
+			// Instantiate a PreparedStatement to fill in the variables (?)
+			PreparedStatement ps = conn.prepareStatement(SQL);
+			ps.setInt(1, reimb_status_id);
+			ps.setInt(2, reimb_author);
+			// System.out.println(ps.toString());
+			ResultSet getReimb = ps.executeQuery();
+
+			ArrayList<ERSReimbursement> reimbList = new ArrayList<ERSReimbursement>();
+			ERSUsers ersAuthor = new ERSUsers();
+			ERSUsers ersResolver = new ERSUsers();
+			ERSReimbursement reimbObj;
+			ERSReimbursementStatus ers;
+			ERSReimbursementType ert;
+			while (getReimb.next()) {
+				reimbObj = new ERSReimbursement();
+				reimbObj.setReimb_id(getReimb.getInt(1));
+				reimbObj.setReimb_amount(getReimb.getDouble(2));
+				reimbObj.setReimb_submitted(getReimb.getTimestamp(3));
+				reimbObj.setReimb_resolved(getReimb.getTimestamp(4));
+				reimbObj.setReimb_description(getReimb.getString(5));
+				reimbObj.setReimb_author(getReimb.getInt(6));
+				reimbObj.setReimb_resolver(getReimb.getInt(7));
+				reimbObj.setReimb_status_id(getReimb.getInt(8));
+				reimbObj.setReimb_type_id(getReimb.getInt(9));
+
+				ers = new ERSReimbursementStatus(getReimb.getInt(8), getReimb.getString(10));
+				ert = new ERSReimbursementType(getReimb.getInt(9), getReimb.getString(11));
+
+				ersAuthor.setUser_first_name(
+						StringUtils.isNoneEmpty(getReimb.getString(12)) ? getReimb.getString(12) : "");
+				ersAuthor.setUser_last_name(
+						StringUtils.isNoneEmpty(getReimb.getString(13)) ? getReimb.getString(13) : "");
+
+				ersResolver.setUser_first_name(
+						StringUtils.isNoneEmpty(getReimb.getString(14)) ? getReimb.getString(14) : "");
+				ersResolver.setUser_last_name(
+						StringUtils.isNoneEmpty(getReimb.getString(15)) ? getReimb.getString(15) : "");
+
+				reimbObj.setErsReimbursementStatus(ers);
+				reimbObj.setErsReimbursementType(ert);
+				reimbObj.setErsAuthor(ersAuthor);
+				reimbObj.setErsResolver(ersResolver);
+
+				reimbList.add(reimbObj);
+				// System.out.println(reimbList.toString());
+			}
+			return reimbList;
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+
+		}
+		return null;
+	}
+
+	@Override
+	public ERSReimbursement getReceipt(int reimb_id, int ers_users_id) {
+
+		String SQL = "SELECT reimb_receipt FROM ers.ers_reimbursement WHERE reimb_id = ?";
+		try (Connection conn = ConnectionUtil.getConnection()) {
+			// Instantiate a PreparedStatement to fill in the variables (?)
+			PreparedStatement ps = conn.prepareStatement(SQL);
+			ps.setInt(1, reimb_id);
+			// System.out.println(ps.toString());
+			ResultSet getReimb = ps.executeQuery();
+
+			if (getReimb.next()) {
+				ERSReimbursement reimbObj = new ERSReimbursement();
+				reimbObj.setReimb_receipt(getReimb.getBytes(1));
+				return reimbObj;
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+
+		}
+		return null;
+	}
+
+	@Override
+	public ArrayList<ERSReimbursement> getAllReimbursementRequests(int reimb_status_id) {
+
+		String SQL = "SELECT reimb_id, reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_author, reimb_resolver, ers.reimb_status_id, ert.reimb_type_id, ers.reimb_status, ert.reimb_type, eu.user_first_name, eu.user_last_name, eu.user_role_id, eu2.user_first_name AS resolver_first_name, eu2.user_last_name AS resolver_last_name, eu2.user_role_id AS resolver_role_id\r\n"
+				+ "FROM ers.ers_reimbursement er\r\n"
+				+ "LEFT JOIN ers.ers_reimbursement_status ers ON\r\n"
+				+ "er.reimb_status_id = ers.reimb_status_id\r\n"
+				+ "LEFT JOIN ers.ers_reimbursement_type ert ON\r\n"
+				+ "er.reimb_type_id = ert.reimb_type_id\r\n"
+				+ "LEFT JOIN ers.ers_users eu ON\r\n"
+				+ "er.reimb_author = eu.ers_users_id\r\n"
+				+ "LEFT JOIN ers.ers_users eu2 ON\r\n"
+				+ "er.reimb_resolver = eu2.ers_users_id\r\n"
+				+ "WHERE er.reimb_status_id = ?\r\n"
+				+ "ORDER BY er.reimb_id ASC;\r\n";
+
+		try (Connection conn = ConnectionUtil.getConnection()) {
+			// Instantiate a PreparedStatement to fill in the variables (?)
+			PreparedStatement ps = conn.prepareStatement(SQL);
+			ps.setInt(1, reimb_status_id);
+			// System.out.println(ps.toString());
+			ResultSet getReimb = ps.executeQuery();
+
+			ArrayList<ERSReimbursement> reimbList = new ArrayList<ERSReimbursement>();
+			ERSUsers ersAuthor = new ERSUsers();
+			ERSUsers ersResolver = new ERSUsers();
+			ERSReimbursement reimbObj;
+			ERSReimbursementStatus ers;
+			ERSReimbursementType ert;
+			while (getReimb.next()) {
+				reimbObj = new ERSReimbursement();
+				reimbObj.setReimb_id(getReimb.getInt("reimb_id"));
+				reimbObj.setReimb_amount(getReimb.getDouble("reimb_amount"));
+				reimbObj.setReimb_submitted(getReimb.getTimestamp("reimb_submitted"));
+				reimbObj.setReimb_resolved(getReimb.getTimestamp("reimb_resolved"));
+				reimbObj.setReimb_description(getReimb.getString("reimb_description"));
+				reimbObj.setReimb_author(getReimb.getInt("reimb_author"));
+				reimbObj.setReimb_resolver(getReimb.getInt("reimb_resolver"));
+				reimbObj.setReimb_status_id(getReimb.getInt("reimb_status_id"));
+				reimbObj.setReimb_type_id(getReimb.getInt("reimb_type_id"));
+
+				ers = new ERSReimbursementStatus(getReimb.getInt("reimb_status_id"), getReimb.getString("reimb_status"));
+				ert = new ERSReimbursementType(getReimb.getInt("reimb_type_id"), getReimb.getString("reimb_type"));
+				
+				
+				ersAuthor.setErs_users_id(getReimb.getInt("reimb_author"));
+				ersAuthor.setUser_first_name(
+						StringUtils.isNoneEmpty(getReimb.getString("user_first_name")) ? getReimb.getString("user_first_name") : "");
+				ersAuthor.setUser_last_name(
+						StringUtils.isNoneEmpty(getReimb.getString("user_last_name")) ? getReimb.getString("user_last_name") : "");
+				ersAuthor.setUser_role_id(getReimb.getInt("user_role_id"));
+
+				ersResolver.setErs_users_id(getReimb.getInt("reimb_resolver"));
+				ersResolver.setUser_first_name(
+						StringUtils.isNoneEmpty(getReimb.getString("resolver_first_name")) ? getReimb.getString("resolver_first_name") : "");
+				ersResolver.setUser_last_name(
+						StringUtils.isNoneEmpty(getReimb.getString("resolver_last_name")) ? getReimb.getString("resolver_last_name") : "");
+				ersResolver.setUser_role_id(getReimb.getInt("resolver_role_id"));
+
+				reimbObj.setErsReimbursementStatus(ers);
+				reimbObj.setErsReimbursementType(ert);
+				reimbObj.setErsAuthor(ersAuthor);
+				reimbObj.setErsResolver(ersResolver);
+
+				reimbList.add(reimbObj);
+				// System.out.println(reimbList.toString());
+			}
+			return reimbList;
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+
+		}
+		return null;
+	}
+
+}

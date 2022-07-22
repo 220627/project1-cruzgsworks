@@ -1,0 +1,48 @@
+@charset 'utf-8';
+
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  align-items: center;
+}
+
+@keyframes statusEntrance {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.login-message .alert {
+  display: none;
+}
+
+.login-message div.alert.activeStatus {
+  animation: statusEntrance 1s ease 0s 1 normal forwards;
+  display: block;
+}
+
+.my-container .hideElem {
+  display: none;
+}
+
+.my-container {
+  max-width: 576px;
+}
+
+.my-container input#inputUsername {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.my-container input#inputPassword {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}

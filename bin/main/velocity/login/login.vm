@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]> <html class="no-js"> <!--<![endif]-->
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Login to ERS</title>
+        <meta name="description" content="Login to ERS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Favicon -->
+        <link rel="apple-touch-icon" sizes="180x180" href="img/ers_logo/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="img/ers_logo/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="img/ers_logo/favicon-16x16.png">
+        <link rel="manifest" href="img/ers_logo/site.webmanifest">
+        <!-- Stylesheets -->
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/login.css">
+    </head>
+
+    <body class="">
+        <!--[if lt IE 7]> <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p> <![endif]-->
+        <main class="my-container w-100 m-auto">
+            <div class="container">
+                <div class="row">
+                    <div class="col pb-2 text-center">
+                        <img src="/img/reimbursement-128.png" height="64">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col pb-2 text-center">
+                        <h1 class="h3">Please sign in</h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div>
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="inputUsername" value="" placeholder="Username">
+                                <label for="inputUsername" class="form-label">Username</label>
+                            </div>
+                            <div class="form-floating">
+                                <input type="password" class="form-control" id="inputPassword" value="" placeholder="Password">
+                                <label for="inputPassword" class="form-label">Password</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <button id="submitBtn" href="#" class="w-100 btn btn-primary">
+                            <div id="proceedText" class="proceedText">Login</div>
+                            <div id="proceedLoading" class="proceedLoading text-center hideElem">
+                                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                                Loading...
+                            </div>
+                        </button>
+                    </div>
+                    <div class="col">
+                        <button id="registerBtn" href="#" class="w-100 btn btn-secondary">
+                            Sign-up
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col login-message mt-3">
+                        <div id="setupAlertSuccess" class="alert alert-success text-center" role="alert">
+                            Login Success. Redirecting to main page in 1s.
+                        </div>
+                        <div id="setupAlertFailed" class="alert alert-danger text-center" role="alert">
+                            Failed.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <script src="js/bootstrap.bundle.js"></script>
+        <script src="js/login.js"></script>
+    </body>
+
+</html>
