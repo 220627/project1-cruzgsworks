@@ -10,6 +10,8 @@ plugins {
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
     id 'application'
+    id 'distribution'
+    id 'eclipse'
 }
 
 repositories {
@@ -54,15 +56,13 @@ dependencies {
     
 }
 
-// Include dependent libraries in archive.
+// Main Class
 mainClassName = "com.revature.ers.Launcher"
 
-jar {
-  manifest { 
-    attributes "Main-Class": "$mainClassName"
-  }  
-
-  from {
-    configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-  }
+// Include configs folder in Distribution Zip
+distZip {
+    into(project.name + '/bin') {
+        from '.'
+        include 'configs/*'
+    }
 }

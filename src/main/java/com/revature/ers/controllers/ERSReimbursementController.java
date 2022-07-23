@@ -167,7 +167,7 @@ public class ERSReimbursementController {
 		ERSReimbursement myReimb = null;
 		try {
 			UploadedFile uploadedReceipt = ctx.uploadedFile("rReceipt");
-			byte[] myReceipt = uploadedReceipt != null ? ByteStreams.toByteArray(uploadedReceipt.getContent()) : null;
+			byte[] myReceipt = ByteStreams.toByteArray(uploadedReceipt.getContent());
 
 			Double rAmount = StringUtils.isNotEmpty(ctx.formParam("rAmount"))
 					? Double.parseDouble(ctx.formParam("rAmount"))

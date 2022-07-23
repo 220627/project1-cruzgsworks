@@ -71,7 +71,6 @@ public class ERSReimbursementStatusDAO implements ERSReimbursementStatusDAOInter
 
 			if (reimbStatus == null) {
 
-				// TODO create roles table and return to this
 				String SQL = "INSERT INTO ers.ers_reimbursement_status\r\n"
 						+ "(reimb_status)\r\n"
 						+ "VALUES(?)\r\n"

@@ -5,22 +5,51 @@
 <!--[if gt IE 8]> <html class="no-js"> <!--<![endif]-->
 <html>
 
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>404 - Not Found</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="css/404.css">
-    </head>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>404 - Not Found</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <style>
+        html,
+        body {
+            padding: 0;
+            height: 100%;
+        }
 
-    <body>
-        <!--[if lt IE 7]> <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p> <![endif]-->
-        <div id="main">
-            <div class="fof">
+        .main {
+            height: 100%;
+        }
+
+        .johntravolta {
+            position: absolute;
+            bottom: 0;
+        }
+
+        .fof {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+    </style>
+</head>
+
+<body>
+    <!--[if lt IE 7]> <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p> <![endif]-->
+    <div class="main">
+        <div class="fof">
+            <div>
                 <h1>Error 404 - Not Found</h1>
             </div>
         </div>
-    </body>
+        <div class="johntravolta">
+            <img src="/img/404.gif">
+        </div>
+    </div>
+</body>
 
 </html>

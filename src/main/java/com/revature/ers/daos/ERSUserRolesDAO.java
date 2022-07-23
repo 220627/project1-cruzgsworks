@@ -70,7 +70,6 @@ public class ERSUserRolesDAO implements ERSUserRolesDAOInterface {
 
 			if (getUserRole == null) {
 
-				// TODO create roles table and return to this
 				String SQL = "INSERT INTO ers.ers_user_roles\r\n"
 						+ "(user_role)\r\n"
 						+ "VALUES(?)\r\n"

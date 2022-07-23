@@ -71,7 +71,6 @@ public class ERSReimbursementTypeDAO implements ERSReimbursementTypeDAOInterface
 
 			if (reimbType == null) {
 
-				// TODO create roles table and return to this
 				String SQL = "INSERT INTO ers.ers_reimbursement_type\r\n"
 						+ "(reimb_type)\r\n"
 						+ "VALUES(?)\r\n"

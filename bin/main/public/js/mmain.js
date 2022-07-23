@@ -69,9 +69,55 @@ let formatter = new Intl.NumberFormat('en-US', {
   currency: 'USD',
 
   // These options are needed to round to whole numbers if that's what you want.
-  //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
-  //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+  // minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+  // maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
 });
+
+let resolveReimbursements = async (id) => {
+  console.log(id);
+  let actionId = id.split("-");
+  let requestData = {};
+  if (actionId[0].toLowerCase() === 'approve') {
+    requestData.reimb_status = 'approved';
+  } else {
+    requestData.reimb_status = 'denied';
+  }
+  console.log(requestData);
+
+  /*
+  ev.preventDefault();
+  let elemId = ev.target.id;
+  let actionId = elemId.split("-");
+  let requestData = {};
+  if (actionId[0].toLowerCase() === 'approve') {
+    requestData.reimb_status = 'approved';
+  } else {
+    requestData.reimb_status = 'denied';
+  }
+  */
+  await fetch(
+    "/api/manager/reimbursement/resolve/" + actionId[1],
+    {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json; charset=utf-8",
+      },
+      body: JSON.stringify(requestData),
+    }
+  )
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      // console.log(data);
+      refreshAllTables();
+    });
+
+  // console.log(elemId);
+  // console.log(actionId);
+  // console.log(requestData);
+};
 
 let loadPendingReimbursements = async () => {
   document.getElementById('reimPendingSpinner').classList.remove('d-none');
@@ -97,33 +143,89 @@ let loadPendingReimbursements = async () => {
     .then((data) => {
       let recordsArr = data.statusObject;
       var rowsArr = [];
-      for (var rRow of recordsArr) {
-        var aRow =
-          "<tr>" +
-          '  <td class=\"fit\" scope="row">' + rRow.reimb_id + '</td>' +
-          '  <td class=\"fit\" scope="row">' + rRow.ersAuthor.user_first_name + " " + rRow.ersAuthor.user_last_name + '</td>' +
-          "  <td class=\"fit text-end\">" + formatter.format(rRow.reimb_amount) + "</td>" +
-          "  <td class=\"fit\">" + rRow.reimb_submitted + "</td>" +
-          "  <td class=\"\">" + (rRow.reimb_description != undefined ? rRow.reimb_description : "(No Description)") + "</td>" +
-          "  <td class=\"fit\">" + toTitleCase(rRow.ersReimbursementType.reimb_type) + "</td>" +
-          '  <td class="fit"><a href="/api/manager/reimbursement/receipt/' + rRow.reimb_id + '" download><i class="bi bi-file-earmark-arrow-down-fill me-2"></i>Download</a></td>' +
-          '  <td class="fit">' +
-          '    <a href="#" class="text-danger me-3 fw-bold"><i class="bi bi-x-lg me-2"></i>Deny</a>' +
-          '    <a href="#" class="text-success fw-bold"><i class="bi bi-check-lg me-2"></i>Approve</a>' +
-          '  </td>' +
-          "</tr>";
+
+      if (recordsArr.length > 0) {
+        for (var rRow of recordsArr) {
+          var receiptStr = '<span class="text-danger">(None)</span>';
+          if (rRow.has_receipt) {
+            receiptStr = '<a href="/api/employee/reimbursement/receipt/' + rRow.reimb_id + '" download><i class="bi bi-file-earmark-arrow-down-fill me-2"></i>Download</a>';
+          }
+
+          var aRow =
+            "<tr>" +
+            '  <td class=\"fit\" scope="row">' + rRow.reimb_id + '</td>' +
+            '  <td class=\"fit\">' + rRow.ersAuthor.user_first_name + " " + rRow.ersAuthor.user_last_name + '</td>' +
+            "  <td class=\"fit text-end\">" + formatter.format(rRow.reimb_amount) + "</td>" +
+            "  <td class=\"fit\">" + rRow.reimb_submitted + "</td>" +
+            "  <td class=\"text-start\">" + (rRow.reimb_description != undefined ? rRow.reimb_description : "(No Description)") + "</td>" +
+            "  <td class=\"fit\">" + toTitleCase(rRow.ersReimbursementType.reimb_type) + "</td>" +
+            '  <td class="fit">' + receiptStr + '</td>' +
+            '  <td class="fit">' +
+            '    <a id="deny-' + rRow.reimb_id + '" class="reimb-action text-danger me-3 fw-bold" tabindex="0"><i class="bi bi-x-lg me-2"></i>Deny</a>' +
+            '    <a id="approve-' + rRow.reimb_id + '" class="reimb-action text-success fw-bold" tabindex="0"><i class="bi bi-check-lg me-2"></i>Approve</a>' +
+            '  </td>' +
+            "</tr>";
+          rowsArr.push(aRow);
+
+        }
+      } else {
+        let aRow = "<tr><td colspan=\"8\">No Results Found</td></tr>";
         rowsArr.push(aRow);
       }
-
-      if (rowsArr.length < 1) {
-        let aRow = "<tr><td colspan=\"6\">No Results Found</td></tr>";
-        rowsArr.push(aRow);
-      };
 
       document.getElementById('reimPendingSpinner').classList.add('d-none');
       document.getElementById('reimPendingTBody').innerHTML = rowsArr.join("\r\n");
       document.getElementById('reimPendingTable').classList.remove('d-none');
-      // console.log(recordsArr);
+
+      let reimbAction = document.getElementsByClassName('reimb-action');
+
+      let popoverOptions = {
+        html: true,
+        sanitize: false,
+        placement: 'left',
+        title: 'Are you sure?',
+        trigger: 'click',
+        content: '<div class="container-fluid">' +
+          '  <div class="row">' +
+          '    <div class="col p-0 me-2"><a type="button" class="btn btn-confirm-no btn-outline-danger pt-0 pb-0">No</a></div>' +
+          '    <div class="col p-0"><a type="button" class="btn btn-confirm-yes btn-outline-success pt-0 pb-0">Yes</a></div>' +
+          '  </div>' +
+          '</div>'
+      };
+
+      $('.reimb-action').popover(popoverOptions);
+
+      $('.reimb-action').on('click', function () {
+        $('.reimb-action').not(this).popover('hide');
+      });
+
+      $('.reimb-action').on('shown.bs.popover', function () {
+        const popoverInstanceId = '#' + $(this).attr('aria-describedby') + ' .btn';
+        const originId = $(this).attr('id');
+        const thisElem = $(this);
+        $(popoverInstanceId).click(function () {
+          if ($(this).hasClass('btn-confirm-yes')) {
+            thisElem.popover("hide");
+            resolveReimbursements(originId);
+          } else {
+            thisElem.popover("hide");
+          }
+        });
+      });
+
+      /*
+      const popoverList = [...reimbAction].map(myElem => new bootstrap.Popover(myElem, popoverOptions));
+
+      console.log(popoverList);
+
+      for (const curE of reimbAction) {
+        curE.addEventListener('show.bs.popover', function (param) {
+          console.log(param);
+        });
+        // curE.addEventListener('click', resolveReimbursements);
+      }
+      */
+
     });
 };
 
@@ -151,26 +253,29 @@ let loadApprovedReimbursements = async () => {
     .then((data) => {
       let recordsArr = data.statusObject;
       var rowsArr = [];
-      for (var rRow of recordsArr) {
-        let aRow =
-          "<tr>" +
-          '  <td class=\"fit\" scope="row">' + rRow.reimb_id + '</td>' +
-          '  <td class=\"fit\" scope="row">' + rRow.ersAuthor.user_first_name + " " + rRow.ersAuthor.user_last_name + '</td>' +
-          "  <td class=\"fit text-end\">" + formatter.format(rRow.reimb_amount) + "</td>" +
-          "  <td class=\"fit\">" + rRow.reimb_submitted + "</td>" +
-          "  <td class=\"\">" + (rRow.reimb_description != undefined ? rRow.reimb_description : "(No Description)") + "</td>" +
-          "  <td class=\"fit\">" + toTitleCase(rRow.ersReimbursementType.reimb_type) + "</td>" +
-          '  <td class="fit"><a href="/api/manager/reimbursement/receipt/' + rRow.reimb_id + '" download><i class="bi bi-file-earmark-arrow-down-fill me-2"></i>Download</a></td>' +
-          '  <td class="fit">' +
-          '    <a href="#" class="text-danger me-3 fw-bold"><i class="bi bi-x-lg me-2"></i>Deny</a>' +
-          '    <a href="#" class="text-success fw-bold"><i class="bi bi-check-lg me-2"></i>Approve</a>' +
-          '  </td>' +
-          "</tr>";
-        rowsArr.push(aRow);
-      }
+      if (recordsArr.length > 0) {
+        for (var rRow of recordsArr) {
+          var receiptStr = '<span class="text-danger">(None)</span>';
+          if (rRow.has_receipt) {
+            receiptStr = '<a href="/api/employee/reimbursement/receipt/' + rRow.reimb_id + '" download><i class="bi bi-file-earmark-arrow-down-fill me-2"></i>Download</a>';
+          }
 
-      if (rowsArr.length < 1) {
-        let aRow = "<tr><td colspan=\"6\">No Results Found</td></tr>";
+          let aRow =
+            "<tr>" +
+            '  <td class=\"fit\" scope="row">' + rRow.reimb_id + '</td>' +
+            '  <td class=\"fit\">' + rRow.ersAuthor.user_first_name + " " + rRow.ersAuthor.user_last_name + '</td>' +
+            "  <td class=\"fit text-end\">" + formatter.format(rRow.reimb_amount) + "</td>" +
+            "  <td class=\"fit\">" + rRow.reimb_submitted + "</td>" +
+            "  <td class=\"fit\">" + rRow.ersResolver.user_first_name + " " + rRow.ersResolver.user_last_name + "</td>" +
+            '  <td class="fit">' + rRow.reimb_resolved + '</td>' +
+            "  <td class=\"text-start\">" + (rRow.reimb_description != undefined ? rRow.reimb_description : "(No Description)") + "</td>" +
+            "  <td class=\"fit\">" + toTitleCase(rRow.ersReimbursementType.reimb_type) + "</td>" +
+            '  <td class="fit">' + receiptStr + '</td>' +
+            "</tr>";
+          rowsArr.push(aRow);
+        }
+      } else {
+        let aRow = "<tr><td colspan=\"9\">No Results Found</td></tr>";
         rowsArr.push(aRow);
       };
 
@@ -205,26 +310,29 @@ let loadDeniedReimbursements = async () => {
     .then((data) => {
       let recordsArr = data.statusObject;
       var rowsArr = [];
-      for (var rRow of recordsArr) {
-        let aRow =
-          "<tr>" +
-          '  <td class=\"fit\" scope="row">' + rRow.reimb_id + '</td>' +
-          '  <td class=\"fit\" scope="row">' + rRow.ersAuthor.user_first_name + " " + rRow.ersAuthor.user_last_name + '</td>' +
-          "  <td class=\"fit text-end\">" + formatter.format(rRow.reimb_amount) + "</td>" +
-          "  <td class=\"fit\">" + rRow.reimb_submitted + "</td>" +
-          "  <td class=\"\">" + (rRow.reimb_description != undefined ? rRow.reimb_description : "(No Description)") + "</td>" +
-          "  <td class=\"fit\">" + toTitleCase(rRow.ersReimbursementType.reimb_type) + "</td>" +
-          '  <td class="fit"><a href="/api/manager/reimbursement/receipt/' + rRow.reimb_id + '" download><i class="bi bi-file-earmark-arrow-down-fill me-2"></i>Download</a></td>' +
-          '  <td class="fit">' +
-          '    <a href="#" class="text-danger me-3 fw-bold"><i class="bi bi-x-lg me-2"></i>Deny</a>' +
-          '    <a href="#" class="text-success fw-bold"><i class="bi bi-check-lg me-2"></i>Approve</a>' +
-          '  </td>' +
-          "</tr>";
-        rowsArr.push(aRow);
+      if (recordsArr.length > 0) {
+        for (var rRow of recordsArr) {
+          var receiptStr = '<span class="text-danger">(None)</span>';
+          if (rRow.has_receipt) {
+            receiptStr = '<a href="/api/employee/reimbursement/receipt/' + rRow.reimb_id + '" download><i class="bi bi-file-earmark-arrow-down-fill me-2"></i>Download</a>';
+          }
+          let aRow =
+            "<tr>" +
+            '  <td class=\"fit\" scope="row">' + rRow.reimb_id + '</td>' +
+            '  <td class=\"fit\">' + rRow.ersAuthor.user_first_name + " " + rRow.ersAuthor.user_last_name + '</td>' +
+            "  <td class=\"fit text-end\">" + formatter.format(rRow.reimb_amount) + "</td>" +
+            "  <td class=\"fit\">" + rRow.reimb_submitted + "</td>" +
+            "  <td class=\"fit\">" + rRow.ersResolver.user_first_name + " " + rRow.ersResolver.user_last_name + "</td>" +
+            '  <td class="fit">' + rRow.reimb_resolved + '</td>' +
+            "  <td class=\"text-start\">" + (rRow.reimb_description != undefined ? rRow.reimb_description : "(No Description)") + "</td>" +
+            "  <td class=\"fit\">" + toTitleCase(rRow.ersReimbursementType.reimb_type) + "</td>" +
+            '  <td class="fit">' + receiptStr + '</td>' +
+            "</tr>";
+          rowsArr.push(aRow);
+        }
       }
-
-      if (rowsArr.length < 1) {
-        let aRow = "<tr><td colspan=\"8\">No Results Found</td></tr>";
+      else {
+        let aRow = "<tr><td colspan=\"9\">No Results Found</td></tr>";
         rowsArr.push(aRow);
       };
 
@@ -271,17 +379,33 @@ let refreshAllTables = () => {
 }
 
 document.addEventListener("DOMContentLoaded", function (event) {
+  // Log-out button
   document.getElementById("logoutBtn").addEventListener("click", function () {
     deleteAllCookies();
   });
+
+  // Submit Request
   document.getElementById("submitBtn").addEventListener("click", function () {
     newReimbursement();
   });
+
+  // Refresh list of reimbursements
   document.getElementById("refreshReimbursementTables").addEventListener("click", function () {
     refreshAllTables();
   });
+
+  // Get reimburse types
   loadReimbursementTypes();
+
+  // Get all list of reimbursements
   refreshAllTables();
-  var intervalID = setInterval(refreshAllTables, 60000);
+
+  // Reload list of reimbursements every minute
+  // var intervalID = setInterval(refreshAllTables, 60000);
+
+  document.querySelectorAll('[data-bs-toggle="popover"]')
+    .forEach(popover => {
+      new bootstrap.Popover(popover)
+    })
 
 });

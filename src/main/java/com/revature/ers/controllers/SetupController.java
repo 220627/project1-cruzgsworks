@@ -5,14 +5,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 
 import com.google.gson.Gson;
-import com.revature.ers.Launcher;
 import com.revature.ers.daos.ERSReimbursementStatusDAO;
 import com.revature.ers.daos.ERSReimbursementTypeDAO;
 import com.revature.ers.daos.ERSUserRolesDAO;
@@ -31,7 +28,7 @@ import io.javalin.http.Handler;
 
 public class SetupController {
 
-//	private static Logger logger = LoggerFactory.getLogger(SetupController.class);
+	// private static Logger logger = LoggerFactory.getLogger(SetupController.class);
 
 	public static Handler serveSetupPage = ctx -> {
 		ctx.render(Path.Template.INITIAL_SETUP);
@@ -39,18 +36,15 @@ public class SetupController {
 
 	public static Handler doInitialSetup = ctx -> {
 
-		Launcher launch = new Launcher();
-
-		ClassLoader classLoader = launch.getClass().getClassLoader();
-		URL path = classLoader.getResource("configs/config.properties");
-		String ERS_DB_RUNONCE = "0";
 		Gson gson = new Gson();
-		File configFile;
-		FileReader reader;
-		Properties props;
+		File configFile = null;
+		FileReader reader = null;
+		Properties props = null;
+
+		String ERS_DB_RUNONCE = null;
 
 		try {
-			configFile = new File(path.toURI());
+			configFile = new File("./configs/config.properties");
 			reader = new FileReader(configFile);
 			props = new Properties();
 			props.load(reader);
@@ -62,31 +56,25 @@ public class SetupController {
 			ex.printStackTrace();
 		} catch (IOException ex) {
 			ex.printStackTrace();
-		} catch (URISyntaxException ex) {
-			ex.printStackTrace();
 		}
 
 		if (!ERS_DB_RUNONCE.equals("true")) {
 
 			InitialSetup is = gson.fromJson(ctx.body(), InitialSetup.class);
 
-			// "jdbc:postgresql://localhost:5432/postgres?currentSchema=ers"
-			String dbUrl = "jdbc:postgresql://" + is.getPostgresDBUrl() + ":" + is.getPostgresDBPort() + "/"
-					+ is.getPostgresDBName() + "?currentSchema=" + is.getPostgresDBSchema();
+			String dbUrl = "jdbc:postgresql://" + is.getPostgresDBUrl() + ":" + is.getPostgresDBPort() + "/" + is.getPostgresDBName()
+					+ "?currentSchema=" + is.getPostgresDBSchema();
+			// System.out.println(dbUrl);
 
-			ConnectionUtil.setUrl(dbUrl);
-			ConnectionUtil.setUsername(is.getPostgresUsername());
-			ConnectionUtil.setPassword(is.getPostgresPassword());
-
-			boolean testConnection = ConnectionUtil.testConnection();
+			boolean testConnection = ConnectionUtil.testConnection(dbUrl, is.getPostgresUsername(), is.getPostgresPassword());
 
 			if (testConnection) {
 
 				// create 2 new roles and 1 financial manager
 				ERSUserRoles newRole1 = new ERSUserRoles("manager");
 				ERSUserRoles newRole2 = new ERSUserRoles("employee");
-				ERSUsers newUser = new ERSUsers(is.getErsUsername(), is.getErsPassword(), is.getErsFirstname(),
-						is.getErsLastname(), is.getErsEmail(), 1);
+				ERSUsers newUser = new ERSUsers(is.getErsUsername(), is.getErsPassword(), is.getErsFirstname(), is.getErsLastname(),
+						is.getErsEmail(), 1);
 				ERSReimbursementType newRtype1 = new ERSReimbursementType("lodging");
 				ERSReimbursementType newRtype2 = new ERSReimbursementType("travel");
 				ERSReimbursementType newRtype3 = new ERSReimbursementType("food");
@@ -102,16 +90,13 @@ public class SetupController {
 				ERSReimbursementType createRtype2 = new ERSReimbursementTypeDAO().createReimbursementType(newRtype2);
 				ERSReimbursementType createRtype3 = new ERSReimbursementTypeDAO().createReimbursementType(newRtype3);
 				ERSReimbursementType createRtype4 = new ERSReimbursementTypeDAO().createReimbursementType(newRtype4);
-				ERSReimbursementStatus createRstatus1 = new ERSReimbursementStatusDAO()
-						.createReimbursementStatus(newRStatus1);
-				ERSReimbursementStatus createRstatus2 = new ERSReimbursementStatusDAO()
-						.createReimbursementStatus(newRStatus2);
-				ERSReimbursementStatus createRstatus3 = new ERSReimbursementStatusDAO()
-						.createReimbursementStatus(newRStatus3);
+				ERSReimbursementStatus createRstatus1 = new ERSReimbursementStatusDAO().createReimbursementStatus(newRStatus1);
+				ERSReimbursementStatus createRstatus2 = new ERSReimbursementStatusDAO().createReimbursementStatus(newRStatus2);
+				ERSReimbursementStatus createRstatus3 = new ERSReimbursementStatusDAO().createReimbursementStatus(newRStatus3);
 
-				if (createRole1 != null & createRole2 != null & createUser != null & createRtype1 != null
-						& createRtype2 != null & createRtype3 != null & createRtype4 != null & createRstatus1 != null
-						& createRstatus1 != null & createRstatus2 != null & createRstatus3 != null) {
+				if (createRole1 != null & createRole2 != null & createUser != null & createRtype1 != null & createRtype2 != null
+						& createRtype3 != null & createRtype4 != null & createRstatus1 != null & createRstatus1 != null
+						& createRstatus2 != null & createRstatus3 != null) {
 					HashMap<String, ArrayList<?>> setupList = new HashMap<String, ArrayList<?>>();
 
 					ArrayList<ERSUserRoles> roleList = new ArrayList<ERSUserRoles>();
@@ -136,7 +121,6 @@ public class SetupController {
 					setupList.put("reimbursementStatus", ersList);
 
 					try {
-						configFile = new File(path.toURI());
 						reader = new FileReader(configFile);
 						props = new Properties();
 						props.load(reader);
@@ -155,8 +139,6 @@ public class SetupController {
 						ex.printStackTrace();
 					} catch (IOException ex) {
 						ex.printStackTrace();
-					} catch (URISyntaxException ex) {
-						ex.printStackTrace();
 					}
 
 					RunOnce.setRunonce(true);
@@ -164,8 +146,7 @@ public class SetupController {
 					Responses rp = new Responses(200, "Setup Success", true, setupList);
 					ctx.status(rp.getStatusCode()).json(gson.toJson(rp));
 				} else {
-					Responses rp = new Responses(400, "Setup Failed. One of the insert SQLs may have failed.", false,
-							null);
+					Responses rp = new Responses(400, "Setup Failed. One of the insert SQLs may have failed.", false, null);
 					ctx.status(rp.getStatusCode()).json(gson.toJson(rp));
 				}
 			} else {
@@ -179,19 +160,25 @@ public class SetupController {
 
 	};
 
+	/*
+	 * private static void getAllFiles(File curDir) {
+	 * 
+	 * File[] filesList = curDir.listFiles(); for (File f : filesList) { if (f.isDirectory()) System.out.println("(Directory)" +
+	 * f.getName()); if (f.isFile()) { System.out.println(f.getName()); } }
+	 * 
+	 * }
+	 */
+
 	public static boolean isRun_once() {
-		Launcher launch = new Launcher();
-		ClassLoader classLoader = launch.getClass().getClassLoader();
-		URL path = classLoader.getResource("configs/config.properties");
-		File configFile;
-		FileReader reader;
-		Properties props;
+		// File curDir = new File(".");
+		// getAllFiles(curDir);
+
 		String ERS_DB_RUNONCE = null;
 
 		try {
-			configFile = new File(path.toURI());
-			reader = new FileReader(configFile);
-			props = new Properties();
+			File configFile = new File("./configs/config.properties");
+			FileReader reader = new FileReader(configFile);
+			Properties props = new Properties();
 			props.load(reader);
 
 			ERS_DB_RUNONCE = props.getProperty("ERS_DB_RUNONCE");
@@ -200,8 +187,6 @@ public class SetupController {
 		} catch (FileNotFoundException ex) {
 			ex.printStackTrace();
 		} catch (IOException ex) {
-			ex.printStackTrace();
-		} catch (URISyntaxException ex) {
 			ex.printStackTrace();
 		}
 

@@ -46,7 +46,7 @@ let newReimbursement = async () => {
           .classList.add("activeStatus");
         document.getElementById("submitBtn").removeAttribute("disabled");
         document.getElementById("reimbursementForm").reset();
-        // location replace in 3 seconds
+        refreshAllTables();
       } else {
         document.getElementById("submitBtn").removeAttribute("disabled");
         document.getElementById("newRequestAlertFailed").innerHTML =

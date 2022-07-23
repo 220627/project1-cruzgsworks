@@ -61,6 +61,35 @@ div.main-container {
 .table th.fit {
     white-space: nowrap;
     width: 1%;
-    padding-left: 1rem;
-    padding-right: 1rem;
+}
+
+.table td, .table th {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.accordion button > i.bi {
+  font-size: 22px;
+}
+
+a {
+  cursor: pointer;
+}
+
+h3.popover-header {
+  padding: 8px 8px 4px 8px;
+  font-size: 14px;
+  text-align: center;
+  border: none;
+  background-color: transparent;
+}
+
+div.popover-body {
+  padding: 4px 8px 8px 8px;
+}
+
+.popover-body a.btn {
+  font-size: 12px;
+  width: 75px;
+  font-weight: 500;
 }

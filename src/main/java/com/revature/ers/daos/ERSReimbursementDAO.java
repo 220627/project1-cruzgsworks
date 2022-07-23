@@ -22,7 +22,6 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 
 		try (Connection conn = ConnectionUtil.getConnection()) {
 
-			// TODO create roles table and return to this
 			String SQL = "INSERT INTO ers.ers_reimbursement\r\n"
 					+ "(reimb_amount, reimb_submitted, reimb_description, reimb_receipt, reimb_author, reimb_status_id, reimb_type_id)\r\n"
 					+ "VALUES(?, ?, ?, ?, ?, ?, ?)\r\n"
@@ -34,7 +33,7 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 			ps.setDouble(1, myReimb.getReimb_amount());
 			ps.setTimestamp(2, myReimb.getReimb_submitted());
 			ps.setString(3, myReimb.getReimb_description());
-			ps.setBytes(4, myReimb.getReimb_receipt());
+			ps.setBytes(4, myReimb.getReimb_receipt().length > 0 ? myReimb.getReimb_receipt() : null);
 			ps.setInt(5, myReimb.getReimb_author());
 			ps.setInt(6, myReimb.getReimb_status_id());
 			ps.setInt(7, myReimb.getReimb_type_id());

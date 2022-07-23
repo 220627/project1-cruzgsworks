@@ -72,17 +72,17 @@
       </div>
       <div class="row">
         <div class="col">
-          <div class="accordion" id="accordionPanelsStayOpenExample">
+          <div class="accordion" id="accordionreimbTablePanelsExample">
             <div class="accordion-item">
-              <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-                <button class="accordion-button text-bg-light" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
-                  aria-controls="panelsStayOpen-collapseOne">
+              <h2 class="accordion-header" id="reimbTablePanels-headingOne">
+                <button class="accordion-button text-bg-light pt-1 pb-1 ps-2 pe-2" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#reimbTablePanels-collapseOne" aria-expanded="true"
+                  aria-controls="reimbTablePanels-collapseOne">
                   <i class="bi bi-three-dots me-2"></i>Pending Reimbursements
                 </button>
               </h2>
-              <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
-                aria-labelledby="panelsStayOpen-headingOne">
+              <div id="reimbTablePanels-collapseOne" class="accordion-collapse collapse show"
+                aria-labelledby="reimbTablePanels-headingOne">
                 <div class="accordion-body p-1">
                   <div id="reimPendingSpinner" class="text-center">
                     <div class="spinner-grow" role="status">
@@ -90,7 +90,7 @@
                     </div>
                   </div>
                   <div class="table-responsive">
-                    <table id="reimPendingTable" class="table table-sm d-none table-striped m-0 text-center small">
+                    <table id="reimPendingTable" class="table table-sm d-none table-striped m-0 text-center small table-bordered">
                       <thead>
                         <tr>
                           <th class="fit" scope="col">ID</th>
@@ -109,15 +109,15 @@
               </div>
             </div>
             <div class="accordion-item">
-              <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
-                <button class="accordion-button collapsed text-bg-light" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false"
-                  aria-controls="panelsStayOpen-collapseTwo">
+              <h2 class="accordion-header" id="reimbTablePanels-headingTwo">
+                <button class="accordion-button text-bg-light pt-1 pb-1 ps-2 pe-2" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#reimbTablePanels-collapseTwo" aria-expanded="true"
+                  aria-controls="reimbTablePanels-collapseTwo">
                   <i class="bi bi-check-all me-2 text-success"></i>Approved Reimbursements
                 </button>
               </h2>
-              <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse"
-                aria-labelledby="panelsStayOpen-headingTwo">
+              <div id="reimbTablePanels-collapseTwo" class="accordion-collapse collapse show"
+                aria-labelledby="reimbTablePanels-headingTwo">
                 <div class="accordion-body p-1">
                   <div id="reimApprovedSpinner" class="text-center">
                     <div class="spinner-grow" role="status">
@@ -125,7 +125,7 @@
                     </div>
                   </div>
                   <div class="table-responsive">
-                    <table id="reimApprovedTable" class="table table-sm d-none table-striped m-0 text-center small">
+                    <table id="reimApprovedTable" class="table table-sm d-none table-striped m-0 text-center small table-bordered">
                       <thead>
                         <tr>
                           <th class="fit" scope="col">ID</th>
@@ -144,15 +144,15 @@
               </div>
             </div>
             <div class="accordion-item">
-              <h2 class="accordion-header" id="panelsStayOpen-headingThree">
-                <button class="accordion-button collapsed text-bg-light" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false"
-                  aria-controls="panelsStayOpen-collapseThree">
+              <h2 class="accordion-header" id="reimbTablePanels-headingThree">
+                <button class="accordion-button text-bg-light pt-1 pb-1 ps-2 pe-2" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#reimbTablePanels-collapseThree" aria-expanded="true"
+                  aria-controls="reimbTablePanels-collapseThree">
                   <i class="bi bi-x-circle-fill me-2 text-danger"></i>Denied Reimbursements
                 </button>
               </h2>
-              <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse"
-                aria-labelledby="panelsStayOpen-headingThree">
+              <div id="reimbTablePanels-collapseThree" class="accordion-collapse collapse show"
+                aria-labelledby="reimbTablePanels-headingThree">
                 <div class="accordion-body p-1">
                   <div id="reimDeniedSpinner" class="text-center">
                     <div class="spinner-grow" role="status">
@@ -160,7 +160,7 @@
                     </div>
                   </div>
                   <div class="table-responsive">
-                    <table id="reimDeniedTable" class="table table-sm d-none table-striped m-0 text-center small">
+                    <table id="reimDeniedTable" class="table table-sm d-none table-striped m-0 text-center small table-bordered">
                       <thead>
                         <tr>
                           <th class="fit" scope="col">ID</th>
