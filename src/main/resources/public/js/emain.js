@@ -49,8 +49,7 @@ let newReimbursement = async () => {
         refreshAllTables();
       } else {
         document.getElementById("submitBtn").removeAttribute("disabled");
-        document.getElementById("newRequestAlertFailed").innerHTML =
-          data.statusMessage;
+        document.getElementById("newRequestAlertFailed").innerHTML = data.statusMessage;
         document
           .getElementById("newRequestAlertFailed")
           .classList.add("activeStatus");

@@ -19,13 +19,16 @@ public class IndexController {
 
 		if (curUser != null) {
 			ERSUserRoles getEur = new ERSUserRolesDAO().getRoleById(curUser.getUser_role_id());
-
+			
 			model.put("userInfo", curUser);
-			model.put("roleInfo", getEur);
 
-			if (getEur.getUser_role().equals("manager")) {
+			if (getEur.getUser_role().toLowerCase().equals("manager")) {
+				String roleInfo = "Finance Manager";
+				model.put("roleInfo", roleInfo);
 				ctx.render(Path.Template.MANAGER, model);
 			} else {
+				String roleInfo = "Employee";
+				model.put("roleInfo", roleInfo);
 				ctx.render(Path.Template.EMPLOYEE, model);
 			}
 		} else {
