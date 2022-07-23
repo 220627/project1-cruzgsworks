@@ -26,6 +26,40 @@ import io.javalin.http.Handler;
 import io.javalin.http.UploadedFile;
 
 public class ERSReimbursementController {
+
+	public static Handler resolveReimbursements = (ctx) -> {
+		Gson gson = new Gson();
+
+		// retrieve user records
+		ERSReimbursement updateReimb = null;
+		try {
+
+			ERSReimbursementStatus requestData = new ERSReimbursementStatusDAO().getReimbursementStatusByStatus(
+					gson.fromJson(ctx.body(), ERSReimbursementStatus.class).getReimb_status());
+			
+			ERSUsers curUser = AuthUtil.verifyCookie(ctx.cookie("Authentication"));
+
+			int reimb_id = Integer.parseInt(ctx.pathParam("reimb_id"));
+
+			updateReimb = new ERSReimbursementDAO()
+					.resolveReimbursements(reimb_id, curUser.getErs_users_id(), requestData.getReimb_status_id());
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		Responses response;
+
+		// Response
+		if (updateReimb != null) {
+			response = new Responses(200, "Retrieved list of reimbursements", true, updateReimb);
+			ctx.status(response.getStatusCode()).json(gson.toJson(response));
+		} else {
+			response = new Responses(400, "Could not retrieve reimbursements", false, null);
+			ctx.status(response.getStatusCode()).json(gson.toJson(response));
+		}
+	};
+
 	public static Handler getAllReimbursementRequests = (ctx) -> {
 
 		// object of gson class
@@ -57,7 +91,7 @@ public class ERSReimbursementController {
 			ctx.status(response.getStatusCode()).json(gson.toJson(response));
 		}
 	};
-	
+
 	public static Handler getReceipt = (ctx) -> {
 		// retrieve user records
 		ERSReimbursement reimbRequest = null;
@@ -93,7 +127,7 @@ public class ERSReimbursementController {
 			ctx.status(404).result("Not Found");
 		}
 	};
-	
+
 	public static Handler getReimbursementRequests = (ctx) -> {
 		// object of gson class
 		Gson gson = new Gson();

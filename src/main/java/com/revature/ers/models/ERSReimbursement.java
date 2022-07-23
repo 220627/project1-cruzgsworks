@@ -28,6 +28,15 @@ public class ERSReimbursement {
 	private ERSUsers ersResolver;
 	private ERSReimbursementStatus ersReimbursementStatus;
 	private ERSReimbursementType ersReimbursementType;
+	private boolean has_receipt;
+
+	public boolean isHas_receipt() {
+		return has_receipt;
+	}
+
+	public void setHas_receipt(boolean has_receipt) {
+		this.has_receipt = has_receipt;
+	}
 
 	public ERSUsers getErsAuthor() {
 		return ersAuthor;
@@ -71,6 +80,22 @@ public class ERSReimbursement {
 		this.reimb_resolved = reimb_resolved;
 		this.reimb_description = reimb_description;
 		this.reimb_receipt = reimb_receipt;
+		this.reimb_author = reimb_author;
+		this.reimb_resolver = reimb_resolver;
+		this.reimb_status_id = reimb_status_id;
+		this.reimb_type_id = reimb_type_id;
+	}
+	
+	
+
+	public ERSReimbursement(int reimb_id, double reimb_amount, Timestamp reimb_submitted, Timestamp reimb_resolved,
+			String reimb_description, int reimb_author, int reimb_resolver, int reimb_status_id, int reimb_type_id) {
+		super();
+		this.reimb_id = reimb_id;
+		this.reimb_amount = reimb_amount;
+		this.reimb_submitted = reimb_submitted;
+		this.reimb_resolved = reimb_resolved;
+		this.reimb_description = reimb_description;
 		this.reimb_author = reimb_author;
 		this.reimb_resolver = reimb_resolver;
 		this.reimb_status_id = reimb_status_id;

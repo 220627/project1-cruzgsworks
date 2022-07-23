@@ -98,14 +98,19 @@ let loadPendingReimbursements = async () => {
       let recordsArr = data.statusObject;
       var rowsArr = [];
       for (var rRow of recordsArr) {
+        var receiptStr = '<span class="text-danger">(None)</span>';
+        if (rRow.has_receipt) {
+          receiptStr = '<a href="/api/employee/reimbursement/receipt/' + rRow.reimb_id + '" download><i class="bi bi-file-earmark-arrow-down-fill me-2"></i>Download</a>';
+        }
+
         var aRow =
           "<tr>" +
           '  <td class=\"fit\" scope="row">' + rRow.reimb_id + '</td>' +
           "  <td class=\"fit text-end\">" + formatter.format(rRow.reimb_amount) + "</td>" +
           "  <td class=\"fit\">" + rRow.reimb_submitted + "</td>" +
-          "  <td class=\"\">" + (rRow.reimb_description != undefined ? rRow.reimb_description : "(No Description)") + "</td>" +
+          "  <td class=\"text-start\">" + (rRow.reimb_description != undefined ? rRow.reimb_description : "(No Description)") + "</td>" +
           "  <td class=\"fit\">" + toTitleCase(rRow.ersReimbursementType.reimb_type) + "</td>" +
-          '  <td class="fit"><a href="/api/employee/reimbursement/receipt/' + rRow.reimb_id + '" download><i class="bi bi-file-earmark-arrow-down-fill me-2"></i>Download</a></td>' +
+          '  <td class="fit">' + receiptStr + '</td>' +
           "</tr>";
         rowsArr.push(aRow);
       }
@@ -147,14 +152,19 @@ let loadApprovedReimbursements = async () => {
       let recordsArr = data.statusObject;
       var rowsArr = [];
       for (var rRow of recordsArr) {
+        var receiptStr = '<span class="text-danger">(None)</span>';
+        if (rRow.has_receipt) {
+          receiptStr = '<a href="/api/employee/reimbursement/receipt/' + rRow.reimb_id + '" download><i class="bi bi-file-earmark-arrow-down-fill me-2"></i>Download</a>';
+        }
+
         let aRow =
           "<tr>" +
           '  <td class=\"fit\" scope="row">' + rRow.reimb_id + '</td>' +
           "  <td class=\"fit text-end\">" + formatter.format(rRow.reimb_amount) + "</td>" +
           "  <td class=\"fit\">" + rRow.reimb_submitted + "</td>" +
-          "  <td class=\"\">" + (rRow.reimb_description != undefined ? rRow.reimb_description : "(No Description)") + "</td>" +
+          "  <td class=\"text-start\">" + (rRow.reimb_description != undefined ? rRow.reimb_description : "(No Description)") + "</td>" +
           "  <td class=\"fit\">" + toTitleCase(rRow.ersReimbursementType.reimb_type) + "</td>" +
-          '  <td class="fit"><a href="/api/employee/reimbursement/receipt/' + rRow.reimb_id + '" download><i class="bi bi-file-earmark-arrow-down-fill me-2"></i>Download</a></td>' +
+          '  <td class="fit">' + receiptStr + '</td>' +
           "</tr>";
         rowsArr.push(aRow);
       }
@@ -196,14 +206,19 @@ let loadDeniedReimbursements = async () => {
       let recordsArr = data.statusObject;
       var rowsArr = [];
       for (var rRow of recordsArr) {
+        var receiptStr = '<span class="text-danger">(None)</span>';
+        if (rRow.has_receipt) {
+          receiptStr = '<a href="/api/employee/reimbursement/receipt/' + rRow.reimb_id + '" download><i class="bi bi-file-earmark-arrow-down-fill me-2"></i>Download</a>';
+        }
+
         let aRow =
           "<tr>" +
           '  <td class=\"fit\" scope="row">' + rRow.reimb_id + '</td>' +
           "  <td class=\"fit text-end\">" + formatter.format(rRow.reimb_amount) + "</td>" +
           "  <td class=\"fit\">" + rRow.reimb_submitted + "</td>" +
-          "  <td class=\"\">" + (rRow.reimb_description != undefined ? rRow.reimb_description : "(No Description)") + "</td>" +
+          "  <td class=\"text-start\">" + (rRow.reimb_description != undefined ? rRow.reimb_description : "(No Description)") + "</td>" +
           "  <td class=\"fit\">" + toTitleCase(rRow.ersReimbursementType.reimb_type) + "</td>" +
-          '  <td class="fit"><a href="/api/employee/reimbursement/receipt/' + rRow.reimb_id + '" download><i class="bi bi-file-earmark-arrow-down-fill me-2"></i>Download</a></td>' +
+          '  <td class="fit">' + receiptStr + '</td>' +
           "</tr>";
         rowsArr.push(aRow);
       }

@@ -3,6 +3,7 @@ package com.revature.ers.routes;
 import static io.javalin.apibuilder.ApiBuilder.get;
 import static io.javalin.apibuilder.ApiBuilder.path;
 import static io.javalin.apibuilder.ApiBuilder.post;
+import static io.javalin.apibuilder.ApiBuilder.put;
 
 import com.google.gson.Gson;
 import com.revature.ers.controllers.AuthController;
@@ -62,6 +63,10 @@ public class Routes {
 			});
 			path("/api/setup", () -> {
 				post(SetupController.doInitialSetup);
+			});
+			path("/api/manager/reimbursement/resolve/{reimb_id}", () -> {
+				put(ERSReimbursementController.resolveReimbursements, 
+						new RouteRole[] { Roles.FINANCE_MANAGER });
 			});
 			path("/api/manager/reimbursement", () -> {
 				get(ERSReimbursementController.getAllReimbursementRequests,

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import org.apache.commons.lang3.StringUtils;
@@ -64,7 +65,10 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 	@Override
 	public ArrayList<ERSReimbursement> getReimbursementRequest(int reimb_status_id, int reimb_author) {
 
-		String SQL = "SELECT reimb_id, reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_author, reimb_resolver, ers.reimb_status_id, ert.reimb_type_id, ers.reimb_status, ert.reimb_type, eu.user_first_name, eu.user_last_name, eu.user_role_id, eu2.user_first_name AS resolver_first_name, eu2.user_last_name AS resolver_last_name, eu2.user_role_id AS resolver_role_id\r\n"
+		String SQL = "SELECT reimb_id, reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_author, reimb_resolver, ers.reimb_status_id, "
+				+ "ert.reimb_type_id, ers.reimb_status, ert.reimb_type, eu.user_first_name, eu.user_last_name, eu.user_role_id, "
+				+ "eu2.user_first_name AS resolver_first_name, eu2.user_last_name AS resolver_last_name, eu2.user_role_id AS resolver_role_id, "
+				+ "CASE WHEN reimb_receipt IS NOT NULL THEN true ELSE false END AS has_receipt\r\n"
 				+ "FROM ers.ers_reimbursement er\r\n"
 				+ "LEFT JOIN ers.ers_reimbursement_status ers ON\r\n"
 				+ "er.reimb_status_id = ers.reimb_status_id\r\n"
@@ -102,6 +106,7 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 				reimbObj.setReimb_resolver(getReimb.getInt(7));
 				reimbObj.setReimb_status_id(getReimb.getInt(8));
 				reimbObj.setReimb_type_id(getReimb.getInt(9));
+				reimbObj.setHas_receipt(getReimb.getBoolean("has_receipt"));
 
 				ers = new ERSReimbursementStatus(getReimb.getInt(8), getReimb.getString(10));
 				ert = new ERSReimbursementType(getReimb.getInt(9), getReimb.getString(11));
@@ -165,7 +170,10 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 	@Override
 	public ArrayList<ERSReimbursement> getAllReimbursementRequests(int reimb_status_id) {
 
-		String SQL = "SELECT reimb_id, reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_author, reimb_resolver, ers.reimb_status_id, ert.reimb_type_id, ers.reimb_status, ert.reimb_type, eu.user_first_name, eu.user_last_name, eu.user_role_id, eu2.user_first_name AS resolver_first_name, eu2.user_last_name AS resolver_last_name, eu2.user_role_id AS resolver_role_id\r\n"
+		String SQL = "SELECT reimb_id, reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_author, reimb_resolver, "
+				+ "ers.reimb_status_id, ert.reimb_type_id, ers.reimb_status, ert.reimb_type, eu.user_first_name, eu.user_last_name, "
+				+ "eu.user_role_id, eu2.user_first_name AS resolver_first_name, eu2.user_last_name AS resolver_last_name, eu2.user_role_id AS resolver_role_id, "
+				+ "CASE WHEN reimb_receipt IS NOT NULL THEN true ELSE false END AS has_receipt\r\n"
 				+ "FROM ers.ers_reimbursement er\r\n"
 				+ "LEFT JOIN ers.ers_reimbursement_status ers ON\r\n"
 				+ "er.reimb_status_id = ers.reimb_status_id\r\n"
@@ -202,23 +210,32 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 				reimbObj.setReimb_resolver(getReimb.getInt("reimb_resolver"));
 				reimbObj.setReimb_status_id(getReimb.getInt("reimb_status_id"));
 				reimbObj.setReimb_type_id(getReimb.getInt("reimb_type_id"));
+				reimbObj.setHas_receipt(getReimb.getBoolean("has_receipt"));
 
-				ers = new ERSReimbursementStatus(getReimb.getInt("reimb_status_id"), getReimb.getString("reimb_status"));
+				ers = new ERSReimbursementStatus(getReimb.getInt("reimb_status_id"),
+						getReimb.getString("reimb_status"));
 				ert = new ERSReimbursementType(getReimb.getInt("reimb_type_id"), getReimb.getString("reimb_type"));
-				
-				
+
 				ersAuthor.setErs_users_id(getReimb.getInt("reimb_author"));
 				ersAuthor.setUser_first_name(
-						StringUtils.isNoneEmpty(getReimb.getString("user_first_name")) ? getReimb.getString("user_first_name") : "");
+						StringUtils.isNoneEmpty(getReimb.getString("user_first_name"))
+								? getReimb.getString("user_first_name")
+								: "");
 				ersAuthor.setUser_last_name(
-						StringUtils.isNoneEmpty(getReimb.getString("user_last_name")) ? getReimb.getString("user_last_name") : "");
+						StringUtils.isNoneEmpty(getReimb.getString("user_last_name"))
+								? getReimb.getString("user_last_name")
+								: "");
 				ersAuthor.setUser_role_id(getReimb.getInt("user_role_id"));
 
 				ersResolver.setErs_users_id(getReimb.getInt("reimb_resolver"));
 				ersResolver.setUser_first_name(
-						StringUtils.isNoneEmpty(getReimb.getString("resolver_first_name")) ? getReimb.getString("resolver_first_name") : "");
+						StringUtils.isNoneEmpty(getReimb.getString("resolver_first_name"))
+								? getReimb.getString("resolver_first_name")
+								: "");
 				ersResolver.setUser_last_name(
-						StringUtils.isNoneEmpty(getReimb.getString("resolver_last_name")) ? getReimb.getString("resolver_last_name") : "");
+						StringUtils.isNoneEmpty(getReimb.getString("resolver_last_name"))
+								? getReimb.getString("resolver_last_name")
+								: "");
 				ersResolver.setUser_role_id(getReimb.getInt("resolver_role_id"));
 
 				reimbObj.setErsReimbursementStatus(ers);
@@ -230,6 +247,43 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 				// System.out.println(reimbList.toString());
 			}
 			return reimbList;
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+
+		}
+		return null;
+	}
+
+	@Override
+	public ERSReimbursement resolveReimbursements(int reimb_id, int ers_users_id, int reimb_status_id) {
+		String SQL = "UPDATE ers_reimbursement SET reimb_status_id = ?, reimb_resolved = ?, reimb_resolver = ? WHERE reimb_id = ? RETURNING *";
+		try (Connection conn = ConnectionUtil.getConnection()) {
+			// Instantiate a PreparedStatement to fill in the variables (?)
+			PreparedStatement ps = conn.prepareStatement(SQL);
+			ps.setInt(1, reimb_status_id);
+			ps.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+			ps.setInt(3, ers_users_id);
+			ps.setInt(4, reimb_id);
+			// System.out.println(ps.toString());
+			ResultSet updateReimb = ps.executeQuery();
+
+			if (updateReimb.next()) {
+				ERSReimbursement reimbObj = new ERSReimbursement(
+						updateReimb.getInt("reimb_id"),
+						updateReimb.getDouble("reimb_amount"),
+						updateReimb.getTimestamp("reimb_submitted"),
+						updateReimb.getTimestamp("reimb_resolved"),
+						updateReimb.getString("reimb_description"),
+						updateReimb.getInt("reimb_author"),
+						updateReimb.getInt("reimb_resolver"),
+						updateReimb.getInt("reimb_status_id"),
+						updateReimb.getInt("reimb_type_id"));
+				return reimbObj;
+			}
+
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 
