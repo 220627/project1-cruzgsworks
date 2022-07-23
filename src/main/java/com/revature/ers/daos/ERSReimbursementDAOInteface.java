@@ -16,4 +16,10 @@ public interface ERSReimbursementDAOInteface {
 
 	ERSReimbursement resolveReimbursements(int reimb_id, int ers_users_id, int reimb_status_id);
 
+	int countReimbursements(boolean isManager, int author_id);
+
+	ArrayList<ERSReimbursement> getAllReimbursementRequestsPagination(int reimb_status_id, int limit, int offset);
+
+	ArrayList<ERSReimbursement> getReimbursementRequestPagination(int reimb_status_id, int reimb_author, int limit, int offset);
+
 }

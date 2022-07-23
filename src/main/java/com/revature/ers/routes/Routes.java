@@ -80,6 +80,10 @@ public class Routes {
 				get(ERSReimbursementController.getReimbursementRequests,
 						new RouteRole[] { Roles.EMPLOYEE });
 			});
+			path("/api/reimbursement/count", () -> {
+				get(ERSReimbursementController.countReimbursements,
+						new RouteRole[] { Roles.FINANCE_MANAGER, Roles.EMPLOYEE });
+			});
 			path("/api/reimbursement/new", () -> {
 				post(ERSReimbursementController.newReimbursementRequest,
 						new RouteRole[] { Roles.EMPLOYEE });

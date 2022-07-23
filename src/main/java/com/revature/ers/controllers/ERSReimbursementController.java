@@ -16,8 +16,11 @@ import com.google.common.io.ByteStreams;
 import com.google.gson.Gson;
 import com.revature.ers.daos.ERSReimbursementDAO;
 import com.revature.ers.daos.ERSReimbursementStatusDAO;
+import com.revature.ers.daos.ERSUserRolesDAO;
 import com.revature.ers.models.ERSReimbursement;
+import com.revature.ers.models.ERSReimbursementCount;
 import com.revature.ers.models.ERSReimbursementStatus;
+import com.revature.ers.models.ERSUserRoles;
 import com.revature.ers.models.ERSUsers;
 import com.revature.ers.models.Responses;
 import com.revature.ers.utils.AuthUtil;
@@ -198,4 +201,27 @@ public class ERSReimbursementController {
 		}
 
 	};
+	
+	public static Handler countReimbursements = (ctx) -> {
+		Gson gson = new Gson();
+		
+		int pages = 0;
+		
+		ERSUsers curUser = AuthUtil.verifyCookie(ctx.cookie("Authentication"));
+		ERSUserRoles curRole = new ERSUserRolesDAO().getRoleById(curUser.getUser_role_id());
+		
+		boolean isManager = curRole.getUser_role().toLowerCase().equals("manager");
+		
+		pages = new ERSReimbursementDAO().countReimbursements(isManager, curUser.getErs_users_id());
+		
+		ERSReimbursementCount erc = new ERSReimbursementCount();
+		erc.setCount_rows(pages);
+		
+		Responses response = null;
+		
+		response = new Responses(200, "Retrieved number of reimbursements", true, erc);
+		ctx.status(response.getStatusCode()).json(gson.toJson(response));
+		
+	};
+	
 }
