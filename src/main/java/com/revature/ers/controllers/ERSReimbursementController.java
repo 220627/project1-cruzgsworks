@@ -30,6 +30,50 @@ import io.javalin.http.UploadedFile;
 
 public class ERSReimbursementController {
 
+	public static Handler getReimbursementRequestsPagination = (ctx) -> {
+
+		// object of gson class
+		Gson gson = new Gson();
+
+		// retrieve user records
+		ArrayList<ERSReimbursement> reimbRequest = null;
+		try {
+
+			int limit = StringUtils.isNoneEmpty(ctx.queryParam("limit")) ? Integer.parseInt(ctx.queryParam("limit")) : 0;
+			int page = StringUtils.isNoneEmpty(ctx.queryParam("page")) ? Integer.parseInt(ctx.queryParam("page")) : 0;
+
+			String reimb_status = ctx.queryParam("reimb_status");
+			int reimb_status_id = 0;
+			if (StringUtils.isNotEmpty(reimb_status)) {
+				ERSReimbursementStatus ers = new ERSReimbursementStatusDAO().getReimbursementStatusByStatus(reimb_status);
+				reimb_status_id = ers != null ? ers.getReimb_status_id() : 0;
+			}
+
+			ERSUsers eu = AuthUtil.verifyCookie(ctx.cookie("Authentication"));
+			ERSUserRoles curRole = new ERSUserRolesDAO().getRoleById(eu.getUser_role_id());
+
+			boolean isManager = curRole.getUser_role().toLowerCase().equals("manager");
+
+			reimbRequest = new ERSReimbursementDAO()
+					.getReimbursementRequestPagination(reimb_status_id, eu.getErs_users_id(), isManager, limit, page);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		// object of responses class
+		Responses response;
+
+		// Response
+		if (reimbRequest != null) {
+			response = new Responses(200, "Retrieved list of reimbursements", true, reimbRequest);
+			ctx.status(response.getStatusCode()).json(gson.toJson(response));
+		} else {
+			response = new Responses(400, "Could not retrieve reimbursements", false, null);
+			ctx.status(response.getStatusCode()).json(gson.toJson(response));
+		}
+
+	};
+
 	public static Handler resolveReimbursements = (ctx) -> {
 		Gson gson = new Gson();
 
@@ -39,7 +83,7 @@ public class ERSReimbursementController {
 
 			ERSReimbursementStatus requestData = new ERSReimbursementStatusDAO().getReimbursementStatusByStatus(
 					gson.fromJson(ctx.body(), ERSReimbursementStatus.class).getReimb_status());
-			
+
 			ERSUsers curUser = AuthUtil.verifyCookie(ctx.cookie("Authentication"));
 
 			int reimb_id = Integer.parseInt(ctx.pathParam("reimb_id"));
@@ -201,27 +245,33 @@ public class ERSReimbursementController {
 		}
 
 	};
-	
+
 	public static Handler countReimbursements = (ctx) -> {
 		Gson gson = new Gson();
-		
+
 		int pages = 0;
-		
+
 		ERSUsers curUser = AuthUtil.verifyCookie(ctx.cookie("Authentication"));
 		ERSUserRoles curRole = new ERSUserRolesDAO().getRoleById(curUser.getUser_role_id());
-		
+		String reimb_status = ctx.queryParam("reimb_status");
+		int reimb_status_id = 0;
+		if (StringUtils.isNotEmpty(reimb_status)) {
+			ERSReimbursementStatus ers = new ERSReimbursementStatusDAO().getReimbursementStatusByStatus(reimb_status);
+			reimb_status_id = ers != null ? ers.getReimb_status_id() : 0;
+		}
+
 		boolean isManager = curRole.getUser_role().toLowerCase().equals("manager");
-		
-		pages = new ERSReimbursementDAO().countReimbursements(isManager, curUser.getErs_users_id());
-		
+
+		pages = new ERSReimbursementDAO().countReimbursements(isManager, curUser.getErs_users_id(), reimb_status_id);
+
 		ERSReimbursementCount erc = new ERSReimbursementCount();
 		erc.setCount_rows(pages);
-		
+
 		Responses response = null;
-		
+
 		response = new Responses(200, "Retrieved number of reimbursements", true, erc);
 		ctx.status(response.getStatusCode()).json(gson.toJson(response));
-		
+
 	};
-	
+
 }

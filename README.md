@@ -4,7 +4,7 @@
 
 ### Re-created by Gerard Cruz according to specifications.
 
-**Entity Relationship Diagaram (POSTGRES)**
+**Entity Relationship Diagram (POSTGRES)**
 
 ![](./imgs/ERD.png)
 

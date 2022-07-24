@@ -65,16 +65,16 @@
 }
 
 .btn3d.btn-success {
-	box-shadow: 0 0 0 1px #31c300 inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset,
-		0 6px 0 0 #5eb924, 0 6px 2px 1px rgba(0, 0, 0, 0.5);
-	background-color: #78d739;
+	box-shadow: 0 0 0 1px #198754 inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset,
+		0 6px 0 0 #157347, 0 6px 2px 1px rgba(0, 0, 0, 0.4);
+	background-color: #198754;
 }
 
 .btn3d.btn-success:active,
 .btn3d.btn-success.active {
-	box-shadow: 0 0 0 1px #30cd00 inset, 0 0 0 1px rgba(255, 255, 255, 0.15) inset,
+	box-shadow: 0 0 0 1px #198754 inset, 0 0 0 1px rgba(255, 255, 255, 0.15) inset,
 		0 1px 3px 1px rgba(0, 0, 0, 0.3);
-	background-color: #78d739;
+	background-color: #198754;
 }
 
 .btn3d.btn-info {

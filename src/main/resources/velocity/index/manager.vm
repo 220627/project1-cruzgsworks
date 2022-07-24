@@ -6,292 +6,221 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>ERS - Main</title>
-  <meta name="description" content="ERS Homepage">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Favicon -->
-  <link rel="apple-touch-icon" sizes="180x180" href="img/ers_logo/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="img/ers_logo/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="img/ers_logo/favicon-16x16.png">
-  <link rel="manifest" href="img/ers_logo/site.webmanifest">
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="css/bootstrap.css">
-  <link rel="stylesheet" href="css/bootstrap-3d-buttons.css">
-  <link rel="stylesheet" href="css/main.css">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>ERS - Main</title>
+    <meta name="description" content="ERS Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="img/ers_logo/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/ers_logo/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/ers_logo/favicon-16x16.png">
+    <link rel="manifest" href="img/ers_logo/site.webmanifest">
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-3d-buttons.css">
+    <link rel="stylesheet" href="css/main.css">
 </head>
 
 <body class="">
-  <!--[if lt IE 7]> <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p> <![endif]-->
-  <!-- Responsive navbar-->
-  <main class="my-container w-100 m-auto">
-    <nav class="my-navbar navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="/">
-          <img src="/img/reimbursement-light.png" alt="" height="32" class="d-inline-block align-text-top">
-          <span class="align-middle">ERS</span>
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span></button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-            <!--
-            <li class="nav-item">
-              <a class="nav-link" href="#" data-bs-toggle="offcanvas" data-bs-target="#newRequestOffCanvas"
-                aria-controls="newRequestOffCanvas">
-                <i class="bi bi-pencil-square px-1"></i>
-                <span>New Request</span>
-              </a>
-            </li>
-            -->
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                <i class="bi bi-person-square px-1"></i>
-                <span id="navUserFullName">$userInfo.user_first_name $userInfo.user_last_name - $roleInfo</span>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <li>
-                  <a id="logoutBtn" class="dropdown-item" href="#">Logout</a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    <!-- Page content-->
-    <div class="my-content container-fluid mt-3 mb-3 p-3 bg-white rounded-1">
-      <div class="row mb-3">
-        <div class="col">
-          <h1 class="h5 me-3">All Reimbursements</h1>
-        </div>
-        <div class="col d-grid d-md-flex justify-content-md-end">
-          <button id="refreshReimbursementTables" type="button text-right" class="btn btn-sm btn-outline-success">
-            <i class="bi bi-arrow-clockwise"></i>
-            Refresh</button>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <div class="accordion" id="accordionPanel1">
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="reimbTablePanels-headingOne">
-                <button class="accordion-button text-bg-light pt-1 pb-1 ps-2 pe-2" type="button"
-                  data-bs-toggle="collapse" data-bs-target="#reimbTablePanels-collapseOne" aria-expanded="true"
-                  aria-controls="reimbTablePanels-collapseOne">
-                  <i class="bi bi-three-dots me-2"></i>Pending Reimbursements
-                </button>
-              </h2>
-              <div id="reimbTablePanels-collapseOne" class="accordion-collapse collapse show"
-                aria-labelledby="reimbTablePanels-headingOne">
-                <div class="accordion-body p-1">
-                  <div id="reimPendingSpinner" class="text-center">
-                    <div class="spinner-grow" role="status">
-                      <span class="visually-hidden">Loading...</span>
+    <!--[if lt IE 7]> <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p> <![endif]-->
+    <!-- Responsive navbar-->
+    <main class="my-container w-100 m-auto">
+        <nav class="my-navbar navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid p-0">
+                <a class="navbar-brand" href="/">
+                    <img src="/img/reimbursement-light.png" alt="" height="32" class="d-inline-block align-text-top">
+                    <span class="align-middle">ERS</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-white" id="navbarDropdown" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-square px-1"></i>
+                                <span id="navUserFullName">$userInfo.user_first_name $userInfo.user_last_name -
+                                    $roleInfo</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <li>
+                                    <a id="logoutBtn" class="dropdown-item" href="#">Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Page content-->
+        <div class="my-content container-fluid mt-3 p-3 bg-white rounded-1 shadow-sm">
+            <div class="row mb-3">
+                <div class="col">
+                    <div class="d-inline-block align-middle">
+                        Filter
                     </div>
-                  </div>
-                  <div class="table-responsive">
-                    <table id="reimPendingTable"
-                      class="table table-sm d-none table-striped m-0 text-center small table-bordered">
-                      <thead>
-                        <tr>
-                          <th class="fit" scope="col">ID</th>
-                          <th class="fit" scope="col">Requestor</th>
-                          <th class="fit" scope="col">Amount</th>
-                          <th class="fit" scope="col">Date Submitted</th>
-                          <th scope="col">Description</th>
-                          <th class="fit" scope="col">Type</th>
-                          <th class="fit" scope="col">Receipt</th>
-                          <th class="fit" scope="col">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody id="reimPendingTBody" class=""></tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="reimbTablePanels-headingTwo">
-                <button class="accordion-button text-bg-light pt-1 pb-1 ps-2 pe-2" type="button"
-                  data-bs-toggle="collapse" data-bs-target="#reimbTablePanels-collapseTwo" aria-expanded="true"
-                  aria-controls="reimbTablePanels-collapseTwo">
-                  <i class="bi bi-check-all me-2 text-success"></i>Approved Reimbursements
-                </button>
-              </h2>
-              <div id="reimbTablePanels-collapseTwo" class="accordion-collapse collapse show"
-                aria-labelledby="reimbTablePanels-headingTwo">
-                <div class="accordion-body p-1">
-                  <div id="reimApprovedSpinner" class="text-center">
-                    <div class="spinner-grow" role="status">
-                      <span class="visually-hidden">Loading...</span>
+                    <div class="d-inline-block me-2 align-middle">
+                        <select id="filterStatus" class="form-select form-select-sm d-inline-block"
+                            aria-label="Reimbursement Status">
+                            <option value="all" selected="selected">All</option>
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                            <option value="denied">Denied</option>
+                        </select>
                     </div>
-                  </div>
-                  <div class="table-responsive">
-                    <table id="reimApprovedTable"
-                      class="table table-sm d-none table-striped m-0 text-center small table-bordered">
-                      <thead>
-                        <tr>
-                          <th class="fit" scope="col">ID</th>
-                          <th class="fit" scope="col">Requestor</th>
-                          <th class="fit" scope="col">Amount</th>
-                          <th class="fit" scope="col">Date Submitted</th>
-                          <th class="fit" scope="col">Resolver</th>
-                          <th class="fit" scope="col">Date Resolved</th>
-                          <th scope="col">Description</th>
-                          <th class="fit" scope="col">Type</th>
-                          <th class="fit" scope="col">Receipt</th>
-                        </tr>
-                      </thead>
-                      <tbody id="reimApprovedTBody" class=""></tbody>
-                    </table>
-                  </div>
                 </div>
-              </div>
-            </div>
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="reimbTablePanels-headingThree">
-                <button class="accordion-button text-bg-light pt-1 pb-1 ps-2 pe-2" type="button"
-                  data-bs-toggle="collapse" data-bs-target="#reimbTablePanels-collapseThree" aria-expanded="true"
-                  aria-controls="reimbTablePanels-collapseThree">
-                  <i class="bi bi-x-circle-fill me-2 text-danger"></i>Denied Reimbursements
-                </button>
-              </h2>
-              <div id="reimbTablePanels-collapseThree" class="accordion-collapse collapse show"
-                aria-labelledby="reimbTablePanels-headingThree">
-                <div class="accordion-body p-1">
-                  <div id="reimDeniedSpinner" class="text-center">
-                    <div class="spinner-grow" role="status">
-                      <span class="visually-hidden">Loading...</span>
+                <div class="col text-end">
+                    <div class="d-inline-block align-middle">
+                        <button id="refreshReimbursementTables" type="button text-right" class="btn btn-sm btn-primary">
+                            <i class="bi bi-arrow-clockwise"></i>
+                            Refresh</button>
                     </div>
-                  </div>
-                  <div class="table-responsive">
-                    <table id="reimDeniedTable"
-                      class="table table-sm d-none table-striped m-0 text-center small table-bordered">
-                      <thead>
-                        <tr>
-                          <th class="fit" scope="col">ID</th>
-                          <th class="fit" scope="col">Requestor</th>
-                          <th class="fit" scope="col">Amount</th>
-                          <th class="fit" scope="col">Date Submitted</th>
-                          <th class="fit" scope="col">Resolver</th>
-                          <th class="fit" scope="col">Date Resolved</th>
-                          <th scope="col">Description</th>
-                          <th class="fit" scope="col">Type</th>
-                          <th class="fit" scope="col">Receipt</th>
-                        </tr>
-                      </thead>
-                      <tbody id="reimDeniedTBody" class=""></tbody>
-                    </table>
-                  </div>
                 </div>
-              </div>
             </div>
-          </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <div id="mainReimbursementsSpinner" class="text-center">
+                        <div class="spinner-grow" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="table-responsive shadow-sm">
+                        <table id="mainReimbursementsTable"
+                            class="table table-sm d-none table-striped m-0 text-center small table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="fit" scope="col">ID</th>
+                                    <th class="fit" scope="col">Amount</th>
+                                    <th class="fit" scope="col">Date Submitted</th>
+                                    <th class="fit" scope="col">Resolver</th>
+                                    <th class="fit" scope="col">Date Resolved</th>
+                                    <th scope="col">Description</th>
+                                    <th class="fit" scope="col">Type</th>
+                                    <th class="fit" scope="col">Status</th>
+                                    <th class="fit" scope="col">Receipt</th>
+                                    <th class="fit" scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="mainReimbursementsTBody" class=""></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <nav aria-label="Reimbursement pagination">
+                        <ul id="rPagination" class="d-none pagination pagination-sm justify-content-center">
+                            <li class="page-item disabled"><a class="page-link" href="#">Prev</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="my-footer container-fluid">
-      <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-        <p class="col-md-4 mb-0 text-muted">© 2022 ERS</p>
-        <a href="/"
-          class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-          <img src="/img/reimbursement-128.png" alt="" height="32" class="d-inline-block align-text-top">
-        </a>
-        <ul class="nav col-md-4 justify-content-end">
-          <li class="nav-item">
-            <a href="/" class="nav-link px-2 text-muted">Home</a>
-          </li>
-        </ul>
-      </footer>
-    </div>
-    <div class="offcanvas offcanvas-start w-100" tabindex="-1" id="newRequestOffCanvas"
-      aria-labelledby="newRequestOffCanvasLabel">
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="newRequestOffCanvasLabel">New Reimbursement</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body-wrapper m-auto">
-        <div class="offcanvas-body">
-          <form enctype="multipart/form-data" id="reimbursementForm" method="post" autocomplete="off">
-            <div class="row">
-              <div class="col pb-2">
-                <h1 class="h3">Please fill out to request for reimbursement</h1>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <label for="rAmount" class="form-label">Amount</label>
-                <div class="input-group mb-3">
-                  <span class="input-group-text" id="rAmountAddon">$</span>
-                  <input type="number" min="0" step="0.01" class="form-control font-monospace" id="rAmount"
-                    name="rAmount" value="0.0" placeholder="0.00" aria-label="Reimbursement Amount"
-                    aria-describedby="rAmountAddon" autocomplete="off" max="99999999.99">
-                </div>
-              </div>
-              <div class="col">
-                <div class="mb-3">
-                  <label for="inputPassword" class="form-label">Type</label>
-                  <select class="form-select" aria-label="Reimbursement Type" id="rType" name="rType"
-                    autocomplete="off">
-                    <option selected="selected">Select a type</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <div class="mb-3">
-                  <label for="rDescription" class="form-label">Description</label>
-                  <textarea class="form-control" id="rDescription" name="rDescription" rows="3" autocomplete="off"
-                    placeholder="Enter description here..."></textarea>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <div class="mb-3">
-                  <label for="rReceipt" class="form-label">Receipt</label>
-                  <input class="form-control" type="file" id="rReceipt" name="rReceipt" accept="image/*,.pdf"
-                    autocomplete="off">
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <div class="d-grid gap-2 mb-3">
-                  <button type="button" id="submitBtn" class="btn btn-primary">
-                    <div id="proceedText" class="proceedText">Submit</div>
-                    <div id="proceedLoading" class="proceedLoading text-center hideElem">
-                      <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                      Loading...
-                    </div>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col new-request-message">
-                <div id="newRequestAlertSuccess" class="alert alert-success text-center" role="alert">
-                  Created new reimbursement request.
-                </div>
-                <div id="newRequestAlertFailed" class="alert alert-danger text-center" role="alert">
-                  Failed to create a new reimbursement request.
-                </div>
-              </div>
-            </div>
-          </form>
+        <div class="my-footer container-fluid p-0">
+            <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+                <p class="col-md-4 mb-0 text-muted">© 2022 ERS</p>
+                <a href="/"
+                    class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                    <img src="/img/reimbursement-128.png" alt="" height="32" class="d-inline-block align-text-top">
+                </a>
+                <ul class="nav col-md-4 justify-content-end">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link px-2 text-muted">Home</a>
+                    </li>
+                </ul>
+            </footer>
         </div>
-      </div>
-    </div>
-  </main>
-  <script src="js/jquery-3.6.0.js"></script>
-  <script src="js/bootstrap.bundle.js"></script>
-  <script src="js/mmain.js?v=1"></script>
+        <div class="offcanvas offcanvas-start w-100" tabindex="-1" id="newRequestOffCanvas"
+            aria-labelledby="newRequestOffCanvasLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="newRequestOffCanvasLabel">New Reimbursement</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body-wrapper m-auto">
+                <div class="offcanvas-body">
+                    <form enctype="multipart/form-data" id="reimbursementForm" method="post" autocomplete="off">
+                        <div class="row">
+                            <div class="col pb-2">
+                                <h1 class="h3">Please fill out to request for reimbursement</h1>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label for="rAmount" class="form-label">Amount</label>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="rAmountAddon">$</span>
+                                    <input type="number" min="0" step="0.01" class="form-control font-monospace"
+                                        id="rAmount" name="rAmount" value="0.0" placeholder="0.00"
+                                        aria-label="Reimbursement Amount" aria-describedby="rAmountAddon"
+                                        autocomplete="off" max="99999999.99">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label for="inputPassword" class="form-label">Type</label>
+                                    <select class="form-select" aria-label="Reimbursement Type" id="rType" name="rType"
+                                        autocomplete="off">
+                                        <option selected="selected">Select a type</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label for="rDescription" class="form-label">Description</label>
+                                    <textarea class="form-control" id="rDescription" name="rDescription" rows="3"
+                                        autocomplete="off" placeholder="Enter description here..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label for="rReceipt" class="form-label">Receipt</label>
+                                    <input class="form-control" type="file" id="rReceipt" name="rReceipt"
+                                        accept="image/*,.pdf" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="d-grid gap-2 mb-3">
+                                    <button type="button" id="submitBtn" class="btn btn-primary">
+                                        <div id="proceedText" class="proceedText">Submit</div>
+                                        <div id="proceedLoading" class="proceedLoading text-center hideElem">
+                                            <span class="spinner-grow spinner-grow-sm" role="status"
+                                                aria-hidden="true"></span>
+                                            Loading...
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col new-request-message">
+                                <div id="newRequestAlertSuccess" class="alert alert-success text-center" role="alert">
+                                    Created new reimbursement request.
+                                </div>
+                                <div id="newRequestAlertFailed" class="alert alert-danger text-center" role="alert">
+                                    Failed to create a new reimbursement request.
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="js/jquery-3.6.0.js"></script>
+    <script src="js/bootstrap.bundle.js"></script>
+    <script src="js/mmain.js?v=1"></script>
 </body>
 
 </html>
