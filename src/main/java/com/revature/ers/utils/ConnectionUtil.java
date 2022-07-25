@@ -43,9 +43,9 @@ public class ConnectionUtil {
 
 					reader.close();
 				} catch (FileNotFoundException ex) {
-					ex.printStackTrace();
+					LoggerUtil.log("ConnectionUtil").error("Could not find configs/config.properties file");
 				} catch (IOException ex) {
-					ex.printStackTrace();
+					LoggerUtil.log("ConnectionUtil").error(ex.getMessage());
 				}
 			}
 
@@ -67,10 +67,11 @@ public class ConnectionUtil {
 
 			try (Connection conn = getConnection()) {
 				if (conn != null) {
+					LoggerUtil.log("ConnectionUtil").info("DB Connection successful");
 					return true;
 				}
 			} catch (SQLException ex) {
-				ex.printStackTrace();
+				LoggerUtil.log("ConnectionUtil").info("Connection failed. Check credentials in initial setup page.");
 			}
 		} 
 		return false;

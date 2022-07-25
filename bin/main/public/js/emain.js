@@ -1,11 +1,10 @@
 let deleteAllCookies = () => {
-  console.log("clearing cookies");
-  var cookies = document.cookie.split(";");
+  let cookies = document.cookie.split(";");
 
-  for (var i = 0; i < cookies.length; i++) {
-    var cookie = cookies[i];
-    var eqPos = cookie.indexOf("=");
-    var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+  for (let i = 0; i < cookies.length; i++) {
+    let cookie = cookies[i];
+    let eqPos = cookie.indexOf("=");
+    let name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
     document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
   }
 
@@ -66,17 +65,12 @@ let toTitleCase = (str) => {
 let formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
-
-  // These options are needed to round to whole numbers if that's what you want.
-  //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
-  //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
 });
 
 let curPage = 1;
-let maxPerPage = 10;
+let maxPerPage = 5;
 
 let loadPagination = async (page) => {
-  console.log('page ' + page);
   curPage = page;
   document.getElementById('rPagination').classList.add('d-none');
 
@@ -119,7 +113,12 @@ let loadPagination = async (page) => {
           }
         }
 
-        if (page == nPages) {
+        if (nPages == 0) {
+          htmlStr += '<li class="page-item disabled"><a class="page-link" href="#">1</a></li>';
+        }
+
+
+        if (page == nPages || nPages == 0) {
           htmlStr += '<li class="page-item next-page disabled"><a class="page-link" href="#">Next</a></li>';
         } else {
           htmlStr += '<li class="page-item next-page"><a class="page-link" href="#">Next</a></li>';
@@ -128,9 +127,7 @@ let loadPagination = async (page) => {
         document.getElementById('rPagination').innerHTML = htmlStr;
 
         let paginationElem = document.querySelectorAll('#rPagination li');
-        // console.log(paginationElem.length);
         for (let idx = 0; idx < paginationElem.length; idx++) {
-          console.log('idx ' + idx);
           if (paginationElem[idx].classList.contains('disabled') || paginationElem[idx].classList.contains('active')) {
             continue;
           }
@@ -160,7 +157,7 @@ let loadPagination = async (page) => {
 let displayReimbursements = async (limit, pageNum) => {
   document.getElementById('mainReimbursementsSpinner').classList.remove('d-none');
   document.getElementById('mainReimbursementsTable').classList.add('d-none');
-  console.log("--- Loading Pending Reimbursements ---");
+  console.log("--- Display Reimbursements ---");
 
   const rStatus = document.getElementById('filterStatus').value;
 
@@ -170,8 +167,10 @@ let displayReimbursements = async (limit, pageNum) => {
     page: (pageNum != undefined ? pageNum : 0)
   };
 
+  let rowsArr = [];
+
   await fetch(
-    "/api/reimbursement/pagination?" + new URLSearchParams(requestData),
+    "/api/reimbursement/list?" + new URLSearchParams(requestData),
     {
       method: "GET",
       headers: {
@@ -186,14 +185,13 @@ let displayReimbursements = async (limit, pageNum) => {
       if (data.statusObject != undefined) {
 
         let recordsArr = data.statusObject;
-        var rowsArr = [];
-        for (var rRow of recordsArr) {
-          var receiptStr = '<span class="text-secondary">(None)</span>';
+        for (let rRow of recordsArr) {
+          let receiptStr = '<span class="text-secondary">(None)</span>';
           if (rRow.has_receipt) {
             receiptStr = '<a href="/api/employee/reimbursement/receipt/' + rRow.reimb_id + '" download><i class="bi bi-file-earmark-arrow-down-fill me-2"></i>Download</a>';
           }
 
-          var statusStr = '';
+          let statusStr = '';
           if (rRow.ersReimbursementStatus != undefined) {
             switch (rRow.ersReimbursementStatus.reimb_status) {
               case 'approved':
@@ -208,7 +206,7 @@ let displayReimbursements = async (limit, pageNum) => {
             }
           }
 
-          var rType = "";
+          let rType = "";
           switch (rRow.ersReimbursementType.reimb_type) {
             case 'lodging':
               rType = '<i class="bi bi-building me-2"></i>Lodging';
@@ -224,7 +222,7 @@ let displayReimbursements = async (limit, pageNum) => {
               break;
           }
 
-          var aRow =
+          let aRow =
             "<tr>" +
             '  <td class=\"fit\" scope="row">' + rRow.reimb_id + '</td>' +
             "  <td class=\"fit text-end\">" + formatter.format(rRow.reimb_amount) + "</td>" +
@@ -254,10 +252,10 @@ let displayReimbursements = async (limit, pageNum) => {
       document.getElementById('mainReimbursementsSpinner').classList.add('d-none');
       document.getElementById('mainReimbursementsTBody').innerHTML = rowsArr.join("\r\n");
       document.getElementById('mainReimbursementsTable').classList.remove('d-none');
-      // console.log(recordsArr);
     });
 };
 
+/*
 let loadPendingReimbursements = async () => {
   document.getElementById('reimPendingSpinner').classList.remove('d-none');
   document.getElementById('reimPendingTable').classList.add('d-none');
@@ -281,14 +279,14 @@ let loadPendingReimbursements = async () => {
     })
     .then((data) => {
       let recordsArr = data.statusObject;
-      var rowsArr = [];
-      for (var rRow of recordsArr) {
-        var receiptStr = '<span class="text-danger">(None)</span>';
+      let rowsArr = [];
+      for (let rRow of recordsArr) {
+        let receiptStr = '<span class="text-danger">(None)</span>';
         if (rRow.has_receipt) {
           receiptStr = '<a href="/api/employee/reimbursement/receipt/' + rRow.reimb_id + '" download><i class="bi bi-file-earmark-arrow-down-fill me-2"></i>Download</a>';
         }
 
-        var aRow =
+        let aRow =
           "<tr>" +
           '  <td class=\"fit\" scope="row">' + rRow.reimb_id + '</td>' +
           "  <td class=\"fit text-end\">" + formatter.format(rRow.reimb_amount) + "</td>" +
@@ -308,7 +306,6 @@ let loadPendingReimbursements = async () => {
       document.getElementById('reimPendingSpinner').classList.add('d-none');
       document.getElementById('reimPendingTBody').innerHTML = rowsArr.join("\r\n");
       document.getElementById('reimPendingTable').classList.remove('d-none');
-      // console.log(recordsArr);
     });
 };
 
@@ -335,9 +332,9 @@ let loadApprovedReimbursements = async () => {
     })
     .then((data) => {
       let recordsArr = data.statusObject;
-      var rowsArr = [];
-      for (var rRow of recordsArr) {
-        var receiptStr = '<span class="text-danger">(None)</span>';
+      let rowsArr = [];
+      for (let rRow of recordsArr) {
+        let receiptStr = '<span class="text-danger">(None)</span>';
         if (rRow.has_receipt) {
           receiptStr = '<a href="/api/employee/reimbursement/receipt/' + rRow.reimb_id + '" download><i class="bi bi-file-earmark-arrow-down-fill me-2"></i>Download</a>';
         }
@@ -362,7 +359,6 @@ let loadApprovedReimbursements = async () => {
       document.getElementById('reimApprovedSpinner').classList.add('d-none');
       document.getElementById('reimApprovedTBody').innerHTML = rowsArr.join("\r\n");
       document.getElementById('reimApprovedTable').classList.remove('d-none');
-      // console.log(recordsArr);
     });
 };
 
@@ -389,9 +385,9 @@ let loadDeniedReimbursements = async () => {
     })
     .then((data) => {
       let recordsArr = data.statusObject;
-      var rowsArr = [];
-      for (var rRow of recordsArr) {
-        var receiptStr = '<span class="text-danger">(None)</span>';
+      let rowsArr = [];
+      for (let rRow of recordsArr) {
+        let receiptStr = '<span class="text-danger">(None)</span>';
         if (rRow.has_receipt) {
           receiptStr = '<a href="/api/employee/reimbursement/receipt/' + rRow.reimb_id + '" download><i class="bi bi-file-earmark-arrow-down-fill me-2"></i>Download</a>';
         }
@@ -416,9 +412,9 @@ let loadDeniedReimbursements = async () => {
       document.getElementById('reimDeniedSpinner').classList.add('d-none');
       document.getElementById('reimDeniedTBody').innerHTML = rowsArr.join("\r\n");
       document.getElementById('reimDeniedTable').classList.remove('d-none');
-      // console.log(recordsArr);
     });
 };
+*/
 
 let loadReimbursementTypes = async () => {
   console.log("--- Loading Reimbursement Types ---");
@@ -433,9 +429,8 @@ let loadReimbursementTypes = async () => {
       return res.json();
     })
     .then((data) => {
-      //console.log(data);
-      var arrOptions = [];
-      var arrOptionsCollection = data.statusObject;
+      let arrOptions = [];
+      let arrOptionsCollection = data.statusObject;
 
       if (data.statusObject) {
         arrOptionsCollection.forEach((element) => {
@@ -448,13 +443,6 @@ let loadReimbursementTypes = async () => {
       }
     });
 };
-/*
-let refreshAllTables = () => {
-  loadPendingReimbursements();
-  loadApprovedReimbursements();
-  loadDeniedReimbursements();
-}
-*/
 
 document.addEventListener("DOMContentLoaded", function (event) {
   document.getElementById("logoutBtn").addEventListener("click", function () {
@@ -471,7 +459,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
   });
   loadReimbursementTypes();
   loadPagination(1);
-  // refreshAllTables();
-  // var intervalID = setInterval(refreshAllTables, 60000);
+
+  document.getElementById('numberOfPages').addEventListener('change', function () {
+    maxPerPage = this.value;
+    loadPagination(curPage);
+  });
 
 });

@@ -12,8 +12,8 @@ public class Path {
 	public static class Template {
 		public static final String EMPLOYEE = "/velocity/index/employee.vm";
 		public static final String MANAGER = "/velocity/index/manager.vm";
-		public static final String INITIAL_SETUP = "/velocity/initialSetup.vm";
-		public static final String NOT_FOUND = "/velocity/notFound.vm";
+		public static final String INITIAL_SETUP = "/velocity/initialSetup/initialSetup.vm";
+		public static final String NOT_FOUND = "/velocity/errorPages/notFound.vm";
 		public static final String LOGIN = "/velocity/login/login.vm";
 		public static final String REGISTER = "/velocity/login/register.vm";
 	}

@@ -65,11 +65,7 @@ public class Routes {
 				post(SetupController.doInitialSetup);
 			});
 			path("/api/manager/reimbursement/resolve/{reimb_id}", () -> {
-				put(ERSReimbursementController.resolveReimbursements, 
-						new RouteRole[] { Roles.FINANCE_MANAGER });
-			});
-			path("/api/manager/reimbursement", () -> {
-				get(ERSReimbursementController.getAllReimbursementRequests,
+				put(ERSReimbursementController.resolveReimbursements,
 						new RouteRole[] { Roles.FINANCE_MANAGER });
 			});
 			path("/api/employee/reimbursement/receipt/{reimb_id}", () -> {
@@ -80,7 +76,11 @@ public class Routes {
 				get(ERSReimbursementController.getReimbursementRequests,
 						new RouteRole[] { Roles.EMPLOYEE });
 			});
-			path("/api/reimbursement/pagination", () -> {
+			path("/api/manager/reimbursement", () -> {
+				get(ERSReimbursementController.getAllReimbursementRequests,
+						new RouteRole[] { Roles.FINANCE_MANAGER });
+			});
+			path("/api/reimbursement/list", () -> {
 				get(ERSReimbursementController.getReimbursementRequestsPagination,
 						new RouteRole[] { Roles.FINANCE_MANAGER, Roles.EMPLOYEE });
 			});

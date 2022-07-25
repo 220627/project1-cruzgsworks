@@ -19,6 +19,7 @@ body {
   flex: 1 1 auto;
 }
 
+
 @keyframes statusEntrance {
   from {
     opacity: 0;
@@ -81,4 +82,12 @@ div.popover-body {
   font-size: 12px;
   width: 75px;
   font-weight: 500;
+}
+
+#filterDropdown .input-group-text{
+  min-width: 128px;
+}
+
+#filterDropdown ul {
+  min-width: 256px;
 }

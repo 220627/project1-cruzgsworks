@@ -1,15 +1,19 @@
 package com.revature.ers.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class LoggerUtil {
-	// Get the current line number in Java
-	public static int getLineNumber() {
-		return new Throwable().getStackTrace()[0].getLineNumber();
-	}
 
-	public static Logger log(Object myClass) {
-		return LoggerFactory.getLogger(myClass.getClass());
+	public static Logger log(String className) {
+		Class<?> myClass = null;
+		try {
+			myClass = Class.forName(className);
+			return LogManager.getLogger(myClass.getClass());
+		} catch (ClassNotFoundException e) {
+			// Do Nothing
+		}
+		// Generic logger
+		return LogManager.getLogger();
 	}
 }

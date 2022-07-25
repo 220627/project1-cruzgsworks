@@ -10,6 +10,7 @@ import com.revature.ers.models.ERSUsers;
 import com.revature.ers.models.Responses;
 import com.revature.ers.models.Roles;
 import com.revature.ers.utils.AuthUtil;
+import com.revature.ers.utils.LoggerUtil;
 import com.revature.ers.utils.Path;
 
 import io.javalin.http.Context;
@@ -103,6 +104,8 @@ public class AuthController {
 				ERSUsers curUser = AuthUtil.verifyCookie(ctx.cookie("Authentication"));
 				if (curUser != null) {
 					ERSUserRoles getEur = new ERSUserRolesDAO().getRoleById(curUser.getUser_role_id());
+					LoggerUtil.log("AuthController").info(curUser.getUser_first_name() + " "
+							+ curUser.getUser_last_name() + " has the \"" + getEur.getUser_role() + "\" role.");
 					switch (getEur.getUser_role()) {
 					case "manager":
 						return Roles.FINANCE_MANAGER;
@@ -116,6 +119,7 @@ public class AuthController {
 		// Forward to initial setup page if it hasn't been done yet
 		else {
 			if (!ctx.path().startsWith("/initialsetup")) {
+				LoggerUtil.log("AuthController").info("Redirect user to initial setup page.");
 				ctx.redirect(Path.Web.INITIAL_SETUP);
 			}
 		}

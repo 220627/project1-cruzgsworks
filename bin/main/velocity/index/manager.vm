@@ -60,22 +60,43 @@
         <div class="my-content container-fluid mt-3 p-3 bg-white rounded-1 shadow-sm">
             <div class="row mb-3">
                 <div class="col">
-                    <div class="d-inline-block align-middle">
-                        Filter
-                    </div>
                     <div class="d-inline-block me-2 align-middle">
-                        <select id="filterStatus" class="form-select form-select-sm d-inline-block"
-                            aria-label="Reimbursement Status">
-                            <option value="all" selected="selected">All</option>
-                            <option value="pending">Pending</option>
-                            <option value="approved">Approved</option>
-                            <option value="denied">Denied</option>
-                        </select>
+                        <div id="filterDropdown" class="dropdown">
+                            <a class="dropdown-toggle text-decoration-none text-dark" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Filters
+                            </a>
+                            <ul class="dropdown-menu p-2">
+                                <li class="mb-2">
+                                    <div class="input-group input-group-sm me-3">
+                                        <span class="input-group-text" id="basic-addon1">By Status</span>
+                                        <select id="filterStatus" class="form-select form-select-sm d-inline-block"
+                                            aria-label="Reimbursement Status">
+                                            <option value="all" selected="selected">All</option>
+                                            <option value="pending">Pending</option>
+                                            <option value="approved">Approved</option>
+                                            <option value="denied">Denied</option>
+                                        </select>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="input-group input-group-sm">
+                                        <span class="input-group-text" id="basic-addon1">Results per page</span>
+                                        <select id="numberOfPages" class="form-select form-select-sm d-inline-block"
+                                            aria-label="Reimbursement Status">
+                                            <option value="2">2</option>
+                                            <option value="5" selected="selected">5</option>
+                                            <option value="10">10</option>
+                                        </select>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 <div class="col text-end">
                     <div class="d-inline-block align-middle">
-                        <button id="refreshReimbursementTables" type="button text-right" class="btn btn-sm btn-primary">
+                        <button id="refreshReimbursementTables" type="button" class="btn btn-sm btn-primary text-right">
                             <i class="bi bi-arrow-clockwise"></i>
                             Refresh</button>
                     </div>
