@@ -28,7 +28,7 @@
   <!-- Responsive navbar-->
   <main class="my-container w-100 m-auto">
     <nav class="my-navbar navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container p-0">
+      <div class="container-fluid p-0">
         <a class="navbar-brand" href="/">
           <img src="/img/reimbursement-light.png" alt="" height="32" class="d-inline-block align-text-top">
           <span class="align-middle">ERS</span>
@@ -63,7 +63,7 @@
       </div>
     </nav>
     <!-- Page content-->
-    <div class="my-content container mt-3 p-3 bg-white rounded-1 shadow-sm">
+    <div class="my-content container-fluid mt-3 p-3 bg-white rounded-1 shadow-sm">
       <div class="row mb-3">
         <div class="col">
           <div class="d-inline-block me-2 align-middle">
@@ -148,7 +148,7 @@
         </div>
       </div>
     </div>
-    <div class="my-footer container p-0">
+    <div class="my-footer container-fluid">
       <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
         <p class="col-md-4 mb-0 text-muted">© 2022 ERS</p>
         <a href="/"

@@ -39,3 +39,164 @@
 2022-07-25 20:10:16 INFO  AuthController:110 - Gerard Cruz has the "employee" role.
 2022-07-25 20:10:16 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
 2022-07-25 20:10:16 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee
+2022-07-25 21:18:18 INFO  Launcher:14 - Server starting
+2022-07-25 21:18:26 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 21:18:26 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee
+2022-07-25 21:18:26 INFO  AuthController:110 - Gerard Cruz has the "employee" role.
+2022-07-25 21:18:26 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 21:18:26 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee
+2022-07-25 21:18:27 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 21:18:27 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 21:18:27 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee
+2022-07-25 21:18:27 INFO  AuthController:110 - Gerard Cruz has the "employee" role.
+2022-07-25 21:18:27 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee
+2022-07-25 21:18:27 INFO  AuthController:110 - Gerard Cruz has the "employee" role.
+2022-07-25 21:18:27 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 21:18:27 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee
+2022-07-25 21:18:27 INFO  ERSReimbursementController:75 - Gerard Cruz retrieved 0 reimbursement requests
+2022-07-25 21:18:27 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 21:18:27 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee
+2022-07-25 21:18:27 INFO  AuthController:110 - Gerard Cruz has the "employee" role.
+2022-07-25 21:18:27 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 21:18:27 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee
+2022-07-25 21:18:30 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 21:18:30 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee
+2022-07-25 21:18:30 INFO  AuthController:110 - Gerard Cruz has the "employee" role.
+2022-07-25 21:18:30 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 21:18:30 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee
+2022-07-25 21:18:30 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 21:18:30 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 21:18:30 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee
+2022-07-25 21:18:30 INFO  AuthController:110 - Gerard Cruz has the "employee" role.
+2022-07-25 21:18:30 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee
+2022-07-25 21:18:30 INFO  AuthController:110 - Gerard Cruz has the "employee" role.
+2022-07-25 21:18:30 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 21:18:30 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee
+2022-07-25 21:18:30 INFO  ERSReimbursementController:75 - Gerard Cruz retrieved 0 reimbursement requests
+2022-07-25 21:18:30 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 21:18:30 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee
+2022-07-25 21:18:30 INFO  AuthController:110 - Gerard Cruz has the "employee" role.
+2022-07-25 21:18:30 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 21:18:30 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee
+2022-07-25 21:18:50 INFO  Launcher:14 - Server starting
+2022-07-25 21:18:53 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 21:18:53 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee
+2022-07-25 21:18:53 INFO  AuthController:110 - Gerard Cruz has the "employee" role.
+2022-07-25 21:18:53 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 21:18:53 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee
+2022-07-25 21:18:53 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 21:18:53 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 21:18:53 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee
+2022-07-25 21:18:53 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee
+2022-07-25 21:18:53 INFO  AuthController:110 - Gerard Cruz has the "employee" role.
+2022-07-25 21:18:53 INFO  AuthController:110 - Gerard Cruz has the "employee" role.
+2022-07-25 21:18:53 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 21:18:53 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee
+2022-07-25 21:18:53 INFO  ERSReimbursementController:75 - Gerard Cruz retrieved 0 reimbursement requests
+2022-07-25 21:18:54 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 21:18:54 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee
+2022-07-25 21:18:54 INFO  AuthController:110 - Gerard Cruz has the "employee" role.
+2022-07-25 21:18:54 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 21:18:54 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee
+2022-07-25 21:19:15 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:19:16 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:19:16 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
+2022-07-25 21:19:16 INFO  AuthController:110 - Revature Company has the "manager" role.
+2022-07-25 21:19:16 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:19:16 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
+2022-07-25 21:19:17 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:19:17 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:19:17 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
+2022-07-25 21:19:17 INFO  AuthController:110 - Revature Company has the "manager" role.
+2022-07-25 21:19:17 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
+2022-07-25 21:19:17 INFO  AuthController:110 - Revature Company has the "manager" role.
+2022-07-25 21:19:17 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:19:17 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
+2022-07-25 21:19:17 INFO  ERSReimbursementController:75 - Revature Company retrieved 0 reimbursement requests
+2022-07-25 21:19:17 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:19:17 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
+2022-07-25 21:19:17 INFO  AuthController:110 - Revature Company has the "manager" role.
+2022-07-25 21:19:17 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:19:17 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
+2022-07-25 21:20:16 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:20:16 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
+2022-07-25 21:20:16 INFO  AuthController:110 - Revature Company has the "manager" role.
+2022-07-25 21:20:16 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:20:16 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
+2022-07-25 21:20:17 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:20:17 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:20:17 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
+2022-07-25 21:20:17 INFO  AuthController:110 - Revature Company has the "manager" role.
+2022-07-25 21:20:17 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
+2022-07-25 21:20:17 INFO  AuthController:110 - Revature Company has the "manager" role.
+2022-07-25 21:20:17 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:20:17 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
+2022-07-25 21:20:17 INFO  ERSReimbursementController:75 - Revature Company retrieved 0 reimbursement requests
+2022-07-25 21:20:17 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:20:17 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
+2022-07-25 21:20:17 INFO  AuthController:110 - Revature Company has the "manager" role.
+2022-07-25 21:20:17 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:20:17 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
+2022-07-25 21:20:26 INFO  Launcher:14 - Server starting
+2022-07-25 21:20:30 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:20:30 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
+2022-07-25 21:20:30 INFO  AuthController:110 - Revature Company has the "manager" role.
+2022-07-25 21:20:30 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:20:30 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
+2022-07-25 21:20:30 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:20:30 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:20:30 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
+2022-07-25 21:20:30 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
+2022-07-25 21:20:30 INFO  AuthController:110 - Revature Company has the "manager" role.
+2022-07-25 21:20:30 INFO  AuthController:110 - Revature Company has the "manager" role.
+2022-07-25 21:20:30 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:20:30 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
+2022-07-25 21:20:30 INFO  ERSReimbursementController:75 - Revature Company retrieved 0 reimbursement requests
+2022-07-25 21:20:30 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:20:30 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
+2022-07-25 21:20:30 INFO  AuthController:110 - Revature Company has the "manager" role.
+2022-07-25 21:20:30 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:20:30 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
+2022-07-25 21:20:53 INFO  Launcher:14 - Server starting
+2022-07-25 21:20:55 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:20:55 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
+2022-07-25 21:20:55 INFO  AuthController:110 - Revature Company has the "manager" role.
+2022-07-25 21:20:55 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:20:56 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
+2022-07-25 21:20:56 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:20:56 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:20:56 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
+2022-07-25 21:20:56 INFO  AuthController:110 - Revature Company has the "manager" role.
+2022-07-25 21:20:56 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
+2022-07-25 21:20:56 INFO  AuthController:110 - Revature Company has the "manager" role.
+2022-07-25 21:20:56 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:20:56 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
+2022-07-25 21:20:56 INFO  ERSReimbursementController:75 - Revature Company retrieved 0 reimbursement requests
+2022-07-25 21:20:56 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:20:56 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
+2022-07-25 21:20:56 INFO  AuthController:110 - Revature Company has the "manager" role.
+2022-07-25 21:20:56 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
+2022-07-25 21:20:56 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
+2022-07-25 22:08:02 INFO  Launcher:14 - Server starting
+2022-07-25 22:28:53 INFO  Launcher:14 - Server starting
+2022-07-25 22:29:35 INFO  Launcher:14 - Server starting
+2022-07-25 22:40:18 INFO  Launcher:14 - Server starting
+2022-07-26 07:09:32 INFO  Launcher:14 - Server starting
+2022-07-26 07:10:35 INFO  Launcher:14 - Server starting
+2022-07-26 07:11:14 INFO  Launcher:14 - Server starting
+2022-07-26 07:12:04 INFO  Launcher:14 - Server starting
+2022-07-26 07:13:14 INFO  Launcher:14 - Server starting
+2022-07-26 07:14:13 INFO  Launcher:14 - Server starting
+2022-07-26 07:14:29 INFO  Launcher:14 - Server starting
+2022-07-26 07:14:44 INFO  Launcher:14 - Server starting
+2022-07-26 07:20:18 INFO  Launcher:14 - Server starting
+2022-07-26 07:20:33 INFO  Launcher:14 - Server starting
+2022-07-26 07:21:53 INFO  Launcher:14 - Server starting
+2022-07-26 07:23:42 INFO  Launcher:14 - Server starting
+2022-07-26 07:24:41 INFO  Launcher:14 - Server starting
+2022-07-26 07:29:16 INFO  Launcher:14 - Server starting
+2022-07-26 07:29:43 INFO  Launcher:14 - Server starting
+2022-07-26 07:33:33 INFO  Launcher:14 - Server starting
+2022-07-26 07:35:15 INFO  Launcher:14 - Server starting
+2022-07-26 07:35:36 INFO  Launcher:14 - Server starting
+2022-07-26 07:36:00 INFO  Launcher:14 - Server starting

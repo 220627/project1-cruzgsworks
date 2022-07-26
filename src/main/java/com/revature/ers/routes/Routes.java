@@ -5,6 +5,13 @@ import static io.javalin.apibuilder.ApiBuilder.path;
 import static io.javalin.apibuilder.ApiBuilder.post;
 import static io.javalin.apibuilder.ApiBuilder.put;
 
+import java.io.File;
+
+import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.util.ssl.SslContextFactory;
+
 import com.google.gson.Gson;
 import com.revature.ers.controllers.AuthController;
 import com.revature.ers.controllers.ERSReimbursementController;
@@ -23,6 +30,14 @@ import io.javalin.core.security.RouteRole;
 import io.javalin.http.staticfiles.Location;
 
 public class Routes {
+	
+	private static SslContextFactory.Server getSslContextFactory() {
+        SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
+        sslContextFactory.setKeyStorePath(new File("./certs/cert.jks").getPath());
+        sslContextFactory.setKeyStorePassword("H3aesN6dHNUACN");
+        return sslContextFactory;
+    }
+
 
 	public void initRoute() {
 
@@ -31,7 +46,7 @@ public class Routes {
 			config.enableCorsForAllOrigins();
 			config.addStaticFiles("/public", Location.CLASSPATH);
 			config.accessManager((handler, ctx, routeRoles) -> {
-				
+
 				Roles role = AuthController.checkSetupAndRole(ctx);
 				if (routeRoles.isEmpty() || routeRoles.contains(role)) {
 					handler.handle(ctx);
@@ -39,26 +54,17 @@ public class Routes {
 					Responses resp = new Responses(401, "Unauthorized", false, null);
 					ctx.status(resp.getStatusCode()).contentType("application/json").result(new Gson().toJson(resp));
 				}
-				/*
-				// Make sure the environment is setup first
-				if (SetupController.isRun_once()) {
-					// Make initial setup page inaccessible
-					if (ctx.path().startsWith("/initialsetup")) {
-						ctx.redirect(Path.Web.INDEX);
-					} else {
-						
-					}
-				}
-				// Forward to initial setup page if it hasn't been done yet
-				else {
-					if (!ctx.path().startsWith("/initialsetup")) {
-						LoggerUtil.log("AuthController").info("Redirect user to initial setup page.");
-						ctx.redirect(Path.Web.INITIAL_SETUP);
-					}
-				}
-				*/
 			});
-		}).start(8080);
+			config.server(() -> {
+                Server server = new Server();
+                ServerConnector sslConnector = new ServerConnector(server, getSslContextFactory());
+                sslConnector.setPort(8443);
+                ServerConnector connector = new ServerConnector(server);
+                connector.setPort(8080);
+                server.setConnectors(new Connector[]{sslConnector, connector});
+                return server;
+            });
+		}).start();
 
 		app.routes(() -> {
 			path(Path.Web.INITIAL_SETUP, () -> {
