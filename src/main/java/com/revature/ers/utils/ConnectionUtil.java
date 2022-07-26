@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 //This Class is where we manage and establish our database connection
 public class ConnectionUtil {
@@ -17,6 +19,8 @@ public class ConnectionUtil {
 	private static String url = null;
 	private static String username = null;
 	private static String password = null;
+	
+	public static Logger log = LogManager.getLogger();
 
 	// This method will eventually return an object of type Connection, which we'll use to connect to our database
 	public static Connection getConnection() throws SQLException {
@@ -43,15 +47,15 @@ public class ConnectionUtil {
 
 					reader.close();
 				} catch (FileNotFoundException ex) {
-					LoggerUtil.log("ConnectionUtil").error("Could not find configs/config.properties file");
+					log.error("Could not find configs/config.properties file");
 				} catch (IOException ex) {
-					LoggerUtil.log("ConnectionUtil").error(ex.getMessage());
+					log.error(ex.getMessage());
 				}
 			}
 
 		} catch (ClassNotFoundException ex) {
 			// This tells in the console us what went wrong
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 		}
 
 		return DriverManager.getConnection(url, username, password);
@@ -67,11 +71,11 @@ public class ConnectionUtil {
 
 			try (Connection conn = getConnection()) {
 				if (conn != null) {
-					LoggerUtil.log("ConnectionUtil").info("DB Connection successful");
+					log.info("DB Connection test is successful");
 					return true;
 				}
 			} catch (SQLException ex) {
-				LoggerUtil.log("ConnectionUtil").info("Connection failed. Check credentials in initial setup page.");
+				log.error("Connection failed. Check credentials in initial setup page.");
 			}
 		} 
 		return false;

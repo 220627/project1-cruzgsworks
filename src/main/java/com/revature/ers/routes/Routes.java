@@ -31,14 +31,32 @@ public class Routes {
 			config.enableCorsForAllOrigins();
 			config.addStaticFiles("/public", Location.CLASSPATH);
 			config.accessManager((handler, ctx, routeRoles) -> {
+				
 				Roles role = AuthController.checkSetupAndRole(ctx);
-
 				if (routeRoles.isEmpty() || routeRoles.contains(role)) {
 					handler.handle(ctx);
 				} else {
 					Responses resp = new Responses(401, "Unauthorized", false, null);
 					ctx.status(resp.getStatusCode()).contentType("application/json").result(new Gson().toJson(resp));
 				}
+				/*
+				// Make sure the environment is setup first
+				if (SetupController.isRun_once()) {
+					// Make initial setup page inaccessible
+					if (ctx.path().startsWith("/initialsetup")) {
+						ctx.redirect(Path.Web.INDEX);
+					} else {
+						
+					}
+				}
+				// Forward to initial setup page if it hasn't been done yet
+				else {
+					if (!ctx.path().startsWith("/initialsetup")) {
+						LoggerUtil.log("AuthController").info("Redirect user to initial setup page.");
+						ctx.redirect(Path.Web.INITIAL_SETUP);
+					}
+				}
+				*/
 			});
 		}).start(8080);
 

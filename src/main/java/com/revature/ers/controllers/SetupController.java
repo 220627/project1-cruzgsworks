@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.gson.Gson;
 import com.revature.ers.daos.ERSReimbursementStatusDAO;
 import com.revature.ers.daos.ERSReimbursementTypeDAO;
@@ -28,52 +31,43 @@ import io.javalin.http.Handler;
 
 public class SetupController {
 
-	// private static Logger logger = LoggerFactory.getLogger(SetupController.class);
+	public static Logger log = LogManager.getLogger();
 
 	public static Handler serveSetupPage = ctx -> {
-		ctx.render(Path.Template.INITIAL_SETUP);
+		if (isRun_once()) {
+			// Make initial setup page inaccessible
+			log.info("Setup has already been run once. Redirecting user to homepage.");
+			ctx.redirect(Path.Web.INDEX);
+		} else {
+			ctx.render(Path.Template.INITIAL_SETUP);
+		}
 	};
 
 	public static Handler doInitialSetup = ctx -> {
 
 		Gson gson = new Gson();
-		File configFile = null;
-		FileReader reader = null;
-		Properties props = null;
 
-		String ERS_DB_RUNONCE = null;
-
-		try {
-			configFile = new File("./configs/config.properties");
-			reader = new FileReader(configFile);
-			props = new Properties();
-			props.load(reader);
-
-			ERS_DB_RUNONCE = props.getProperty("ERS_DB_RUNONCE");
-
-			reader.close();
-		} catch (FileNotFoundException ex) {
-			ex.printStackTrace();
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
-
-		if (!ERS_DB_RUNONCE.equals("true")) {
+		if (!isRun_once()) {
 
 			InitialSetup is = gson.fromJson(ctx.body(), InitialSetup.class);
 
-			String dbUrl = "jdbc:postgresql://" + is.getPostgresDBUrl() + ":" + is.getPostgresDBPort() + "/" + is.getPostgresDBName()
+			String dbUrl = "jdbc:postgresql://" + is.getPostgresDBUrl() + ":" + is.getPostgresDBPort() + "/"
+					+ is.getPostgresDBName()
 					+ "?currentSchema=" + is.getPostgresDBSchema();
 			// System.out.println(dbUrl);
 
-			boolean testConnection = ConnectionUtil.testConnection(dbUrl, is.getPostgresUsername(), is.getPostgresPassword());
+			boolean testConnection = ConnectionUtil.testConnection(dbUrl, is.getPostgresUsername(),
+					is.getPostgresPassword());
 
 			if (testConnection) {
+
+				// TODO - I should probably do batch processing on this part.
 
 				// create 2 new roles and 1 financial manager
 				ERSUserRoles newRole1 = new ERSUserRoles("manager");
 				ERSUserRoles newRole2 = new ERSUserRoles("employee");
-				ERSUsers newUser = new ERSUsers(is.getErsUsername(), is.getErsPassword(), is.getErsFirstname(), is.getErsLastname(),
+				ERSUsers newUser = new ERSUsers(is.getErsUsername(), is.getErsPassword(), is.getErsFirstname(),
+						is.getErsLastname(),
 						is.getErsEmail(), 1);
 				ERSReimbursementType newRtype1 = new ERSReimbursementType("lodging");
 				ERSReimbursementType newRtype2 = new ERSReimbursementType("travel");
@@ -90,11 +84,15 @@ public class SetupController {
 				ERSReimbursementType createRtype2 = new ERSReimbursementTypeDAO().createReimbursementType(newRtype2);
 				ERSReimbursementType createRtype3 = new ERSReimbursementTypeDAO().createReimbursementType(newRtype3);
 				ERSReimbursementType createRtype4 = new ERSReimbursementTypeDAO().createReimbursementType(newRtype4);
-				ERSReimbursementStatus createRstatus1 = new ERSReimbursementStatusDAO().createReimbursementStatus(newRStatus1);
-				ERSReimbursementStatus createRstatus2 = new ERSReimbursementStatusDAO().createReimbursementStatus(newRStatus2);
-				ERSReimbursementStatus createRstatus3 = new ERSReimbursementStatusDAO().createReimbursementStatus(newRStatus3);
+				ERSReimbursementStatus createRstatus1 = new ERSReimbursementStatusDAO()
+						.createReimbursementStatus(newRStatus1);
+				ERSReimbursementStatus createRstatus2 = new ERSReimbursementStatusDAO()
+						.createReimbursementStatus(newRStatus2);
+				ERSReimbursementStatus createRstatus3 = new ERSReimbursementStatusDAO()
+						.createReimbursementStatus(newRStatus3);
 
-				if (createRole1 != null & createRole2 != null & createUser != null & createRtype1 != null & createRtype2 != null
+				if (createRole1 != null & createRole2 != null & createUser != null & createRtype1 != null
+						& createRtype2 != null
 						& createRtype3 != null & createRtype4 != null & createRstatus1 != null & createRstatus1 != null
 						& createRstatus2 != null & createRstatus3 != null) {
 					HashMap<String, ArrayList<?>> setupList = new HashMap<String, ArrayList<?>>();
@@ -121,7 +119,10 @@ public class SetupController {
 					setupList.put("reimbursementStatus", ersList);
 
 					try {
-						reader = new FileReader(configFile);
+						File configFile = new File("./configs/config.properties");
+						FileReader reader = new FileReader(configFile);
+						Properties props = new Properties();
+						
 						props = new Properties();
 						props.load(reader);
 
@@ -136,42 +137,37 @@ public class SetupController {
 
 						reader.close();
 					} catch (FileNotFoundException ex) {
-						ex.printStackTrace();
+						log.error(ex.getMessage());
 					} catch (IOException ex) {
-						ex.printStackTrace();
+						log.error(ex.getMessage());
 					}
 
 					RunOnce.setRunonce(true);
 
+					log.info("Initial setup success");
 					Responses rp = new Responses(200, "Setup Success", true, setupList);
 					ctx.status(rp.getStatusCode()).json(gson.toJson(rp));
 				} else {
-					Responses rp = new Responses(400, "Setup Failed. One of the insert SQLs may have failed.", false, null);
+								
+					log.error("Initial setup failed. One of the insert SQLs may have failed");
+					Responses rp = new Responses(400, "Setup Failed. One of the insert SQLs may have failed.", false,
+							null);
 					ctx.status(rp.getStatusCode()).json(gson.toJson(rp));
 				}
 			} else {
+				log.error("Initial setup failed. Cannot connect to DB");
 				Responses rp = new Responses(400, "Connection failed", false, null);
 				ctx.status(rp.getStatusCode()).json(gson.toJson(rp));
 			}
 		} else {
+			log.error("IP (" + ctx.ip() + ") tried to access the initial setup even though it's already done");
 			Responses rp = new Responses(400, "This can only be executed once during initial setup", false, null);
 			ctx.status(rp.getStatusCode()).json(gson.toJson(rp));
 		}
 
 	};
 
-	/*
-	 * private static void getAllFiles(File curDir) {
-	 * 
-	 * File[] filesList = curDir.listFiles(); for (File f : filesList) { if (f.isDirectory()) System.out.println("(Directory)" +
-	 * f.getName()); if (f.isFile()) { System.out.println(f.getName()); } }
-	 * 
-	 * }
-	 */
-
 	public static boolean isRun_once() {
-		// File curDir = new File(".");
-		// getAllFiles(curDir);
 
 		String ERS_DB_RUNONCE = null;
 
@@ -181,13 +177,13 @@ public class SetupController {
 			Properties props = new Properties();
 			props.load(reader);
 
-			ERS_DB_RUNONCE = props.getProperty("ERS_DB_RUNONCE");
+			ERS_DB_RUNONCE = props.getProperty("ERS_DB_RUNONCE").toLowerCase();
 
 			reader.close();
 		} catch (FileNotFoundException ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 		} catch (IOException ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 		}
 
 		if (ERS_DB_RUNONCE.equals("true")) {

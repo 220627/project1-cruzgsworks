@@ -3,7 +3,7 @@ package com.revature.ers.utils;
 public class Path {
 	public static class Web {
 		public static final String INDEX = "/";
-		public static final String INITIAL_SETUP = "/initialsetup";
+		public static final String INITIAL_SETUP = "/setup";
 		public static final String NOT_FOUND = "/notfound";
 		public static final String LOGIN = "/login";
 		public static final String REGISTER = "/register";

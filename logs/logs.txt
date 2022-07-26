@@ -1,0 +1,41 @@
+2022-07-25 20:01:34 INFO  Launcher:14 - Server starting
+2022-07-25 20:02:57 INFO  ConnectionUtil:74 - DB Connection test is successful
+2022-07-25 20:02:57 INFO  ERSUserRolesDAO:98 - Created new role - manager
+2022-07-25 20:02:57 INFO  ERSUserRolesDAO:98 - Created new role - employee
+2022-07-25 20:02:57 INFO  ERSUsersDAO:92 - Created new user - Revature Company
+2022-07-25 20:02:57 INFO  ERSReimbursementTypeDAO:98 - Created new reimbursement type - lodging
+2022-07-25 20:02:57 INFO  ERSReimbursementTypeDAO:98 - Created new reimbursement type - travel
+2022-07-25 20:02:57 INFO  ERSReimbursementTypeDAO:98 - Created new reimbursement type - food
+2022-07-25 20:02:57 INFO  ERSReimbursementTypeDAO:98 - Created new reimbursement type - other
+2022-07-25 20:02:57 INFO  ERSReimbursementStatusDAO:97 - Created - pending
+2022-07-25 20:02:57 INFO  ERSReimbursementStatusDAO:97 - Created - approved
+2022-07-25 20:02:58 INFO  ERSReimbursementStatusDAO:97 - Created - denied
+2022-07-25 20:02:58 INFO  SetupController:147 - Initial setup success
+2022-07-25 20:03:31 INFO  ERSUserRolesDAO:61 - Retrieved role by name - employee
+2022-07-25 20:03:31 INFO  ERSUsersDAO:92 - Created new user - Gerard Cruz
+2022-07-25 20:07:56 INFO  ERSUserRolesDAO:61 - Retrieved role by name - employee
+2022-07-25 20:07:56 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 20:09:19 INFO  Launcher:14 - Server starting
+2022-07-25 20:09:27 INFO  ERSUserRolesDAO:61 - Retrieved role by name - employee
+2022-07-25 20:09:28 ERROR ERSUsersDAO:98 - ERROR: duplicate key value violates unique constraint "ers_users_un"
+  Detail: Key (ers_username, user_email)=(gerardcruz, gerard984@revature.net) already exists.
+2022-07-25 20:10:14 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 20:10:15 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 20:10:15 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee
+2022-07-25 20:10:15 INFO  AuthController:110 - Gerard Cruz has the "employee" role.
+2022-07-25 20:10:15 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 20:10:15 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee
+2022-07-25 20:10:16 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 20:10:16 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 20:10:16 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee
+2022-07-25 20:10:16 INFO  AuthController:110 - Gerard Cruz has the "employee" role.
+2022-07-25 20:10:16 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee
+2022-07-25 20:10:16 INFO  AuthController:110 - Gerard Cruz has the "employee" role.
+2022-07-25 20:10:16 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 20:10:16 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee
+2022-07-25 20:10:16 INFO  ERSReimbursementController:75 - Gerard Cruz retrieved 0 reimbursement requests
+2022-07-25 20:10:16 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 20:10:16 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee
+2022-07-25 20:10:16 INFO  AuthController:110 - Gerard Cruz has the "employee" role.
+2022-07-25 20:10:16 INFO  ERSUsersDAO:40 - Retrieved user - Gerard Cruz
+2022-07-25 20:10:16 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - employee

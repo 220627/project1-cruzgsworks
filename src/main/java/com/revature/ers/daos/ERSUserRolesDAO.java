@@ -5,10 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.revature.ers.models.ERSUserRoles;
 import com.revature.ers.utils.ConnectionUtil;
 
 public class ERSUserRolesDAO implements ERSUserRolesDAOInterface {
+	
+	public static Logger log = LogManager.getLogger();
 
 	@Override
 	public ERSUserRoles getRoleById(int esr_user_role_id) {
@@ -25,13 +30,14 @@ public class ERSUserRolesDAO implements ERSUserRolesDAOInterface {
 				ERSUserRoles getRoleObj = new ERSUserRoles(
 						getRole.getInt(1),
 						getRole.getString(2));
+				log.info("Retrieved role by ID - " + getRoleObj.getUser_role());
 				return getRoleObj;
 			}
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		}
 		return null;
@@ -52,11 +58,14 @@ public class ERSUserRolesDAO implements ERSUserRolesDAOInterface {
 				ERSUserRoles getRoleObj = new ERSUserRoles(
 						getRole.getInt(1),
 						getRole.getString(2));
+				log.info("Retrieved role by name - " + getRoleObj.getUser_role());
 				return getRoleObj;
 			}
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
+		} catch (Exception ex) {
+			log.error(ex.getMessage());
 		}
 		return null;
 	}
@@ -86,16 +95,16 @@ public class ERSUserRolesDAO implements ERSUserRolesDAOInterface {
 					ERSUserRoles createdRole = new ERSUserRoles(
 							rs.getInt(1),
 							rs.getString(2));
-
+					log.info("Created new role - " + createdRole.getUser_role());
 					return createdRole;
 				}
 			}
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		}
 		return null;

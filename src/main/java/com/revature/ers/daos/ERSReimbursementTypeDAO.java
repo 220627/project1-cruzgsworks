@@ -6,11 +6,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.revature.ers.models.ERSReimbursementType;
 import com.revature.ers.utils.ConnectionUtil;
 
 public class ERSReimbursementTypeDAO implements ERSReimbursementTypeDAOInterface {
 
+	public static Logger log = LogManager.getLogger();
+	
 	@Override
 	public ERSReimbursementType getReimbursementTypeById(int reimb_type_id) {
 		String SQL = "SELECT * FROM ers.ers_reimbursement_type WHERE reimb_type_id = ?";
@@ -23,16 +28,17 @@ public class ERSReimbursementTypeDAO implements ERSReimbursementTypeDAOInterface
 			ResultSet getReimType = ps.executeQuery();
 
 			if (getReimType.next()) {
-				ERSReimbursementType getReimTypeObj = new ERSReimbursementType(
+				ERSReimbursementType getReimbTypeObj = new ERSReimbursementType(
 						getReimType.getInt(1),
 						getReimType.getString(2));
-				return getReimTypeObj;
+				log.info("Retrieved reimbursement type by ID - " + getReimbTypeObj.getReimb_type());
+				return getReimbTypeObj;
 			}
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		}
 		return null;
@@ -53,10 +59,11 @@ public class ERSReimbursementTypeDAO implements ERSReimbursementTypeDAOInterface
 				ERSReimbursementType getReimbTypeObj = new ERSReimbursementType(
 						getReimbType.getInt(1),
 						getReimbType.getString(2));
+				log.info("Retrieved reimbursement type by name - " + getReimbTypeObj.getReimb_type());
 				return getReimbTypeObj;
 			}
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		}
 		return null;
@@ -87,16 +94,18 @@ public class ERSReimbursementTypeDAO implements ERSReimbursementTypeDAOInterface
 					ERSReimbursementType createdReimbType = new ERSReimbursementType(
 							rs.getInt(1),
 							rs.getString(2));
+					
+					log.info("Created new reimbursement type - " + createdReimbType.getReimb_type());
 
 					return createdReimbType;
 				}
 			}
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		}
 		return null;
@@ -118,10 +127,10 @@ public class ERSReimbursementTypeDAO implements ERSReimbursementTypeDAOInterface
 			}
 			return typesList;
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		}
 		return null;

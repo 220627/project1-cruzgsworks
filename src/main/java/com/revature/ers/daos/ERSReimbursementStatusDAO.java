@@ -5,10 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.revature.ers.models.ERSReimbursementStatus;
 import com.revature.ers.utils.ConnectionUtil;
 
 public class ERSReimbursementStatusDAO implements ERSReimbursementStatusDAOInterface {
+	
+	public static Logger log = LogManager.getLogger();
 
 	@Override
 	public ERSReimbursementStatus getReimbursementStatusById(int reimb_status_id) {
@@ -19,19 +24,20 @@ public class ERSReimbursementStatusDAO implements ERSReimbursementStatusDAOInter
 
 			ps.setInt(1, reimb_status_id);
 
-			ResultSet getReimStatus = ps.executeQuery();
+			ResultSet getReimbStatus = ps.executeQuery();
 
-			if (getReimStatus.next()) {
-				ERSReimbursementStatus getReimStatusObj = new ERSReimbursementStatus(
-						getReimStatus.getInt(1),
-						getReimStatus.getString(2));
-				return getReimStatusObj;
+			if (getReimbStatus.next()) {
+				ERSReimbursementStatus getReimbStatusObj = new ERSReimbursementStatus(
+						getReimbStatus.getInt(1),
+						getReimbStatus.getString(2));
+				log.info("Retrieved status by ID - " + getReimbStatusObj.getReimb_status());
+				return getReimbStatusObj;
 			}
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		}
 		return null;
@@ -52,10 +58,11 @@ public class ERSReimbursementStatusDAO implements ERSReimbursementStatusDAOInter
 				ERSReimbursementStatus getReimbStatusObj = new ERSReimbursementStatus(
 						getReimbStatus.getInt(1),
 						getReimbStatus.getString(2));
+				log.info("Retrieved status by name - " + getReimbStatusObj.getReimb_status());
 				return getReimbStatusObj;
 			}
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		}
 		return null;
@@ -87,16 +94,16 @@ public class ERSReimbursementStatusDAO implements ERSReimbursementStatusDAOInter
 					ERSReimbursementStatus createdReimbStatus = new ERSReimbursementStatus(
 							rs.getInt(1),
 							rs.getString(2));
-
+					log.info("Created - " + createdReimbStatus.getReimb_status());
 					return createdReimbStatus;
 				}
 			}
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		}
 		return null;

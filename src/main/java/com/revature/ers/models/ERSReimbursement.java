@@ -1,19 +1,8 @@
 package com.revature.ers.models;
 
 import java.sql.Timestamp;
-import java.util.Arrays;
 
 public class ERSReimbursement {
-	@Override
-	public String toString() {
-		return "ERSReimbursement [reimb_id=" + reimb_id + ", reimb_amount=" + reimb_amount + ", reimb_submitted="
-				+ reimb_submitted + ", reimb_resolved=" + reimb_resolved + ", reimb_description=" + reimb_description
-				+ ", reimb_receipt=" + Arrays.toString(reimb_receipt) + ", reimb_author=" + reimb_author
-				+ ", reimb_resolver=" + reimb_resolver + ", reimb_status_id=" + reimb_status_id + ", reimb_type_id="
-				+ reimb_type_id + ", ersReimbursementStatus=" + ersReimbursementStatus + ", ersReimbursementType="
-				+ ersReimbursementType + "]";
-	}
-
 	private int reimb_id;
 	private double reimb_amount;
 	private Timestamp reimb_submitted;

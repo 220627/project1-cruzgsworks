@@ -8,6 +8,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.revature.ers.models.ERSReimbursement;
 import com.revature.ers.models.ERSReimbursementStatus;
@@ -16,6 +18,8 @@ import com.revature.ers.models.ERSUsers;
 import com.revature.ers.utils.ConnectionUtil;
 
 public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
+
+	public static Logger log = LogManager.getLogger();
 
 	@Override
 	public ERSReimbursement addNewRequest(ERSReimbursement myReimb) {
@@ -52,10 +56,10 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 			}
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		}
 		return null;
@@ -130,23 +134,24 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 			}
 			return reimbList;
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		}
 		return null;
 	}
 
 	@Override
-	public ArrayList<ERSReimbursement> getReimbursementRequestPagination(int reimb_status_id, int reimb_author, boolean isManager,
+	public ArrayList<ERSReimbursement> getReimbursementRequestPagination(int reimb_status_id, int reimb_author,
+			boolean isManager,
 			int limit, int page) {
 
 		String SQL = null;
 		PreparedStatement ps = null;
 		try (Connection conn = ConnectionUtil.getConnection()) {
-			
+
 			int offset = (page - 1) * limit;
 
 			if (reimb_status_id < 1) {
@@ -192,9 +197,8 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 					ps.setInt(3, offset);
 				}
 
-				
 			} else {
-				if(isManager) {
+				if (isManager) {
 					SQL = "SELECT reimb_id, reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_author, reimb_resolver, ers.reimb_status_id, "
 							+ "ert.reimb_type_id, ers.reimb_status, ert.reimb_type, eu.user_first_name, eu.user_last_name, eu.user_role_id, "
 							+ "eu2.user_first_name AS resolver_first_name, eu2.user_last_name AS resolver_last_name, eu2.user_role_id AS resolver_role_id, "
@@ -302,10 +306,10 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 			}
 			return reimbList;
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		}
 		return null;
@@ -329,10 +333,10 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 			}
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		}
 		return null;
@@ -419,17 +423,18 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 			}
 			return reimbList;
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		}
 		return null;
 	}
 
 	@Override
-	public ArrayList<ERSReimbursement> getAllReimbursementRequestsPagination(int reimb_status_id, int limit, int offset) {
+	public ArrayList<ERSReimbursement> getAllReimbursementRequestsPagination(int reimb_status_id, int limit,
+			int offset) {
 
 		String SQL = null;
 		PreparedStatement ps = null;
@@ -532,10 +537,10 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 			}
 			return reimbList;
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		}
 		return null;
@@ -569,10 +574,10 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 			}
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		}
 		return null;
@@ -584,7 +589,7 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 		PreparedStatement ps = null;
 		try (Connection conn = ConnectionUtil.getConnection()) {
 			if (isManager) {
-				if(reimb_status_id > 0) {
+				if (reimb_status_id > 0) {
 					SQL = "SELECT COUNT(*) FROM ers.ers_reimbursement WHERE reimb_status_id = ?";
 					ps = conn.prepareStatement(SQL);
 					ps.setInt(1, reimb_status_id);
@@ -592,9 +597,9 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 					SQL = "SELECT COUNT(*) FROM ers.ers_reimbursement";
 					ps = conn.prepareStatement(SQL);
 				}
-				
+
 			} else {
-				if(reimb_status_id > 0) {
+				if (reimb_status_id > 0) {
 					SQL = "SELECT COUNT(*) FROM ers.ers_reimbursement WHERE reimb_author = ? AND reimb_status_id = ?";
 					ps = conn.prepareStatement(SQL);
 					ps.setInt(1, author_id);
@@ -604,7 +609,7 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 					ps = conn.prepareStatement(SQL);
 					ps.setInt(1, author_id);
 				}
-				
+
 			}
 
 			ResultSet countReimb = ps.executeQuery();
@@ -613,10 +618,10 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 				return countReimb.getInt(1);
 			}
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 
 		}
 
