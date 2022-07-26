@@ -18,9 +18,11 @@ public interface ERSReimbursementDAOInteface {
 
 	ArrayList<ERSReimbursement> getAllReimbursementRequestsPagination(int reimb_status_id, int limit, int offset);
 
-	ArrayList<ERSReimbursement> getReimbursementRequestPagination(int reimb_status_id, int reimb_author, boolean isManager, int limit,
-			int page);
+	// ArrayList<ERSReimbursement> getReimbursementRequestPagination(int reimb_status_id, int reimb_author, boolean isManager, int limit, int page);
 
 	int countReimbursements(boolean isManager, int author_id, int reimb_status);
+
+	ArrayList<ERSReimbursement> getReimbursementRequestPagination(int reimb_status_id, int reimb_author,
+			boolean isManager, int limit, int page, String orderBy, String column);
 
 }

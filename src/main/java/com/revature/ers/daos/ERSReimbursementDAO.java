@@ -146,11 +146,13 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 	@Override
 	public ArrayList<ERSReimbursement> getReimbursementRequestPagination(int reimb_status_id, int reimb_author,
 			boolean isManager,
-			int limit, int page) {
+			int limit, int page, String orderBy, String column) {
 
 		String SQL = null;
 		PreparedStatement ps = null;
 		try (Connection conn = ConnectionUtil.getConnection()) {
+
+			String sqlOrder = "ORDER BY " + column + " " + orderBy + "\r\n";
 
 			int offset = (page - 1) * limit;
 
@@ -169,7 +171,7 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 							+ "er.reimb_author = eu.ers_users_id\r\n"
 							+ "LEFT JOIN ers.ers_users eu2 ON\r\n"
 							+ "er.reimb_resolver = eu2.ers_users_id\r\n"
-							+ "ORDER BY er.reimb_id ASC\r\n"
+							+ sqlOrder
 							+ "LIMIT ? OFFSET ?";
 					ps = conn.prepareStatement(SQL);
 					ps.setInt(1, limit);
@@ -189,7 +191,7 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 							+ "LEFT JOIN ers.ers_users eu2 ON\r\n"
 							+ "er.reimb_resolver = eu2.ers_users_id\r\n"
 							+ "WHERE er.reimb_author = ?\r\n"
-							+ "ORDER BY er.reimb_id ASC\r\n"
+							+ sqlOrder
 							+ "LIMIT ? OFFSET ?";
 					ps = conn.prepareStatement(SQL);
 					ps.setInt(1, reimb_author);
@@ -213,7 +215,7 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 							+ "LEFT JOIN ers.ers_users eu2 ON\r\n"
 							+ "er.reimb_resolver = eu2.ers_users_id\r\n"
 							+ "WHERE er.reimb_status_id = ?\r\n"
-							+ "ORDER BY er.reimb_id ASC\r\n"
+							+ sqlOrder
 							+ "LIMIT ? OFFSET ?";
 
 					ps = conn.prepareStatement(SQL);
@@ -236,7 +238,7 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 							+ "er.reimb_resolver = eu2.ers_users_id\r\n"
 							+ "WHERE er.reimb_status_id = ?\r\n"
 							+ "AND er.reimb_author = ?\r\n"
-							+ "ORDER BY er.reimb_id ASC\r\n"
+							+ sqlOrder
 							+ "LIMIT ? OFFSET ?";
 
 					ps = conn.prepareStatement(SQL);
@@ -271,9 +273,8 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 						getReimb.getString("reimb_status"));
 				ert = new ERSReimbursementType(getReimb.getInt("reimb_type_id"), getReimb.getString("reimb_type"));
 
+				// Set data for Author
 				ersAuthor = new ERSUsers();
-				ersResolver = new ERSUsers();
-
 				ersAuthor.setErs_users_id(getReimb.getInt("reimb_author"));
 				ersAuthor.setUser_first_name(
 						StringUtils.isNoneEmpty(getReimb.getString("user_first_name"))
@@ -285,6 +286,8 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 								: "");
 				ersAuthor.setUser_role_id(getReimb.getInt("user_role_id"));
 
+				// Set data for Resolver
+				ersResolver = new ERSUsers();
 				ersResolver.setErs_users_id(getReimb.getInt("reimb_resolver"));
 				ersResolver.setUser_first_name(
 						StringUtils.isNoneEmpty(getReimb.getString("resolver_first_name"))

@@ -74,7 +74,10 @@ let loadPagination = async (page) => {
   curPage = page;
   document.getElementById('rPagination').classList.add('d-none');
 
-  const loadReimb = displayReimbursements(maxPerPage, page);
+  const rOrder = document.getElementById('orderBy').value;
+  const rColumn = document.getElementById('sortBy').value;
+
+  const loadReimb = displayReimbursements(maxPerPage, curPage, rOrder, rColumn);
   const rStatus = document.getElementById('filterStatus').value;
 
   const requestData = {
@@ -100,28 +103,28 @@ let loadPagination = async (page) => {
         let nPages = Math.ceil(nRows / maxPerPage);
 
         if (page == 1) {
-          htmlStr += '<li class="page-item prev-page disabled"><a class="page-link" href="#">Prev</a></li>';
+          htmlStr += '<li class="page-item prev-page disabled"><a class="page-link">Prev</a></li>';
         } else {
-          htmlStr += '<li class="page-item prev-page"><a class="page-link" href="#">Prev</a></li>';
+          htmlStr += '<li class="page-item prev-page"><a class="page-link">Prev</a></li>';
         }
 
         for (let idx = 1; idx <= nPages; idx++) {
           if (idx == page) {
-            htmlStr += '<li class="page-item active"><a class="page-link" href="#">' + idx + '</a></li>';
+            htmlStr += '<li class="page-item active"><a class="page-link">' + idx + '</a></li>';
           } else {
-            htmlStr += '<li class="page-item"><a class="page-link" href="#">' + idx + '</a></li>';
+            htmlStr += '<li class="page-item"><a class="page-link">' + idx + '</a></li>';
           }
         }
 
         if (nPages == 0) {
-          htmlStr += '<li class="page-item disabled"><a class="page-link" href="#">1</a></li>';
+          htmlStr += '<li class="page-item disabled"><a class="page-link">1</a></li>';
         }
 
 
         if (page == nPages || nPages == 0) {
-          htmlStr += '<li class="page-item next-page disabled"><a class="page-link" href="#">Next</a></li>';
+          htmlStr += '<li class="page-item next-page disabled"><a class="page-link">Next</a></li>';
         } else {
-          htmlStr += '<li class="page-item next-page"><a class="page-link" href="#">Next</a></li>';
+          htmlStr += '<li class="page-item next-page"><a class="page-link">Next</a></li>';
         }
 
         document.getElementById('rPagination').innerHTML = htmlStr;
@@ -148,13 +151,16 @@ let loadPagination = async (page) => {
           });
         }
 
+        // Show table and pagination
+        document.getElementById('mainReimbursementsSpinner').classList.add('d-none');
+        document.getElementById('mainReimbursementsTable').classList.remove('d-none');
         document.getElementById('rPagination').classList.remove('d-none');
       });
   });
 
 };
 
-let displayReimbursements = async (limit, pageNum) => {
+let displayReimbursements = async (limit, pageNum, order, column) => {
   document.getElementById('mainReimbursementsSpinner').classList.remove('d-none');
   document.getElementById('mainReimbursementsTable').classList.add('d-none');
   console.log("--- Display Reimbursements ---");
@@ -164,7 +170,9 @@ let displayReimbursements = async (limit, pageNum) => {
   const requestData = {
     reimb_status: rStatus,
     limit: (limit != undefined ? limit : 0),
-    page: (pageNum != undefined ? pageNum : 0)
+    page: (pageNum != undefined ? pageNum : 0),
+    order: (order != undefined ? order.toLowerCase() : 'asc'),
+    column: (column != undefined ? column.toLowerCase() : 'reimb_id')
   };
 
   let rowsArr = [];
@@ -249,9 +257,8 @@ let displayReimbursements = async (limit, pageNum) => {
           rowsArr.push(aRow);
         };
       }
-      document.getElementById('mainReimbursementsSpinner').classList.add('d-none');
+      
       document.getElementById('mainReimbursementsTBody').innerHTML = rowsArr.join("\r\n");
-      document.getElementById('mainReimbursementsTable').classList.remove('d-none');
     });
 };
 
@@ -445,6 +452,7 @@ let loadReimbursementTypes = async () => {
 };
 
 document.addEventListener("DOMContentLoaded", function (event) {
+  // logout button
   document.getElementById("logoutBtn").addEventListener("click", function () {
     deleteAllCookies();
   });
@@ -455,14 +463,21 @@ document.addEventListener("DOMContentLoaded", function (event) {
     loadPagination(curPage);
   });
   document.getElementById("filterStatus").addEventListener("change", function () {
-    loadPagination(curPage);
+    loadPagination(1);
   });
+  document.getElementById("orderBy").addEventListener("change", function () {
+    loadPagination(1);
+  });
+  document.getElementById("sortBy").addEventListener("change", function () {
+    loadPagination(1);
+  });
+
   loadReimbursementTypes();
   loadPagination(1);
 
   document.getElementById('numberOfPages').addEventListener('change', function () {
     maxPerPage = this.value;
-    loadPagination(curPage);
+    loadPagination(1);
   });
 
 });

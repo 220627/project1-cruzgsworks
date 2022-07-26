@@ -28,7 +28,7 @@
   <!-- Responsive navbar-->
   <main class="my-container w-100 m-auto">
     <nav class="my-navbar navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container-fluid p-0">
+      <div class="container-fluid">
         <a class="navbar-brand" href="/">
           <img src="/img/reimbursement-light.png" alt="" height="32" class="d-inline-block align-text-top">
           <span class="align-middle">ERS</span>
@@ -39,15 +39,15 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link text-white" href="#" data-bs-toggle="offcanvas" data-bs-target="#newRequestOffCanvas"
+              <a class="nav-link text-white" data-bs-toggle="offcanvas" data-bs-target="#newRequestOffCanvas"
                 aria-controls="newRequestOffCanvas">
                 <i class="bi bi-pencil-square px-1"></i>
                 <span>New Request</span>
               </a>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle text-white" id="navbarDropdown" href="#" role="button"
-                data-bs-toggle="dropdown" aria-expanded="false">
+              <a class="nav-link dropdown-toggle text-white" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
                 <i class="bi bi-person-square px-1"></i>
                 <span id="navUserFullName">$userInfo.user_first_name $userInfo.user_last_name -
                   $roleInfo</span>
@@ -63,19 +63,19 @@
       </div>
     </nav>
     <!-- Page content-->
-    <div class="my-content container-fluid mt-3 p-3 bg-white rounded-1 shadow-sm">
+    <div class="my-content container-fluid mt-3 p-3 bg-white shadow-sm">
       <div class="row mb-3">
         <div class="col">
           <div class="d-inline-block me-2 align-middle">
             <div id="filterDropdown" class="dropdown">
-              <a class="dropdown-toggle text-decoration-none text-dark" href="#" role="button" data-bs-toggle="dropdown"
+              <a class="dropdown-toggle text-decoration-none text-dark" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
                 Filters
               </a>
-              <ul class="dropdown-menu p-2">
-                <li class="mb-2">
-                  <div class="input-group input-group-sm me-3">
-                    <span class="input-group-text" id="basic-addon1">By Status</span>
+              <ul class="dropdown-menu p-1">
+                <li class="mb-1">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="byStatus">By status</span>
                     <select id="filterStatus" class="form-select form-select-sm d-inline-block"
                       aria-label="Reimbursement Status">
                       <option value="all" selected="selected">All</option>
@@ -85,14 +85,44 @@
                     </select>
                   </div>
                 </li>
-                <li>
+                <li class="mb-1">
                   <div class="input-group input-group-sm">
-                    <span class="input-group-text" id="basic-addon1">Results per page</span>
+                    <span class="input-group-text" id="itemsPerPage">Items per page</span>
                     <select id="numberOfPages" class="form-select form-select-sm d-inline-block"
-                      aria-label="Reimbursement Status">
+                      aria-label="Items per page">
                       <option value="2">2</option>
                       <option value="5" selected="selected">5</option>
                       <option value="10">10</option>
+                      <option value="20">20</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                    </select>
+                  </div>
+                </li>
+                <li class="mb-1">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="byColumn">Sort column</span>
+                    <select id="sortBy" class="form-select form-select-sm d-inline-block"
+                      aria-label="Reimbursement Status">
+                      <option value="reimb_id">ID</option>
+                      <option value="reimb_amount">Amount</option>
+                      <option value="reimb_author">Author</option>
+                      <option value="reimb_submitted">Date Submitted</option>
+                      <option value="reimb_resolver">Resolver</option>
+                      <option value="reimb_resolved">Date Resolved</option>
+                      <option value="reimb_description">Description</option>
+                      <option value="reimb_type_id">Type</option>
+                      <option value="reimb_status_id">Status</option>
+                    </select>
+                  </div>
+                </li>
+                <li>
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="columnOrder">Order</span>
+                    <select id="orderBy" class="form-select form-select-sm d-inline-block"
+                      aria-label="Reimbursement Status">
+                      <option value="asc" selected>Ascending</option>
+                      <option value="desc">Descending</option>
                     </select>
                   </div>
                 </li>
@@ -140,9 +170,15 @@
         <div class="col">
           <nav aria-label="Reimbursement pagination">
             <ul id="rPagination" class="d-none pagination pagination-sm justify-content-center">
-              <li class="page-item disabled"><a class="page-link" href="#">Prev</a></li>
-              <li class="page-item active"><a class="page-link" href="#">1</a></li>
-              <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+              <li class="page-item disabled">
+                <a class="page-link" href="#">Prev</a>
+              </li>
+              <li class="page-item active">
+                <a class="page-link" href="#">1</a>
+              </li>
+              <li class="page-item disabled">
+                <a class="page-link" href="#">Next</a>
+              </li>
             </ul>
           </nav>
         </div>

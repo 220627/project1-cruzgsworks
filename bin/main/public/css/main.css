@@ -85,9 +85,9 @@ div.popover-body {
 }
 
 #filterDropdown .input-group-text{
-  min-width: 128px;
+  min-width: 112px;
 }
 
 #filterDropdown ul {
-  min-width: 256px;
+  min-width: 300px;
 }

@@ -44,10 +44,22 @@ public class ERSReimbursementController {
 		ERSUsers eu = null;
 		try {
 
+			// Number of results per page
 			int limit = StringUtils.isNoneEmpty(ctx.queryParam("limit")) ? Integer.parseInt(ctx.queryParam("limit"))
-					: 0;
-			int page = StringUtils.isNoneEmpty(ctx.queryParam("page")) ? Integer.parseInt(ctx.queryParam("page")) : 0;
+					: 5;
 
+			// Page number
+			int page = StringUtils.isNoneEmpty(ctx.queryParam("page")) ? Integer.parseInt(ctx.queryParam("page")) : 1;
+			
+			// Result order
+			String orderBy = StringUtils.isNoneEmpty(ctx.queryParam("order")) && ctx.queryParam("order").equals("desc") ? "desc" : "asc";
+			System.out.println(orderBy);
+			
+			// Order by column
+			String column = StringUtils.isNoneEmpty(ctx.queryParam("column")) && !ctx.queryParam("column").equals("reimb_id") ? ctx.queryParam("column") : "reimb_id";
+			System.out.println(column);
+
+			// Filter by status
 			String reimb_status = ctx.queryParam("reimb_status");
 			int reimb_status_id = 0;
 			if (StringUtils.isNotEmpty(reimb_status)) {
@@ -56,13 +68,16 @@ public class ERSReimbursementController {
 				reimb_status_id = ers != null ? ers.getReimb_status_id() : 0;
 			}
 
+			// Determine which user is using this endpoint
 			eu = AuthUtil.verifyCookie(ctx.cookie("Authentication"));
 			ERSUserRoles curRole = new ERSUserRolesDAO().getRoleById(eu.getUser_role_id());
 
+			// Check if user is Finance Manager
 			boolean isManager = curRole.getUser_role().toLowerCase().equals("manager");
 
 			reimbRequest = new ERSReimbursementDAO()
-					.getReimbursementRequestPagination(reimb_status_id, eu.getErs_users_id(), isManager, limit, page);
+					.getReimbursementRequestPagination(reimb_status_id, eu.getErs_users_id(), isManager, limit, page, orderBy, column);
+
 		} catch (Exception ex) {
 			log.error(ex.getMessage());
 		}

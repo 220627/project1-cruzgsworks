@@ -31,6 +31,7 @@ import io.javalin.http.staticfiles.Location;
 
 public class Routes {
 	
+	// Method to get SSL certificate
 	private static SslContextFactory.Server getSslContextFactory() {
         SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
         sslContextFactory.setKeyStorePath(new File("./certs/cert.jks").getPath());
@@ -46,7 +47,7 @@ public class Routes {
 			config.enableCorsForAllOrigins();
 			config.addStaticFiles("/public", Location.CLASSPATH);
 			config.accessManager((handler, ctx, routeRoles) -> {
-
+				// Check role of current user
 				Roles role = AuthController.checkSetupAndRole(ctx);
 				if (routeRoles.isEmpty() || routeRoles.contains(role)) {
 					handler.handle(ctx);
@@ -55,11 +56,14 @@ public class Routes {
 					ctx.status(resp.getStatusCode()).contentType("application/json").result(new Gson().toJson(resp));
 				}
 			});
+			// Configure SSL
 			config.server(() -> {
                 Server server = new Server();
                 ServerConnector sslConnector = new ServerConnector(server, getSslContextFactory());
+                // Run SSL on port 8443
                 sslConnector.setPort(8443);
                 ServerConnector connector = new ServerConnector(server);
+                // Run HTTP on port 8080
                 connector.setPort(8080);
                 server.setConnectors(new Connector[]{sslConnector, connector});
                 return server;
@@ -67,64 +71,81 @@ public class Routes {
 		}).start();
 
 		app.routes(() -> {
+			// Setup pages
 			path(Path.Web.INITIAL_SETUP, () -> {
 				get(SetupController.serveSetupPage);
 			});
+			// Index page
 			path(Path.Web.INDEX, () -> {
-				get(IndexController.serveIndexPage);
+				get(IndexController	.serveIndexPage);
 			});
+			// Sign-up page
 			path(Path.Web.REGISTER, () -> {
 				get(AuthController.serveRegisterPage);
 			});
+			// Login page
 			path(Path.Web.LOGIN, () -> {
 				get(AuthController.serveLoginPage);
 			});
+			// Endpoint to process authentication
 			path("/api/login", () -> {
 				post(AuthController.doLogin);
 			});
+			// Endpoint to process signup
 			path("/api/register", () -> {
 				post(AuthController.doRegister);
 			});
+			// Should be accessed first time when app is deployed
 			path("/api/setup", () -> {
 				post(SetupController.doInitialSetup);
 			});
+			// Endpoint to update status of reimbursements
 			path("/api/manager/reimbursement/resolve/{reimb_id}", () -> {
 				put(ERSReimbursementController.resolveReimbursements,
 						new RouteRole[] { Roles.FINANCE_MANAGER });
 			});
+			// Endpoint to download receipts
 			path("/api/employee/reimbursement/receipt/{reimb_id}", () -> {
 				get(ERSReimbursementController.getReceipt,
 						new RouteRole[] { Roles.EMPLOYEE });
 			});
+			// NOT USED - Replaced with /api/reimbursement/list which includes pagination
 			path("/api/employee/reimbursement", () -> {
 				get(ERSReimbursementController.getReimbursementRequests,
 						new RouteRole[] { Roles.EMPLOYEE });
 			});
+			// NOT USED - Replaced with /api/reimbursement/list which includes pagination
 			path("/api/manager/reimbursement", () -> {
 				get(ERSReimbursementController.getAllReimbursementRequests,
 						new RouteRole[] { Roles.FINANCE_MANAGER });
 			});
+			// Endpoint to get list of reimbursements
 			path("/api/reimbursement/list", () -> {
 				get(ERSReimbursementController.getReimbursementRequestsPagination,
 						new RouteRole[] { Roles.FINANCE_MANAGER, Roles.EMPLOYEE });
 			});
+			// Count reimbursements that user can view. For pagination
 			path("/api/reimbursement/count", () -> {
 				get(ERSReimbursementController.countReimbursements,
 						new RouteRole[] { Roles.FINANCE_MANAGER, Roles.EMPLOYEE });
 			});
+			// Endpoint to create new reimbursements
 			path("/api/reimbursement/new", () -> {
 				post(ERSReimbursementController.newReimbursementRequest,
 						new RouteRole[] { Roles.EMPLOYEE });
 			});
+			// Endpoint to get reimbursement types
 			path("/api/reimbursement/types", () -> {
 				get(ERSReimbursementTypeController.getAllTypes,
 						new RouteRole[] { Roles.FINANCE_MANAGER, Roles.EMPLOYEE });
 			});
+			// Endpoint to create user and get user information
 			path("/api/users", () -> {
 				post(ERSUsersController.createUser);
 				get(ERSUsersController.getUserByUserName,
 						new RouteRole[] { Roles.FINANCE_MANAGER, Roles.EMPLOYEE });
 			});
+			// Endpoint to get roles
 			path("/api/roles", () -> {
 				get(ERSUserRolesController.getRoleById,
 						new RouteRole[] { Roles.FINANCE_MANAGER, Roles.EMPLOYEE });
