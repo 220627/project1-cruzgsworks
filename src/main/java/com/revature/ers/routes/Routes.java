@@ -7,9 +7,13 @@ import static io.javalin.apibuilder.ApiBuilder.put;
 
 import java.io.File;
 
-import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.http.HttpVersion;
+import org.eclipse.jetty.server.HttpConfiguration;
+import org.eclipse.jetty.server.HttpConnectionFactory;
+import org.eclipse.jetty.server.SecureRequestCustomizer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 
 import com.google.gson.Gson;
@@ -30,15 +34,14 @@ import io.javalin.core.security.RouteRole;
 import io.javalin.http.staticfiles.Location;
 
 public class Routes {
-	
+
 	// Method to get SSL certificate
 	private static SslContextFactory.Server getSslContextFactory() {
-        SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
-        sslContextFactory.setKeyStorePath(new File("./certs/cert.jks").getPath());
-        sslContextFactory.setKeyStorePassword("H3aesN6dHNUACN");
-        return sslContextFactory;
-    }
-
+		SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
+		sslContextFactory.setKeyStorePath(new File("./certs/cert.jks").getPath());
+		sslContextFactory.setKeyStorePassword("H3aesN6dHNUACN");
+		return sslContextFactory;
+	}
 
 	public void initRoute() {
 
@@ -58,16 +61,41 @@ public class Routes {
 			});
 			// Configure SSL
 			config.server(() -> {
-                Server server = new Server();
-                ServerConnector sslConnector = new ServerConnector(server, getSslContextFactory());
-                // Run SSL on port 8443
-                sslConnector.setPort(8443);
-                ServerConnector connector = new ServerConnector(server);
-                // Run HTTP on port 8080
-                connector.setPort(8080);
-                server.setConnectors(new Connector[]{sslConnector, connector});
-                return server;
-            });
+
+//				Server server = new Server();
+//				
+//				ServerConnector sslConnector = new ServerConnector(server, getSslContextFactory());
+//				// Run SSL on port 8443
+//				sslConnector.setPort(443);
+//				
+//				ServerConnector connector = new ServerConnector(server);
+//				// Run HTTP on port 8080
+//				connector.setPort(80);
+//				
+//				server.setConnectors(new Connector[] { sslConnector, connector });
+				
+				Server server = new Server();
+				
+				// This should automatically redirect to https
+				HttpConfiguration httpConfiguration = new HttpConfiguration();
+				httpConfiguration.setSecureScheme("https");
+				httpConfiguration.setSecurePort(80);
+				
+				ServerConnector http = new ServerConnector(server, new HttpConnectionFactory(httpConfiguration));
+				server.addConnector(http);
+				
+				HttpConfiguration httpsConfiguration = new HttpConfiguration(httpConfiguration);
+				httpsConfiguration.addCustomizer(new SecureRequestCustomizer());
+				
+				// I should probably use HTTP 2 but I can't figure it out at the moment.
+				ServerConnector httpsConnector = new ServerConnector(server,
+					    new SslConnectionFactory(getSslContextFactory(), HttpVersion.HTTP_1_1.asString()),
+					    new HttpConnectionFactory(httpsConfiguration));
+				httpsConnector.setPort(443);
+				server.addConnector(httpsConnector);
+
+				return server;
+			});
 		}).start();
 
 		app.routes(() -> {
@@ -77,7 +105,7 @@ public class Routes {
 			});
 			// Index page
 			path(Path.Web.INDEX, () -> {
-				get(IndexController	.serveIndexPage);
+				get(IndexController.serveIndexPage);
 			});
 			// Sign-up page
 			path(Path.Web.REGISTER, () -> {
