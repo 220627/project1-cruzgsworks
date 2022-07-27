@@ -91,3 +91,7 @@ div.popover-body {
 #filterDropdown ul {
   min-width: 300px;
 }
+
+#searchDropdown ul {
+  min-width: 200px;
+}

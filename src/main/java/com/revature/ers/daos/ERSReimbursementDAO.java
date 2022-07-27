@@ -146,18 +146,35 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 	@Override
 	public ArrayList<ERSReimbursement> getReimbursementRequestPagination(int reimb_status_id, int reimb_author,
 			boolean isManager,
-			int limit, int page, String orderBy, String column) {
+			int limit, int page, String orderBy, String column, String searchTerm) {
 
 		String SQL = null;
 		PreparedStatement ps = null;
 		try (Connection conn = ConnectionUtil.getConnection()) {
 
 			String sqlOrder = "ORDER BY " + column + " " + orderBy + "\r\n";
+			String mySearchTerm = null;
+			String searchSql = "";
+
+			if (searchTerm != null) {
+				mySearchTerm = "%" + searchTerm.trim().toLowerCase().replace(" ", "%") + "%";
+				searchSql = "";
+			}
 
 			int offset = (page - 1) * limit;
 
 			if (reimb_status_id < 1) {
+
 				if (isManager) {
+
+					if (searchTerm != null) {
+						searchSql = "WHERE LOWER(eu.user_first_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(eu.user_last_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(eu2.user_first_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(eu2.user_last_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(reimb_description) LIKE '" + mySearchTerm + "'\r\n";
+					}
+
 					SQL = "SELECT reimb_id, reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_author, reimb_resolver, ers.reimb_status_id, "
 							+ "ert.reimb_type_id, ers.reimb_status, ert.reimb_type, eu.user_first_name, eu.user_last_name, eu.user_role_id, "
 							+ "eu2.user_first_name AS resolver_first_name, eu2.user_last_name AS resolver_last_name, eu2.user_role_id AS resolver_role_id, "
@@ -171,12 +188,22 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 							+ "er.reimb_author = eu.ers_users_id\r\n"
 							+ "LEFT JOIN ers.ers_users eu2 ON\r\n"
 							+ "er.reimb_resolver = eu2.ers_users_id\r\n"
+							+ searchSql
 							+ sqlOrder
 							+ "LIMIT ? OFFSET ?";
 					ps = conn.prepareStatement(SQL);
 					ps.setInt(1, limit);
 					ps.setInt(2, offset);
 				} else {
+
+					if (searchTerm != null) {
+						searchSql = "AND (LOWER(eu.user_first_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(eu.user_last_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(eu2.user_first_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(eu2.user_last_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(reimb_description) LIKE '" + mySearchTerm + "')\r\n";
+					}
+
 					SQL = "SELECT reimb_id, reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_author, reimb_resolver, ers.reimb_status_id, "
 							+ "ert.reimb_type_id, ers.reimb_status, ert.reimb_type, eu.user_first_name, eu.user_last_name, eu.user_role_id, "
 							+ "eu2.user_first_name AS resolver_first_name, eu2.user_last_name AS resolver_last_name, eu2.user_role_id AS resolver_role_id, "
@@ -191,6 +218,7 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 							+ "LEFT JOIN ers.ers_users eu2 ON\r\n"
 							+ "er.reimb_resolver = eu2.ers_users_id\r\n"
 							+ "WHERE er.reimb_author = ?\r\n"
+							+ searchSql
 							+ sqlOrder
 							+ "LIMIT ? OFFSET ?";
 					ps = conn.prepareStatement(SQL);
@@ -201,6 +229,15 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 
 			} else {
 				if (isManager) {
+
+					if (searchTerm != null) {
+						searchSql = "AND (LOWER(eu.user_first_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(eu.user_last_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(eu2.user_first_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(eu2.user_last_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(reimb_description) LIKE '" + mySearchTerm + "')\r\n";
+					}
+
 					SQL = "SELECT reimb_id, reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_author, reimb_resolver, ers.reimb_status_id, "
 							+ "ert.reimb_type_id, ers.reimb_status, ert.reimb_type, eu.user_first_name, eu.user_last_name, eu.user_role_id, "
 							+ "eu2.user_first_name AS resolver_first_name, eu2.user_last_name AS resolver_last_name, eu2.user_role_id AS resolver_role_id, "
@@ -215,6 +252,7 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 							+ "LEFT JOIN ers.ers_users eu2 ON\r\n"
 							+ "er.reimb_resolver = eu2.ers_users_id\r\n"
 							+ "WHERE er.reimb_status_id = ?\r\n"
+							+ searchSql
 							+ sqlOrder
 							+ "LIMIT ? OFFSET ?";
 
@@ -223,6 +261,14 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 					ps.setInt(2, limit);
 					ps.setInt(3, offset);
 				} else {
+
+					if (searchTerm != null) {
+						searchSql = "AND (LOWER(eu.user_first_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(eu.user_last_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(eu2.user_first_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(eu2.user_last_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(reimb_description) LIKE '" + mySearchTerm + "')\r\n";
+					}
 					SQL = "SELECT reimb_id, reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_author, reimb_resolver, ers.reimb_status_id, "
 							+ "ert.reimb_type_id, ers.reimb_status, ert.reimb_type, eu.user_first_name, eu.user_last_name, eu.user_role_id, "
 							+ "eu2.user_first_name AS resolver_first_name, eu2.user_last_name AS resolver_last_name, eu2.user_role_id AS resolver_role_id, "
@@ -238,6 +284,7 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 							+ "er.reimb_resolver = eu2.ers_users_id\r\n"
 							+ "WHERE er.reimb_status_id = ?\r\n"
 							+ "AND er.reimb_author = ?\r\n"
+							+ searchSql
 							+ sqlOrder
 							+ "LIMIT ? OFFSET ?";
 
@@ -248,6 +295,7 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 					ps.setInt(4, offset);
 				}
 			}
+			// System.out.println(ps.toString());
 			ResultSet getReimb = ps.executeQuery();
 
 			ArrayList<ERSReimbursement> reimbList = new ArrayList<ERSReimbursement>();
@@ -435,120 +483,98 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 		return null;
 	}
 
-	@Override
-	public ArrayList<ERSReimbursement> getAllReimbursementRequestsPagination(int reimb_status_id, int limit,
-			int offset) {
-
-		String SQL = null;
-		PreparedStatement ps = null;
-		try (Connection conn = ConnectionUtil.getConnection()) {
-			if (reimb_status_id < 1) {
-				SQL = "SELECT reimb_id, reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_author, reimb_resolver, "
-						+ "ers.reimb_status_id, ert.reimb_type_id, ers.reimb_status, ert.reimb_type, eu.user_first_name, eu.user_last_name, "
-						+ "eu.user_role_id, eu2.user_first_name AS resolver_first_name, eu2.user_last_name AS resolver_last_name, eu2.user_role_id AS resolver_role_id, "
-						+ "CASE WHEN reimb_receipt IS NOT NULL THEN true ELSE false END AS has_receipt\r\n"
-						+ "FROM ers.ers_reimbursement er\r\n"
-						+ "LEFT JOIN ers.ers_reimbursement_status ers ON\r\n"
-						+ "er.reimb_status_id = ers.reimb_status_id\r\n"
-						+ "LEFT JOIN ers.ers_reimbursement_type ert ON\r\n"
-						+ "er.reimb_type_id = ert.reimb_type_id\r\n"
-						+ "LEFT JOIN ers.ers_users eu ON\r\n"
-						+ "er.reimb_author = eu.ers_users_id\r\n"
-						+ "LEFT JOIN ers.ers_users eu2 ON\r\n"
-						+ "er.reimb_resolver = eu2.ers_users_id\r\n"
-						+ "ORDER BY er.reimb_id ASC\r\n"
-						+ "LIMIT ? OFFSET ?";
-				ps = conn.prepareStatement(SQL);
-				ps.setInt(1, limit);
-				ps.setInt(2, offset);
-			} else {
-				SQL = "SELECT reimb_id, reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_author, reimb_resolver, "
-						+ "ers.reimb_status_id, ert.reimb_type_id, ers.reimb_status, ert.reimb_type, eu.user_first_name, eu.user_last_name, "
-						+ "eu.user_role_id, eu2.user_first_name AS resolver_first_name, eu2.user_last_name AS resolver_last_name, eu2.user_role_id AS resolver_role_id, "
-						+ "CASE WHEN reimb_receipt IS NOT NULL THEN true ELSE false END AS has_receipt\r\n"
-						+ "FROM ers.ers_reimbursement er\r\n"
-						+ "LEFT JOIN ers.ers_reimbursement_status ers ON\r\n"
-						+ "er.reimb_status_id = ers.reimb_status_id\r\n"
-						+ "LEFT JOIN ers.ers_reimbursement_type ert ON\r\n"
-						+ "er.reimb_type_id = ert.reimb_type_id\r\n"
-						+ "LEFT JOIN ers.ers_users eu ON\r\n"
-						+ "er.reimb_author = eu.ers_users_id\r\n"
-						+ "LEFT JOIN ers.ers_users eu2 ON\r\n"
-						+ "er.reimb_resolver = eu2.ers_users_id\r\n"
-						+ "WHERE er.reimb_status_id = ?\r\n"
-						+ "ORDER BY er.reimb_id ASC\r\n"
-						+ "LIMIT ? OFFSET ?";
-				ps = conn.prepareStatement(SQL);
-				ps.setInt(1, reimb_status_id);
-				ps.setInt(2, limit);
-				ps.setInt(3, offset);
-			}
-			ResultSet getReimb = ps.executeQuery();
-
-			ArrayList<ERSReimbursement> reimbList = new ArrayList<ERSReimbursement>();
-			ERSUsers ersAuthor = new ERSUsers();
-			ERSUsers ersResolver = new ERSUsers();
-			ERSReimbursement reimbObj;
-			ERSReimbursementStatus ers;
-			ERSReimbursementType ert;
-			while (getReimb.next()) {
-				reimbObj = new ERSReimbursement();
-				reimbObj.setReimb_id(getReimb.getInt("reimb_id"));
-				reimbObj.setReimb_amount(getReimb.getDouble("reimb_amount"));
-				reimbObj.setReimb_submitted(getReimb.getTimestamp("reimb_submitted"));
-				reimbObj.setReimb_resolved(getReimb.getTimestamp("reimb_resolved"));
-				reimbObj.setReimb_description(getReimb.getString("reimb_description"));
-				reimbObj.setReimb_author(getReimb.getInt("reimb_author"));
-				reimbObj.setReimb_resolver(getReimb.getInt("reimb_resolver"));
-				reimbObj.setReimb_status_id(getReimb.getInt("reimb_status_id"));
-				reimbObj.setReimb_type_id(getReimb.getInt("reimb_type_id"));
-				reimbObj.setHas_receipt(getReimb.getBoolean("has_receipt"));
-
-				ers = new ERSReimbursementStatus(getReimb.getInt("reimb_status_id"),
-						getReimb.getString("reimb_status"));
-				ert = new ERSReimbursementType(getReimb.getInt("reimb_type_id"), getReimb.getString("reimb_type"));
-
-				ersAuthor.setErs_users_id(getReimb.getInt("reimb_author"));
-				ersAuthor.setUser_first_name(
-						StringUtils.isNoneEmpty(getReimb.getString("user_first_name"))
-								? getReimb.getString("user_first_name")
-								: "");
-				ersAuthor.setUser_last_name(
-						StringUtils.isNoneEmpty(getReimb.getString("user_last_name"))
-								? getReimb.getString("user_last_name")
-								: "");
-				ersAuthor.setUser_role_id(getReimb.getInt("user_role_id"));
-
-				ersResolver.setErs_users_id(getReimb.getInt("reimb_resolver"));
-				ersResolver.setUser_first_name(
-						StringUtils.isNoneEmpty(getReimb.getString("resolver_first_name"))
-								? getReimb.getString("resolver_first_name")
-								: "");
-				ersResolver.setUser_last_name(
-						StringUtils.isNoneEmpty(getReimb.getString("resolver_last_name"))
-								? getReimb.getString("resolver_last_name")
-								: "");
-				ersResolver.setUser_role_id(getReimb.getInt("resolver_role_id"));
-
-				reimbObj.setErsReimbursementStatus(ers);
-				reimbObj.setErsReimbursementType(ert);
-				reimbObj.setErsAuthor(ersAuthor);
-				reimbObj.setErsResolver(ersResolver);
-
-				reimbList.add(reimbObj);
-				// System.out.println(reimbList.toString());
-			}
-			return reimbList;
-		} catch (SQLException ex) {
-			log.error(ex.getMessage());
-
-		} catch (Exception ex) {
-			log.error(ex.getMessage());
-
-		}
-		return null;
-	}
-
+	/*
+	 * @Override public ArrayList<ERSReimbursement>
+	 * getAllReimbursementRequestsPagination(int reimb_status_id, int limit, int
+	 * offset) {
+	 * 
+	 * String SQL = null; PreparedStatement ps = null; try (Connection conn =
+	 * ConnectionUtil.getConnection()) { if (reimb_status_id < 1) { SQL =
+	 * "SELECT reimb_id, reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_author, reimb_resolver, "
+	 * +
+	 * "ers.reimb_status_id, ert.reimb_type_id, ers.reimb_status, ert.reimb_type, eu.user_first_name, eu.user_last_name, "
+	 * +
+	 * "eu.user_role_id, eu2.user_first_name AS resolver_first_name, eu2.user_last_name AS resolver_last_name, eu2.user_role_id AS resolver_role_id, "
+	 * +
+	 * "CASE WHEN reimb_receipt IS NOT NULL THEN true ELSE false END AS has_receipt\r\n"
+	 * + "FROM ers.ers_reimbursement er\r\n" +
+	 * "LEFT JOIN ers.ers_reimbursement_status ers ON\r\n" +
+	 * "er.reimb_status_id = ers.reimb_status_id\r\n" +
+	 * "LEFT JOIN ers.ers_reimbursement_type ert ON\r\n" +
+	 * "er.reimb_type_id = ert.reimb_type_id\r\n" +
+	 * "LEFT JOIN ers.ers_users eu ON\r\n" + "er.reimb_author = eu.ers_users_id\r\n"
+	 * + "LEFT JOIN ers.ers_users eu2 ON\r\n" +
+	 * "er.reimb_resolver = eu2.ers_users_id\r\n" + "ORDER BY er.reimb_id ASC\r\n" +
+	 * "LIMIT ? OFFSET ?"; ps = conn.prepareStatement(SQL); ps.setInt(1, limit);
+	 * ps.setInt(2, offset); } else { SQL =
+	 * "SELECT reimb_id, reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_author, reimb_resolver, "
+	 * +
+	 * "ers.reimb_status_id, ert.reimb_type_id, ers.reimb_status, ert.reimb_type, eu.user_first_name, eu.user_last_name, "
+	 * +
+	 * "eu.user_role_id, eu2.user_first_name AS resolver_first_name, eu2.user_last_name AS resolver_last_name, eu2.user_role_id AS resolver_role_id, "
+	 * +
+	 * "CASE WHEN reimb_receipt IS NOT NULL THEN true ELSE false END AS has_receipt\r\n"
+	 * + "FROM ers.ers_reimbursement er\r\n" +
+	 * "LEFT JOIN ers.ers_reimbursement_status ers ON\r\n" +
+	 * "er.reimb_status_id = ers.reimb_status_id\r\n" +
+	 * "LEFT JOIN ers.ers_reimbursement_type ert ON\r\n" +
+	 * "er.reimb_type_id = ert.reimb_type_id\r\n" +
+	 * "LEFT JOIN ers.ers_users eu ON\r\n" + "er.reimb_author = eu.ers_users_id\r\n"
+	 * + "LEFT JOIN ers.ers_users eu2 ON\r\n" +
+	 * "er.reimb_resolver = eu2.ers_users_id\r\n" +
+	 * "WHERE er.reimb_status_id = ?\r\n" + "ORDER BY er.reimb_id ASC\r\n" +
+	 * "LIMIT ? OFFSET ?"; ps = conn.prepareStatement(SQL); ps.setInt(1,
+	 * reimb_status_id); ps.setInt(2, limit); ps.setInt(3, offset); } ResultSet
+	 * getReimb = ps.executeQuery();
+	 * 
+	 * ArrayList<ERSReimbursement> reimbList = new ArrayList<ERSReimbursement>();
+	 * ERSUsers ersAuthor = new ERSUsers(); ERSUsers ersResolver = new ERSUsers();
+	 * ERSReimbursement reimbObj; ERSReimbursementStatus ers; ERSReimbursementType
+	 * ert; while (getReimb.next()) { reimbObj = new ERSReimbursement();
+	 * reimbObj.setReimb_id(getReimb.getInt("reimb_id"));
+	 * reimbObj.setReimb_amount(getReimb.getDouble("reimb_amount"));
+	 * reimbObj.setReimb_submitted(getReimb.getTimestamp("reimb_submitted"));
+	 * reimbObj.setReimb_resolved(getReimb.getTimestamp("reimb_resolved"));
+	 * reimbObj.setReimb_description(getReimb.getString("reimb_description"));
+	 * reimbObj.setReimb_author(getReimb.getInt("reimb_author"));
+	 * reimbObj.setReimb_resolver(getReimb.getInt("reimb_resolver"));
+	 * reimbObj.setReimb_status_id(getReimb.getInt("reimb_status_id"));
+	 * reimbObj.setReimb_type_id(getReimb.getInt("reimb_type_id"));
+	 * reimbObj.setHas_receipt(getReimb.getBoolean("has_receipt"));
+	 * 
+	 * ers = new ERSReimbursementStatus(getReimb.getInt("reimb_status_id"),
+	 * getReimb.getString("reimb_status")); ert = new
+	 * ERSReimbursementType(getReimb.getInt("reimb_type_id"),
+	 * getReimb.getString("reimb_type"));
+	 * 
+	 * ersAuthor.setErs_users_id(getReimb.getInt("reimb_author"));
+	 * ersAuthor.setUser_first_name(
+	 * StringUtils.isNoneEmpty(getReimb.getString("user_first_name")) ?
+	 * getReimb.getString("user_first_name") : ""); ersAuthor.setUser_last_name(
+	 * StringUtils.isNoneEmpty(getReimb.getString("user_last_name")) ?
+	 * getReimb.getString("user_last_name") : "");
+	 * ersAuthor.setUser_role_id(getReimb.getInt("user_role_id"));
+	 * 
+	 * ersResolver.setErs_users_id(getReimb.getInt("reimb_resolver"));
+	 * ersResolver.setUser_first_name(
+	 * StringUtils.isNoneEmpty(getReimb.getString("resolver_first_name")) ?
+	 * getReimb.getString("resolver_first_name") : "");
+	 * ersResolver.setUser_last_name(
+	 * StringUtils.isNoneEmpty(getReimb.getString("resolver_last_name")) ?
+	 * getReimb.getString("resolver_last_name") : "");
+	 * ersResolver.setUser_role_id(getReimb.getInt("resolver_role_id"));
+	 * 
+	 * reimbObj.setErsReimbursementStatus(ers);
+	 * reimbObj.setErsReimbursementType(ert); reimbObj.setErsAuthor(ersAuthor);
+	 * reimbObj.setErsResolver(ersResolver);
+	 * 
+	 * reimbList.add(reimbObj); // System.out.println(reimbList.toString()); }
+	 * return reimbList; } catch (SQLException ex) { log.error(ex.getMessage());
+	 * 
+	 * } catch (Exception ex) { log.error(ex.getMessage());
+	 * 
+	 * } return null; }
+	 */
 	@Override
 	public ERSReimbursement resolveReimbursements(int reimb_id, int ers_users_id, int reimb_status_id) {
 		String SQL = "UPDATE ers_reimbursement SET reimb_status_id = ?, reimb_resolved = ?, reimb_resolver = ? WHERE reimb_id = ? RETURNING *";
@@ -587,34 +613,115 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 	}
 
 	@Override
-	public int countReimbursements(boolean isManager, int author_id, int reimb_status_id) {
+	public int countReimbursements(boolean isManager, int author_id, int reimb_status_id, String searchTerm) {
 		String SQL = null;
 		PreparedStatement ps = null;
 		try (Connection conn = ConnectionUtil.getConnection()) {
+
+			String mySearchTerm = null;
+			String searchSql = "";
+
+			if (searchTerm != null) {
+				mySearchTerm = "%" + searchTerm.trim().toLowerCase().replace(" ", "%") + "%";
+				searchSql = "";
+			}
+
 			if (isManager) {
+
 				if (reimb_status_id > 0) {
-					SQL = "SELECT COUNT(*) FROM ers.ers_reimbursement WHERE reimb_status_id = ?";
+
+					if (searchTerm != null) {
+						searchSql = "AND LOWER(eu.user_first_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(eu.user_last_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(eu2.user_first_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(eu2.user_last_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(reimb_description) LIKE '" + mySearchTerm + "'\r\n";
+					}
+
+					SQL = "SELECT COUNT(*) FROM ers.ers_reimbursement er\r\n"
+							+ "LEFT JOIN ers.ers_reimbursement_status ers ON\r\n"
+							+ "er.reimb_status_id = ers.reimb_status_id\r\n"
+							+ "LEFT JOIN ers.ers_reimbursement_type ert ON\r\n"
+							+ "er.reimb_type_id = ert.reimb_type_id\r\n"
+							+ "LEFT JOIN ers.ers_users eu ON\r\n"
+							+ "er.reimb_author = eu.ers_users_id\r\n"
+							+ "LEFT JOIN ers.ers_users eu2 ON\r\n"
+							+ "er.reimb_resolver = eu2.ers_users_id\r\n"
+							+ "WHERE reimb_status_id = ? " + searchSql;
 					ps = conn.prepareStatement(SQL);
 					ps.setInt(1, reimb_status_id);
 				} else {
-					SQL = "SELECT COUNT(*) FROM ers.ers_reimbursement";
+
+					if (searchTerm != null) {
+						searchSql = "WHERE (LOWER(eu.user_first_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(eu.user_last_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(eu2.user_first_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(eu2.user_last_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(reimb_description) LIKE '" + mySearchTerm + "')\r\n";
+					}
+
+					SQL = "SELECT COUNT(*) FROM ers.ers_reimbursement er\r\n"
+							+ "LEFT JOIN ers.ers_reimbursement_status ers ON\r\n"
+							+ "er.reimb_status_id = ers.reimb_status_id\r\n"
+							+ "LEFT JOIN ers.ers_reimbursement_type ert ON\r\n"
+							+ "er.reimb_type_id = ert.reimb_type_id\r\n"
+							+ "LEFT JOIN ers.ers_users eu ON\r\n"
+							+ "er.reimb_author = eu.ers_users_id\r\n"
+							+ "LEFT JOIN ers.ers_users eu2 ON\r\n"
+							+ "er.reimb_resolver = eu2.ers_users_id\r\n"
+							+ searchSql;
 					ps = conn.prepareStatement(SQL);
 				}
 
 			} else {
 				if (reimb_status_id > 0) {
-					SQL = "SELECT COUNT(*) FROM ers.ers_reimbursement WHERE reimb_author = ? AND reimb_status_id = ?";
+					if (searchTerm != null) {
+						searchSql = "AND (LOWER(eu.user_first_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(eu.user_last_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(eu2.user_first_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(eu2.user_last_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(reimb_description) LIKE '" + mySearchTerm + "')\r\n";
+					}
+
+					SQL = "SELECT COUNT(*) FROM ers.ers_reimbursement er\r\n"
+							+ "LEFT JOIN ers.ers_reimbursement_status ers ON\r\n"
+							+ "er.reimb_status_id = ers.reimb_status_id\r\n"
+							+ "LEFT JOIN ers.ers_reimbursement_type ert ON\r\n"
+							+ "er.reimb_type_id = ert.reimb_type_id\r\n"
+							+ "LEFT JOIN ers.ers_users eu ON\r\n"
+							+ "er.reimb_author = eu.ers_users_id\r\n"
+							+ "LEFT JOIN ers.ers_users eu2 ON\r\n"
+							+ "er.reimb_resolver = eu2.ers_users_id\r\n"
+							+ "WHERE reimb_author = ? AND reimb_status_id = ?\r\n"
+							+ searchSql;
 					ps = conn.prepareStatement(SQL);
 					ps.setInt(1, author_id);
 					ps.setInt(2, reimb_status_id);
 				} else {
-					SQL = "SELECT COUNT(*) FROM ers.ers_reimbursement WHERE reimb_author = ?";
+					if (searchTerm != null) {
+						searchSql = "AND (LOWER(eu.user_first_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(eu.user_last_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(eu2.user_first_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(eu2.user_last_name) LIKE '" + mySearchTerm + "' OR\r\n"
+								+ "LOWER(reimb_description) LIKE '" + mySearchTerm + "')\r\n";
+					}
+					SQL = "SELECT COUNT(*) FROM ers.ers_reimbursement er\r\n"
+							+ "LEFT JOIN ers.ers_reimbursement_status ers ON\r\n"
+							+ "er.reimb_status_id = ers.reimb_status_id\r\n"
+							+ "LEFT JOIN ers.ers_reimbursement_type ert ON\r\n"
+							+ "er.reimb_type_id = ert.reimb_type_id\r\n"
+							+ "LEFT JOIN ers.ers_users eu ON\r\n"
+							+ "er.reimb_author = eu.ers_users_id\r\n"
+							+ "LEFT JOIN ers.ers_users eu2 ON\r\n"
+							+ "er.reimb_resolver = eu2.ers_users_id\r\n"
+							+ "WHERE reimb_author = ?\r\n" 
+							+ searchSql;
 					ps = conn.prepareStatement(SQL);
 					ps.setInt(1, author_id);
 				}
 
 			}
-
+			System.out.println(ps.toString());
 			ResultSet countReimb = ps.executeQuery();
 
 			if (countReimb.next()) {

@@ -105,17 +105,19 @@ let maxPerPage = 5;
 
 let loadPagination = async (page) => {
   curPage = page;
-  console.log(curPage);
+  // console.log(curPage);
   document.getElementById('rPagination').classList.add('d-none');
   
   const rOrder = document.getElementById('orderBy').value;
   const rColumn = document.getElementById('sortBy').value;
+  const rSearch = document.getElementById('searchTerm').value;
 
-  const loadReimb = displayReimbursements(maxPerPage, curPage, rOrder, rColumn);
+  const loadReimb = displayReimbursements(maxPerPage, curPage, rOrder, rColumn, rSearch);
   const rStatus = document.getElementById('filterStatus').value;
 
   const requestData = {
-    reimb_status: rStatus
+    reimb_status: rStatus,
+    searchterm: (rSearch != undefined ? rSearch.toLowerCase() : '')
   };
 
   loadReimb.then(async () => {
@@ -186,16 +188,16 @@ let loadPagination = async (page) => {
 
         // Show table and pagination
         document.getElementById('mainReimbursementsSpinner').classList.add('d-none');
-        document.getElementById('mainReimbursementsTable').classList.remove('d-none');
+        document.getElementById('mainReimbursementsTBody').classList.remove('d-none');
         document.getElementById('rPagination').classList.remove('d-none');
       });
   });
 
 };
 
-let displayReimbursements = async (limit, pageNum, order, column) => {
+let displayReimbursements = async (limit, pageNum, order, column, searchTerm) => {
   document.getElementById('mainReimbursementsSpinner').classList.remove('d-none');
-  document.getElementById('mainReimbursementsTable').classList.add('d-none');
+  document.getElementById('mainReimbursementsTBody').classList.add('d-none');
   console.log("--- Display Reimbursements ---");
 
   const rStatus = document.getElementById('filterStatus').value;
@@ -205,7 +207,8 @@ let displayReimbursements = async (limit, pageNum, order, column) => {
     limit: (limit != undefined ? limit : 0),
     page: (pageNum != undefined ? pageNum : 0),
     order: (order != undefined ? order.toLowerCase() : 'asc'),
-    column: (column != undefined ? column.toLowerCase() : 'reimb_id')
+    column: (column != undefined ? column.toLowerCase() : 'reimb_id'),
+    searchterm: (searchTerm != undefined ? searchTerm.toLowerCase() : ''),
   };
 
   let rowsArr = [];
@@ -603,6 +606,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
   });
   document.getElementById("sortBy").addEventListener("change", function () {
     loadPagination(1);
+  });
+
+  document.getElementById("searchButton").addEventListener("click", function () {
+    loadPagination(curPage);
+  });
+  document.getElementById("searchTerm").addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault;
+      loadPagination(curPage);
+    }
   });
 
   loadReimbursementTypes();

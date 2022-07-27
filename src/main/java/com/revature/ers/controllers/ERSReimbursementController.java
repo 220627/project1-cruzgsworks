@@ -53,11 +53,14 @@ public class ERSReimbursementController {
 			
 			// Result order
 			String orderBy = StringUtils.isNoneEmpty(ctx.queryParam("order")) && ctx.queryParam("order").equals("desc") ? "desc" : "asc";
-			System.out.println(orderBy);
+			// System.out.println(orderBy);
 			
 			// Order by column
 			String column = StringUtils.isNoneEmpty(ctx.queryParam("column")) && !ctx.queryParam("column").equals("reimb_id") ? ctx.queryParam("column") : "reimb_id";
-			System.out.println(column);
+			// System.out.println(column);
+			
+			// Search term
+			String searchTerm = StringUtils.isNoneEmpty(ctx.queryParam("searchterm")) ? ctx.queryParam("searchterm") : null;
 
 			// Filter by status
 			String reimb_status = ctx.queryParam("reimb_status");
@@ -76,7 +79,7 @@ public class ERSReimbursementController {
 			boolean isManager = curRole.getUser_role().toLowerCase().equals("manager");
 
 			reimbRequest = new ERSReimbursementDAO()
-					.getReimbursementRequestPagination(reimb_status_id, eu.getErs_users_id(), isManager, limit, page, orderBy, column);
+					.getReimbursementRequestPagination(reimb_status_id, eu.getErs_users_id(), isManager, limit, page, orderBy, column, searchTerm);
 
 		} catch (Exception ex) {
 			log.error(ex.getMessage());
@@ -298,10 +301,13 @@ public class ERSReimbursementController {
 			ERSReimbursementStatus ers = new ERSReimbursementStatusDAO().getReimbursementStatusByStatus(reimb_status);
 			reimb_status_id = ers != null ? ers.getReimb_status_id() : 0;
 		}
+		
+		// Search term
+		String searchTerm = StringUtils.isNoneEmpty(ctx.queryParam("searchterm")) ? ctx.queryParam("searchterm") : null;
 
 		boolean isManager = curRole.getUser_role().toLowerCase().equals("manager");
 
-		pages = new ERSReimbursementDAO().countReimbursements(isManager, curUser.getErs_users_id(), reimb_status_id);
+		pages = new ERSReimbursementDAO().countReimbursements(isManager, curUser.getErs_users_id(), reimb_status_id, searchTerm);
 
 		ERSReimbursementCount erc = new ERSReimbursementCount();
 		erc.setCount_rows(pages);

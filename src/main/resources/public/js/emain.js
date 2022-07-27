@@ -76,8 +76,9 @@ let loadPagination = async (page) => {
 
   const rOrder = document.getElementById('orderBy').value;
   const rColumn = document.getElementById('sortBy').value;
+  const rSearch = document.getElementById('searchTerm').value;
 
-  const loadReimb = displayReimbursements(maxPerPage, curPage, rOrder, rColumn);
+  const loadReimb = displayReimbursements(maxPerPage, curPage, rOrder, rColumn, rSearch);
   const rStatus = document.getElementById('filterStatus').value;
 
   const requestData = {
@@ -153,16 +154,16 @@ let loadPagination = async (page) => {
 
         // Show table and pagination
         document.getElementById('mainReimbursementsSpinner').classList.add('d-none');
-        document.getElementById('mainReimbursementsTable').classList.remove('d-none');
+        document.getElementById('mainReimbursementsTBody').classList.remove('d-none');
         document.getElementById('rPagination').classList.remove('d-none');
       });
   });
 
 };
 
-let displayReimbursements = async (limit, pageNum, order, column) => {
+let displayReimbursements = async (limit, pageNum, order, column, searchTerm) => {
   document.getElementById('mainReimbursementsSpinner').classList.remove('d-none');
-  document.getElementById('mainReimbursementsTable').classList.add('d-none');
+  document.getElementById('mainReimbursementsTBody').classList.add('d-none');
   console.log("--- Display Reimbursements ---");
 
   const rStatus = document.getElementById('filterStatus').value;
@@ -172,7 +173,8 @@ let displayReimbursements = async (limit, pageNum, order, column) => {
     limit: (limit != undefined ? limit : 0),
     page: (pageNum != undefined ? pageNum : 0),
     order: (order != undefined ? order.toLowerCase() : 'asc'),
-    column: (column != undefined ? column.toLowerCase() : 'reimb_id')
+    column: (column != undefined ? column.toLowerCase() : 'reimb_id'),
+    searchterm: (searchTerm != undefined ? searchTerm.toLowerCase() : ''),
   };
 
   let rowsArr = [];
@@ -193,7 +195,9 @@ let displayReimbursements = async (limit, pageNum, order, column) => {
       if (data.statusObject != undefined) {
 
         let recordsArr = data.statusObject;
+
         for (let rRow of recordsArr) {
+          
           let receiptStr = '<span class="text-secondary">(None)</span>';
           if (rRow.has_receipt) {
             receiptStr = '<a href="/api/employee/reimbursement/receipt/' + rRow.reimb_id + '" download><i class="bi bi-file-earmark-arrow-down-fill me-2"></i>Download</a>';
@@ -470,6 +474,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
   });
   document.getElementById("sortBy").addEventListener("change", function () {
     loadPagination(1);
+  });
+
+  document.getElementById("searchButton").addEventListener("click", function () {
+    loadPagination(curPage);
+  });
+  document.getElementById("searchTerm").addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault;
+      loadPagination(curPage);
+    }
   });
 
   loadReimbursementTypes();

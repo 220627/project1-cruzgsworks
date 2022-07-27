@@ -16,13 +16,17 @@ public interface ERSReimbursementDAOInteface {
 
 	ERSReimbursement resolveReimbursements(int reimb_id, int ers_users_id, int reimb_status_id);
 
-	ArrayList<ERSReimbursement> getAllReimbursementRequestsPagination(int reimb_status_id, int limit, int offset);
+	// ArrayList<ERSReimbursement> getAllReimbursementRequestsPagination(int reimb_status_id, int limit, int offset);
 
 	// ArrayList<ERSReimbursement> getReimbursementRequestPagination(int reimb_status_id, int reimb_author, boolean isManager, int limit, int page);
 
-	int countReimbursements(boolean isManager, int author_id, int reimb_status);
+	// int countReimbursements(boolean isManager, int author_id, int reimb_status);
+
+	// ArrayList<ERSReimbursement> getReimbursementRequestPagination(int reimb_status_id, int reimb_author, boolean isManager, int limit, int page, String orderBy, String column);
 
 	ArrayList<ERSReimbursement> getReimbursementRequestPagination(int reimb_status_id, int reimb_author,
-			boolean isManager, int limit, int page, String orderBy, String column);
+			boolean isManager, int limit, int page, String orderBy, String column, String searchTerm);
+
+	int countReimbursements(boolean isManager, int author_id, int reimb_status_id, String searchTerm);
 
 }

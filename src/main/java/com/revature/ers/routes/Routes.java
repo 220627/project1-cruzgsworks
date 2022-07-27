@@ -107,7 +107,7 @@ public class Routes {
 			// Endpoint to download receipts
 			path("/api/employee/reimbursement/receipt/{reimb_id}", () -> {
 				get(ERSReimbursementController.getReceipt,
-						new RouteRole[] { Roles.EMPLOYEE });
+						new RouteRole[] { Roles.EMPLOYEE, Roles.FINANCE_MANAGER });
 			});
 			// NOT USED - Replaced with /api/reimbursement/list which includes pagination
 			path("/api/employee/reimbursement", () -> {
