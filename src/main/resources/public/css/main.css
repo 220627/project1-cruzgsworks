@@ -39,26 +39,28 @@ body {
   display: block;
 }
 
-div#newRequestOffCanvas {
+div#newRequestOffCanvas, div#profileOffCanvas {
   border: none;
+  background: rgba(255, 255, 255, 0.89);
 }
 
 #rDescription {
   height: 128px;
 }
 
-.table td.fit, 
+.table td.fit,
 .table th.fit {
-    white-space: nowrap;
-    width: 1%;
+  white-space: nowrap;
+  width: 1%;
 }
 
-.table td, .table th {
+.table td,
+.table th {
   padding-left: 1rem;
   padding-right: 1rem;
 }
 
-.accordion button > i.bi {
+.accordion button>i.bi {
   font-size: 22px;
 }
 
@@ -84,7 +86,7 @@ div.popover-body {
   font-weight: 500;
 }
 
-#filterDropdown .input-group-text{
+#filterDropdown .input-group-text {
   min-width: 112px;
 }
 
@@ -94,4 +96,34 @@ div.popover-body {
 
 #searchDropdown ul {
   min-width: 200px;
+}
+
+.password-match, .password-not-match {
+  display: none;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: .875em;
+}
+
+.valid-password .password-match, .invalid-password .password-not-match {
+  display: block;
+}
+
+@keyframes statusEntrance {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.update-message .alert, .update-password-message .alert {
+  display: none;
+}
+
+.update-message div.alert.activeStatus, .update-password-message div.alert.activeStatus {
+  animation: statusEntrance 1s ease 0s 1 normal forwards;
+  display: block;
 }

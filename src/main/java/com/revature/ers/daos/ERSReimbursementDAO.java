@@ -721,7 +721,7 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 				}
 
 			}
-			System.out.println(ps.toString());
+			// System.out.println(ps.toString());
 			ResultSet countReimb = ps.executeQuery();
 
 			if (countReimb.next()) {

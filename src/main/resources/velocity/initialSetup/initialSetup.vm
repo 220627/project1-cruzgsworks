@@ -25,127 +25,151 @@
   <!--[if lt IE 7]> <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p> <![endif]-->
   <div class="my-container w-100 m-auto">
     <div class="container">
-      <div class="row">
-        <div class="col pb-2">
-          <h1 class="h3 text-center">Setup ERS</h1>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col pb-2">
-          <h5>Database Connection</h5>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="inputDatabaseURL" value="localhost" placeholder="localhost">
-            <label for="inputDatabaseURL" class="form-label">DB Address</label>
+      <form class="needs-validation" novalidate>
+        <div class="row">
+          <div class="col pb-2">
+            <h1 class="h3 text-center">Setup ERS</h1>
           </div>
         </div>
-        <div class="col">
-          <div class="form-floating mb-3">
-            <input type="number" class="form-control" id="inputDatabasePort" value="5432" placeholder="5432">
-            <label for="inputDatabasePort" class="form-label">DB Port</label>
+        <div class="row">
+          <div class="col pb-2">
+            <h5>Database Connection</h5>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="inputDatabaseName" value="postgres" placeholder="postgres">
-            <label for="inputDatabaseName" class="form-label">DB Name</label>
+        <div class="row">
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="inputDatabaseURL" value="localhost" placeholder="localhost" required>
+              <label for="inputDatabaseURL" class="form-label">DB Address</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input type="number" class="form-control" id="inputDatabasePort" value="5432" placeholder="5432" required>
+              <label for="inputDatabasePort" class="form-label">DB Port</label>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="inputDatabaseSchema" value="ers" placeholder="ers">
-            <label for="inputDatabaseSchema" class="form-label">DB Schema</label>
+        <div class="row">
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="inputDatabaseName" value="postgres" placeholder="postgres" required>
+              <label for="inputDatabaseName" class="form-label">DB Name</label>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="inputDatabaseUsername" value="postgres" placeholder="postgres">
-            <label for="inputDatabaseUsername" class="form-label">DB Username</label>
+        <div class="row">
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="inputDatabaseSchema" value="ers" placeholder="ers" required>
+              <label for="inputDatabaseSchema" class="form-label">DB Schema</label>
+            </div>
           </div>
         </div>
-        <div class="col">
-          <div class="form-floating mb-3">
-            <input type="password" class="form-control" id="inputDatabasePassword" value="revature2022"
-              placeholder="revature2022">
-            <label for="inputDatabasePassword" class="form-label">DB Password</label>
+        <div class="row">
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="inputDatabaseUsername" value="postgres"
+                placeholder="postgres" required>
+              <label for="inputDatabaseUsername" class="form-label">DB Username</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input type="password" class="form-control" id="inputDatabasePassword" value="revature2022"
+                placeholder="revature2022" required>
+              <label for="inputDatabasePassword" class="form-label">DB Password</label>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col pb-2">
-          <h5>Initial Finance Manager</h5>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="inputFMUsername" value="revature" placeholder="revature">
-            <label for="inputFMUsername" class="form-label">ERS Username</label>
+        <div class="row">
+          <div class="col pb-2">
+            <h5>Initial Finance Manager</h5>
           </div>
         </div>
-        <div class="col">
-          <div class="form-floating mb-3">
-            <input type="password" class="form-control" id="inputFMPassword" value="revature2022"
-              placeholder="revature2022">
-            <label for="inputFMPassword" class="form-label">ERS Password</label>
+        <div class="row">
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="inputFMFirst" value="Revature" placeholder="Revature" required>
+              <label for="inputFMFirst" class="form-label">First Name</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="inputFMLast" value="Company" placeholder="Company" required>
+              <label for="inputFMLast" class="form-label">Last Name</label>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="inputFMFirst" value="Revature" placeholder="Revature">
-            <label for="inputFMFirst" class="form-label">First Name</label>
+        <div class="row">
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="inputFMUsername" value="revature" placeholder="revature" required>
+              <label for="inputFMUsername" class="form-label">ERS Username</label>
+            </div>
           </div>
         </div>
-        <div class="col">
-          <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="inputFMLast" value="Company" placeholder="Company">
-            <label for="inputFMLast" class="form-label">Last Name</label>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="inputFMEmail" value="revaturecompany@email.com"
-              placeholder="email@example.com">
-            <label for="inputFMEmail" class="form-label">E-mail</label>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <div class="d-grid gap-2 mb-3">
-            <button id="submitBtn" href="#" class="btn btn-primary">
-              <div id="proceedText" class="proceedText">Proceed</div>
-              <div id="proceedLoading" class="proceedLoading text-center hideElem">
-                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                Loading...
+        <div class="row">
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input type="password" class="form-control" id="inputFMPassword" value="revature2022"
+                placeholder="revature2022" required>
+              <label for="inputFMPassword" class="form-label">ERS Password</label>
+              <div class="password-not-match text-danger">
+                Passwords must match
               </div>
-            </button>
+              <div class="password-match text-success">
+                Passwords match!
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input type="password" class="form-control" id="confirmPassword" value="revature2022"
+                placeholder="revature2022" required>
+              <label for="confirmPassword" class="form-label">ERS Password</label>
+              <div class="password-not-match text-danger">
+                Passwords must match
+              </div>
+              <div class="password-match text-success">
+                Passwords match!
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col setup-message">
-          <div id="setupAlertSuccess" class="alert alert-success text-center" role="alert">
-            Connection Success. Redirecting to homepage in 1s.
-          </div>
-          <div id="setupAlertFailed" class="alert alert-danger text-center" role="alert">
-            Failed to connect. Please check database information.
+        <div class="row">
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input type="email" class="form-control" id="inputFMEmail" value="revaturecompany@email.com"
+                placeholder="email@example.com" required>
+              <label for="inputFMEmail" class="form-label">E-mail</label>
+            </div>
           </div>
         </div>
-      </div>
+        <div class="row">
+          <div class="col">
+            <div class="d-grid gap-2 mb-3">
+              <button id="submitBtn" href="#" class="btn btn-primary" type="submit">
+                <div id="proceedText" class="proceedText">Proceed</div>
+                <div id="proceedLoading" class="proceedLoading text-center hideElem">
+                  <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                  Loading...
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col setup-message">
+            <div id="setupAlertSuccess" class="alert alert-success text-center" role="alert">
+              Connection Success. Redirecting to homepage in 1s.
+            </div>
+            <div id="setupAlertFailed" class="alert alert-danger text-center" role="alert">
+              Failed to connect. Please check database information.
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
 
   </div>

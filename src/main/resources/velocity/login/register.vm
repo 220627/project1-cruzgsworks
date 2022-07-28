@@ -6,97 +6,141 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>ERS - Sign-up</title>
-    <meta name="description" content="ERS - Sign-up">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="img/ers_logo/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="img/ers_logo/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="img/ers_logo/favicon-16x16.png">
-    <link rel="manifest" href="img/ers_logo/site.webmanifest">
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/register.css">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>ERS - Sign-up</title>
+  <meta name="description" content="ERS - Sign-up">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="img/ers_logo/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/ers_logo/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/ers_logo/favicon-16x16.png">
+  <link rel="manifest" href="img/ers_logo/site.webmanifest">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/register.css">
 </head>
 
 <body class="">
-    <!--[if lt IE 7]> <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p> <![endif]-->
-    <main class="my-container w-100 m-auto">
-        <div class="container">
-            <div class="row">
-                <div class="col pb-2">
-                    <h1 class="h3 text-center">Sign-Up</h1>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="inputUsername" value="gerardcruz"
-                            placeholder="Username">
-                        <label for="inputUsername" class="form-label">ERS Username</label>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="form-floating mb-3">
-                        <input type="password" class="form-control" id="inputPassword" value="gerardcruz2022"
-                            placeholder="Password">
-                        <label for="inputPassword" class="form-label">ERS Password</label>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="inputFirst" value="Gerard" placeholder="First Name">
-                        <label for="inputFirst" class="form-label">First Name</label>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="inputLast" value="Cruz" placeholder="Last Name">
-                        <label for="inputLast" class="form-label">Last Name</label>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="form-floating mb-3">
-                        <input type="email" class="form-control" id="inputEmail" value="gerard984@revature.net"
-                            placeholder="email@example.com">
-                        <label for="inputEmail" class="form-label">E-mail</label>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="d-grid gap-2 mb-3">
-                        <button id="submitBtn" href="#" class="btn btn-primary">
-                            <div id="proceedText" class="proceedText">Proceed</div>
-                            <div id="proceedLoading" class="proceedLoading text-center hideElem">
-                                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                                Loading...
-                            </div>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col register-message">
-                    <div id="registerAlertSuccess" class="alert alert-success text-center" role="alert">
-                        Registration successful. Returning to login page in 1s.
-                    </div>
-                    <div id="registerAlertFailed" class="alert alert-danger text-center" role="alert">
-                        Failed to register.
-                    </div>
-                </div>
-            </div>
-
+  <!--[if lt IE 7]> <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p> <![endif]-->
+  <div class="area">
+    <ul class="circles">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+  </div>
+  <main class="my-container w-100 m-auto">
+    <div class="container">
+      <form class="needs-validation" novalidate>
+        <div class="row">
+          <div class="col pb-2">
+            <h1 class="h3 text-center">Sign-Up</h1>
+          </div>
         </div>
-    </main>
-    <script src="js/bootstrap.bundle.js"></script>
-    <script src="js/register.js"></script>
+        <div class="row">
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="inputFirst" value="Gerard" placeholder="First Name" required>
+              <label for="inputFirst" class="form-label">First Name</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="inputLast" value="Cruz" placeholder="Last Name" required>
+              <label for="inputLast" class="form-label">Last Name</label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="inputUsername" value="gerardcruz" placeholder="Username" required>
+              <label for="inputUsername" class="form-label">ERS Username</label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="col">
+              <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="inputPassword" value="gerardcruz2022"
+                  placeholder="Password" required>
+                <label for="inputPassword" class="form-label">ERS Password</label>
+                <div class="password-not-match text-danger">
+                  Passwords must match
+                </div>
+                <div class="password-match text-success">
+                  Passwords match!
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="col">
+              <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="confirmPassword" value="gerardcruz2022"
+                  placeholder="Password" required>
+                <label for="inputPassword" class="form-label">Confirm Password</label>
+                <div class="password-not-match text-danger">
+                  Passwords must match
+                </div>
+                <div class="password-match text-success">
+                  Passwords match!
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input type="email" class="form-control" id="inputEmail" value="gerard984@revature.net"
+                placeholder="email@example.com" required>
+              <label for="inputEmail" class="form-label">E-mail</label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="d-grid gap-2 mb-3">
+              <button id="submitBtn" href="#" class="btn btn-primary" type="submit">
+                <div id="proceedText" class="proceedText">Proceed</div>
+                <div id="proceedLoading" class="proceedLoading text-center hideElem">
+                  <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                  Loading...
+                </div>
+              </button>
+            </div>
+          </div>
+          <div class="col">
+            <a id="goBack" href="/login" class="w-100 btn btn-secondary">
+              Go Back
+            </a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col register-message">
+            <div id="registerAlertSuccess" class="alert alert-success text-center" role="alert">
+              Registration successful. Returning to login page in 1s.
+            </div>
+            <div id="registerAlertFailed" class="alert alert-danger text-center" role="alert">
+              Failed to register.
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </main>
+  <script src="js/bootstrap.bundle.js"></script>
+  <script src="js/register.js"></script>
 </body>
 
 </html>

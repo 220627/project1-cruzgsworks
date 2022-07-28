@@ -41,3 +41,14 @@ body {
 .my-container {
   max-width: 768px;
 }
+
+.password-match, .password-not-match {
+  display: none;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: .875em;
+}
+
+.valid-password .password-match, .invalid-password .password-not-match {
+  display: block;
+}

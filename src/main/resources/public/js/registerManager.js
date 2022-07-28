@@ -17,7 +17,7 @@ let doRegister = async (param) => {
     user_email: document.getElementById("inputEmail").value,
   };
 
-  await fetch("/api/register", {
+  await fetch("/api/manager/register", {
     method: "POST",
     headers: {
       Accept: "application/json",

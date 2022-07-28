@@ -7,6 +7,8 @@ public class Path {
 		public static final String NOT_FOUND = "/notfound";
 		public static final String LOGIN = "/login";
 		public static final String REGISTER = "/register";
+		public static final String REGISTER_MANAGER = "/newmanager";
+		public static final String UNAUTHORIZED = "/unauthorized";
 	}
 
 	public static class Template {
@@ -14,7 +16,9 @@ public class Path {
 		public static final String MANAGER = "/velocity/index/manager.vm";
 		public static final String INITIAL_SETUP = "/velocity/initialSetup/initialSetup.vm";
 		public static final String NOT_FOUND = "/velocity/errorPages/notFound.vm";
+		public static final String UNAUTHORIZED = "/velocity/errorPages/unauthorized.vm";
 		public static final String LOGIN = "/velocity/login/login.vm";
 		public static final String REGISTER = "/velocity/login/register.vm";
+		public static final String REGISTER_MANAGER = "/velocity/login/registerManager.vm";
 	}
 }

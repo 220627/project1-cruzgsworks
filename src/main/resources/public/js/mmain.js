@@ -556,39 +556,113 @@ let loadDeniedReimbursements = async () => {
 
 */
 
-let loadReimbursementTypes = async () => {
-  console.log("--- Loading Reimbursement Types ---");
-  await fetch("/api/reimbursement/types", {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json; charset=utf-8",
-    },
-  })
-    .then((res) => {
-      return res.json();
-    })
-    .then((data) => {
-      let arrOptions = [];
-      let arrOptionsCollection = data.statusObject;
-
-      if (data.statusObject) {
-        arrOptionsCollection.forEach((element) => {
-          arrOptions.push(
-            "<option value='" + element.reimb_type_id + "'>" + toTitleCase(element.reimb_type) + "</option>"
-          );
-        });
-
-        document.getElementById("rType").innerHTML = arrOptions.join("\r\n");
-      }
-    });
-};
-
 let refreshAllTables = () => {
   loadPendingReimbursements();
   loadApprovedReimbursements();
   loadDeniedReimbursements();
 }
+
+let doUpdate = async (param) => {
+  // Hide alerts
+  let alertElems = document.getElementsByClassName("alert");
+  for (let Elems of alertElems) {
+    Elems.classList.remove("activeStatus");
+  }
+  document.getElementById("updateProfileButton").setAttribute("disabled", "");
+  document.getElementById("updateText").classList.add("hideElem");
+  document.getElementById("updateLoading").classList.remove("hideElem");
+
+  // get form data
+  let updateData = {
+    ers_username: document.getElementById("inputUsername").value,
+    ers_password: document.getElementById("inputPassword").value,
+    user_first_name: document.getElementById("inputFirst").value,
+    user_last_name: document.getElementById("inputLast").value,
+    user_email: document.getElementById("inputEmail").value,
+  };
+
+  await fetch("/api/users/update/" + document.getElementById("ers_users_id").value, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json; charset=utf-8",
+    },
+    body: JSON.stringify(updateData),
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      document.getElementById("updateText").classList.remove("hideElem");
+      document.getElementById("updateLoading").classList.add("hideElem");
+
+      if (data.statusSuccess) {
+        document
+          .getElementById("updateAlertSuccess")
+          .classList.add("activeStatus");
+        // location replace in 3 seconds
+        setTimeout(function () {
+          window.location.replace("./");
+        }, 1000);
+      } else {
+        document.getElementById("updateProfileButton").removeAttribute("disabled");
+        document.getElementById("updateAlertFailed").innerHTML =
+          data.statusMessage;
+        document
+          .getElementById("updateAlertFailed")
+          .classList.add("activeStatus");
+      }
+    });
+};
+
+let doChangePassword = async (param) => {
+  // Hide alerts
+  let alertElems = document.getElementsByClassName("alert");
+  for (let Elems of alertElems) {
+    Elems.classList.remove("activeStatus");
+  }
+  document.getElementById("updatePasswordButton").setAttribute("disabled", "");
+  document.getElementById("updatePasswordText").classList.add("hideElem");
+  document.getElementById("updatePasswordLoading").classList.remove("hideElem");
+
+  // get form data
+  let updatePasswordData = {
+    ers_password: document.getElementById("inputPassword").value,
+  };
+
+  await fetch("/api/users/password/" + document.getElementById("ers_users_id").value, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json; charset=utf-8",
+    },
+    body: JSON.stringify(updatePasswordData),
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      document.getElementById("updatePasswordText").classList.remove("hideElem");
+      document.getElementById("updatePasswordLoading").classList.add("hideElem");
+
+      if (data.statusSuccess) {
+        document
+          .getElementById("updatePasswordAlertSuccess")
+          .classList.add("activeStatus");
+        // location replace in 3 seconds
+        setTimeout(function () {
+          window.location.replace("./");
+        }, 1000);
+      } else {
+        document.getElementById("updatePasswordButton").removeAttribute("disabled");
+        document.getElementById("updatePasswordAlertFailed").innerHTML =
+          data.statusMessage;
+        document
+          .getElementById("updatePasswordAlertFailed")
+          .classList.add("activeStatus");
+      }
+    });
+};
 
 document.addEventListener("DOMContentLoaded", function (event) {
   // Log-out button
@@ -618,7 +692,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
   });
 
-  loadReimbursementTypes();
   loadPagination(1);
 
   document.querySelectorAll('[data-bs-toggle="popover"]')
@@ -630,5 +703,50 @@ document.addEventListener("DOMContentLoaded", function (event) {
     maxPerPage = this.value;
     loadPagination(1);
   });
+
+  const profileForms = document.querySelectorAll('.updateProfileForm.needs-validation');
+  const passwordForms = document.querySelectorAll('.updatePasswordForm.needs-validation');
+
+  const password1 = document.getElementById('inputPassword');
+  const password2 = document.getElementById('confirmPassword');
+
+  Array.from(profileForms).forEach(form => {
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      event.stopPropagation();
+      if (form.checkValidity()) {
+        doUpdate();
+      }
+      form.classList.add('was-validated')
+    }, false);
+  })
+
+  Array.from(passwordForms).forEach(form => {
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      event.stopPropagation();
+      passwordForms[0].classList.remove('invalid-password');
+      passwordForms[0].classList.remove('valid-password');
+      if (form.checkValidity()) {
+        if (password1.value != password2.value) {
+          passwordForms[0].classList.add('invalid-password');
+        } else {
+          doChangePassword();
+        }
+      }
+      form.classList.add('was-validated')
+    }, false);
+    form.addEventListener('keyup', event => {
+      event.preventDefault();
+      event.stopPropagation();
+      passwordForms[0].classList.remove('invalid-password');
+      passwordForms[0].classList.remove('valid-password');
+      if (password1.value != password2.value) {
+        passwordForms[0].classList.add('invalid-password');
+      } else {
+        passwordForms[0].classList.add('valid-password');
+      }
+    });
+  })
 
 });

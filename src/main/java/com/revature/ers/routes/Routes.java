@@ -7,7 +7,9 @@ import static io.javalin.apibuilder.ApiBuilder.put;
 
 import java.io.File;
 
+import org.eclipse.jetty.http.HttpScheme;
 import org.eclipse.jetty.http.HttpVersion;
+import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.SecureRequestCustomizer;
@@ -55,44 +57,44 @@ public class Routes {
 				if (routeRoles.isEmpty() || routeRoles.contains(role)) {
 					handler.handle(ctx);
 				} else {
-					Responses resp = new Responses(401, "Unauthorized", false, null);
-					ctx.status(resp.getStatusCode()).contentType("application/json").result(new Gson().toJson(resp));
+					if (ctx.path().startsWith("/api")) {
+						Responses resp = new Responses(401, "Unauthorized", false, null);
+						ctx.status(resp.getStatusCode()).contentType("application/json")
+								.result(new Gson().toJson(resp));
+					} else {
+						ctx.status(401).render(Path.Template.UNAUTHORIZED);
+					}
+
 				}
 			});
-			// Configure SSL
 			config.server(() -> {
 
-//				Server server = new Server();
-//				
-//				ServerConnector sslConnector = new ServerConnector(server, getSslContextFactory());
-//				// Run SSL on port 8443
-//				sslConnector.setPort(443);
-//				
-//				ServerConnector connector = new ServerConnector(server);
-//				// Run HTTP on port 8080
-//				connector.setPort(80);
-//				
-//				server.setConnectors(new Connector[] { sslConnector, connector });
-				
+				int httpPort = 80;
+				int httpsPort = 443;
+
 				Server server = new Server();
-				
-				// This should automatically redirect to https
+
+				// Setup HTTP configuration
 				HttpConfiguration httpConfiguration = new HttpConfiguration();
-				httpConfiguration.setSecureScheme("https");
-				httpConfiguration.setSecurePort(80);
-				
-				ServerConnector http = new ServerConnector(server, new HttpConnectionFactory(httpConfiguration));
-				server.addConnector(http);
-				
+				httpConfiguration.addCustomizer(new SecureRequestCustomizer());
+				httpConfiguration.setSecureScheme(HttpScheme.HTTPS.asString());
+				httpConfiguration.setSecurePort(httpsPort);
+
+				ServerConnector httpConnector = new ServerConnector(server,
+						new HttpConnectionFactory(httpConfiguration));
+				httpConnector.setPort(httpPort);
+
+				// Setup HTTPS configuration
 				HttpConfiguration httpsConfiguration = new HttpConfiguration(httpConfiguration);
 				httpsConfiguration.addCustomizer(new SecureRequestCustomizer());
-				
-				// I should probably use HTTP 2 but I can't figure it out at the moment.
+
 				ServerConnector httpsConnector = new ServerConnector(server,
-					    new SslConnectionFactory(getSslContextFactory(), HttpVersion.HTTP_1_1.asString()),
-					    new HttpConnectionFactory(httpsConfiguration));
-				httpsConnector.setPort(443);
-				server.addConnector(httpsConnector);
+						new SslConnectionFactory(getSslContextFactory(), HttpVersion.HTTP_1_1.asString()),
+						new HttpConnectionFactory(httpsConfiguration));
+				httpsConnector.setPort(httpsPort);
+
+				// Add connectors
+				server.setConnectors(new Connector[] { httpsConnector, httpConnector });
 
 				return server;
 			});
@@ -111,6 +113,10 @@ public class Routes {
 			path(Path.Web.REGISTER, () -> {
 				get(AuthController.serveRegisterPage);
 			});
+			// New Manager
+			path(Path.Web.REGISTER_MANAGER, () -> {
+				get(AuthController.serveNewManager, new RouteRole[] { Roles.FINANCE_MANAGER });
+			});
 			// Login page
 			path(Path.Web.LOGIN, () -> {
 				get(AuthController.serveLoginPage);
@@ -122,6 +128,10 @@ public class Routes {
 			// Endpoint to process signup
 			path("/api/register", () -> {
 				post(AuthController.doRegister);
+			});
+			path("/api/manager/register", () -> {
+				post(AuthController.createManager,
+						new RouteRole[] { Roles.FINANCE_MANAGER });
 			});
 			// Should be accessed first time when app is deployed
 			path("/api/setup", () -> {
@@ -167,10 +177,22 @@ public class Routes {
 				get(ERSReimbursementTypeController.getAllTypes,
 						new RouteRole[] { Roles.FINANCE_MANAGER, Roles.EMPLOYEE });
 			});
-			// Endpoint to create user and get user information
+			// Endpoint to create user and get user information (Get - Finance Manager only)
 			path("/api/users", () -> {
 				post(ERSUsersController.createUser);
 				get(ERSUsersController.getUserByUserName,
+						new RouteRole[] { Roles.FINANCE_MANAGER });
+			});
+			path("/api/users/current", () -> {
+				get(ERSUsersController.currentUser,
+						new RouteRole[] { Roles.FINANCE_MANAGER, Roles.EMPLOYEE });
+			});
+			path("/api/users/update/{ers_users_id}", () -> {
+				put(ERSUsersController.updateUser,
+						new RouteRole[] { Roles.FINANCE_MANAGER, Roles.EMPLOYEE });
+			});
+			path("/api/users/password/{ers_users_id}", () -> {
+				put(ERSUsersController.updatePassword,
 						new RouteRole[] { Roles.FINANCE_MANAGER, Roles.EMPLOYEE });
 			});
 			// Endpoint to get roles

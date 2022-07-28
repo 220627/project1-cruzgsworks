@@ -126,6 +126,36 @@ let doSetup = async (param) => {
 };
 
 document.addEventListener("DOMContentLoaded", function (event) {
-  document.getElementById("submitBtn").addEventListener("click", doSetup);
+  // document.getElementById("submitBtn").addEventListener("click", doSetup);
+  const forms = document.querySelectorAll('.needs-validation');
+  const password1 = document.getElementById('inputFMPassword');
+  const password2 = document.getElementById('confirmPassword');
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      event.stopPropagation();
+      forms[0].classList.remove('invalid-password');
+      forms[0].classList.remove('valid-password');
+      if (form.checkValidity()) {
+        if(password1.value != password2.value) {
+          forms[0].classList.add('invalid-password');
+        } else {
+          doSetup();
+        }
+      }
+      form.classList.add('was-validated')
+    }, false);
+    form.addEventListener('keyup', event => {
+      event.preventDefault();
+      event.stopPropagation();
+      forms[0].classList.remove('invalid-password');
+      forms[0].classList.remove('valid-password');
+      if(password1.value != password2.value) {
+        forms[0].classList.add('invalid-password');
+      } else {
+        forms[0].classList.add('valid-password');
+      }
+    });
+  })
   deleteAllCookies();
 });

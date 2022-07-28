@@ -91,10 +91,13 @@ let doLogin = async () => {
 };
 
 document.addEventListener("DOMContentLoaded", function (event) {
+  /*
   document.getElementById("submitBtn").addEventListener("click", doLogin);
+  
   document.getElementById("registerBtn").addEventListener("click", function () {
     window.location.href = "./register";
   });
+  
   document.getElementById("inputUsername").addEventListener("keypress", function (event) {
     if (event.key === "Enter") {
       event.preventDefault;
@@ -107,4 +110,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
       doLogin();
     }
   });
+  */
+  const forms = document.querySelectorAll('.needs-validation');
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      event.preventDefault()
+      event.stopPropagation()
+      if (form.checkValidity()) {
+        doLogin();
+      }
+      form.classList.add('was-validated')
+    }, false)
+  })
 });

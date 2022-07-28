@@ -49,6 +49,13 @@
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <li>
+                  <a id="profileLink" class="dropdown-item" href="#" data-bs-toggle="offcanvas"
+                    data-bs-target="#profileOffCanvas" aria-controls="offcanvasRight">Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="/newmanager">Create New Manager</a>
+                </li>
+                <li>
                   <a id="logoutBtn" class="dropdown-item" href="#">Logout</a>
                 </li>
               </ul>
@@ -173,7 +180,8 @@
                 <tr>
                   <td colspan="11">
                     <div>
-                      <span class="spinner-grow align-middle me-2" role="status"></span><span class="align-middle">Loading...</span>
+                      <span class="spinner-grow align-middle me-2" role="status"></span><span
+                        class="align-middle">Loading...</span>
                     </div>
                   </td>
                 </tr>
@@ -214,81 +222,143 @@
         </ul>
       </footer>
     </div>
-    <div class="offcanvas offcanvas-start w-100" tabindex="-1" id="newRequestOffCanvas"
-      aria-labelledby="newRequestOffCanvasLabel">
+    <div class="offcanvas offcanvas-end w-100" tabindex="-1" id="profileOffCanvas"
+      aria-labelledby="profileOffCanvasLabel">
       <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="newRequestOffCanvasLabel">New Reimbursement</h5>
+        <h5 class="offcanvas-title" id="profileOffCanvasLabel">My Profile</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
-      <div class="offcanvas-body-wrapper m-auto">
+      <div class="offcanvas-body-wrapper w-100 m-auto" style="max-width: 576px;">
         <div class="offcanvas-body">
-          <form enctype="multipart/form-data" id="reimbursementForm" method="post" autocomplete="off">
-            <div class="row">
-              <div class="col pb-2">
-                <h1 class="h3">Please fill out to request for reimbursement</h1>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <label for="rAmount" class="form-label">Amount</label>
-                <div class="input-group mb-3">
-                  <span class="input-group-text" id="rAmountAddon">$</span>
-                  <input type="number" min="0" step="0.01" class="form-control font-monospace" id="rAmount"
-                    name="rAmount" value="0.0" placeholder="0.00" aria-label="Reimbursement Amount"
-                    aria-describedby="rAmountAddon" autocomplete="off" max="99999999.99">
+          <div class="container">
+            <form class="updateProfileForm needs-validation" novalidate>
+              <div class="row">
+                <div class="col pb-2">
+                  <h1 class="h3 text-center">Update Information</h1>
                 </div>
               </div>
-              <div class="col">
-                <div class="mb-3">
-                  <label for="rType" class="form-label">Type</label>
-                  <select class="form-select" aria-label="Reimbursement Type" id="rType" name="rType"
-                    autocomplete="off">
-                    <option selected="selected">Select a type</option>
-                  </select>
+              <div class="row">
+                <div class="col">
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="inputFirst" value="$userInfo.user_first_name"
+                      placeholder="First Name" required>
+                    <label for="inputFirst" class="form-label">First Name</label>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="inputLast" value="$userInfo.user_last_name"
+                      placeholder="Last Name" required>
+                    <label for="inputLast" class="form-label">Last Name</label>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <div class="mb-3">
-                  <label for="rDescription" class="form-label">Description</label>
-                  <textarea class="form-control" id="rDescription" name="rDescription" rows="3" autocomplete="off"
-                    placeholder="Enter description here..."></textarea>
+              <div class="row">
+                <div class="col">
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="inputUsername" value="$userInfo.ers_username"
+                      placeholder="Username" required>
+                    <label for="inputUsername" class="form-label">ERS Username</label>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <div class="mb-3">
-                  <label for="rReceipt" class="form-label">Receipt</label>
-                  <input class="form-control" type="file" id="rReceipt" name="rReceipt" accept="image/*,.pdf">
+              <div class="row">
+                <div class="col">
+                  <div class="form-floating mb-3">
+                    <input type="email" class="form-control" id="inputEmail" value="$userInfo.user_email"
+                      placeholder="email@example.com" required>
+                    <label for="inputEmail" class="form-label">E-mail</label>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <div class="d-grid gap-2 mb-3">
-                  <button type="button" id="submitBtn" class="btn btn-primary">
-                    <div id="proceedText" class="proceedText">Submit</div>
-                    <div id="proceedLoading" class="proceedLoading text-center hideElem">
-                      <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                      Loading...
+              <div class="row">
+                <div class="col">
+                  <div class="d-grid gap-2 mb-3">
+                    <button id="updateProfileButton" href="#" class="btn btn-primary" type="submit">
+                      <div id="updateText" class="proceedText">Update</div>
+                      <div id="updateLoading" class="proceedLoading text-center hideElem">
+                        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                        Loading...
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col update-message">
+                  <div id="updateAlertSuccess" class="alert alert-success text-center" role="alert">
+                    Updated Password.
+                  </div>
+                  <div id="updateAlertFailed" class="alert alert-danger text-center" role="alert">
+                    Failed to update password.
+                  </div>
+                </div>
+              </div>
+              <input type="hidden" id="ers_users_id" name="ers_users_id" value="$userInfo.ers_users_id">
+            </form>
+            <form class="updatePasswordForm needs-validation" novalidate>
+              <div class="row">
+                <div class="col pb-2">
+                  <h1 class="h3 text-center">Change Password</h1>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <div class="col">
+                    <div class="form-floating mb-3">
+                      <input type="password" class="form-control" id="inputPassword" value="" placeholder="Password"
+                        required>
+                      <label for="inputPassword" class="form-label">ERS Password</label>
+                      <div class="password-not-match text-danger">
+                        Passwords must match
+                      </div>
+                      <div class="password-match text-success">
+                        Passwords match!
+                      </div>
                     </div>
-                  </button>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="col">
+                    <div class="form-floating mb-3">
+                      <input type="password" class="form-control" id="confirmPassword" value="" placeholder="Password"
+                        required>
+                      <label for="inputPassword" class="form-label">Confirm Password</label>
+                      <div class="password-not-match text-danger">
+                        Passwords must match
+                      </div>
+                      <div class="password-match text-success">
+                        Passwords match!
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col new-request-message">
-                <div id="newRequestAlertSuccess" class="alert alert-success text-center" role="alert">
-                  Created new reimbursement request.
-                </div>
-                <div id="newRequestAlertFailed" class="alert alert-danger text-center" role="alert">
-                  Failed to create a new reimbursement request.
+              <div class="row">
+                <div class="col">
+                  <div class="d-grid gap-2 mb-3">
+                    <button id="updatePasswordButton" href="#" class="btn btn-primary" type="submit">
+                      <div id="updatePasswordText" class="proceedText">Change</div>
+                      <div id="updatePasswordLoading" class="proceedLoading text-center hideElem">
+                        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                        Loading...
+                      </div>
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          </form>
+              <div class="row">
+                <div class="col update-password-message">
+                  <div id="updatePasswordAlertSuccess" class="alert alert-success text-center" role="alert">
+                    Updated account.
+                  </div>
+                  <div id="updatePasswordAlertFailed" class="alert alert-danger text-center" role="alert">
+                    Failed to update account.
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>

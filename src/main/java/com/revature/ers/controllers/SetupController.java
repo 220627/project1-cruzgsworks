@@ -61,8 +61,6 @@ public class SetupController {
 
 			if (testConnection) {
 
-				// TODO - I should probably do batch processing on this part.
-
 				// create 2 new roles and 1 financial manager
 				ERSUserRoles newRole1 = new ERSUserRoles("manager");
 				ERSUserRoles newRole2 = new ERSUserRoles("employee");

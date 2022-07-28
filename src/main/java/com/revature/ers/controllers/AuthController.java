@@ -18,8 +18,43 @@ import io.javalin.http.Context;
 import io.javalin.http.Handler;
 
 public class AuthController {
-
+	
 	public static Logger log = LogManager.getLogger();
+
+	public static final Handler serveNewManager = ctx -> {
+		ctx.render(Path.Template.REGISTER_MANAGER);
+	};
+
+	public static Handler createManager = ctx -> {
+		// Post method
+
+		// object of gson class
+		Gson gson = new Gson();
+
+		// Get request body
+		ERSUsers requestData = gson.fromJson(ctx.body(), ERSUsers.class);
+		ERSUserRoles eur = new ERSUserRolesDAO().getRoleByUseRole("manager");
+
+		// object of responses class
+		Responses response;
+
+		ERSUsers createUser = null;
+
+		if (eur != null) {
+			requestData.setUser_role_id(eur.getEsr_user_role_id());
+
+			// create new user
+			createUser = new ERSUsersDAO().createUser(requestData);
+		}
+
+		if (createUser != null) {
+			response = new Responses(200, "Created new manager", true, createUser);
+			ctx.status(response.getStatusCode()).json(gson.toJson(response));
+		} else {
+			response = new Responses(400, "Failed to create new user", false, null);
+			ctx.status(response.getStatusCode()).json(gson.toJson(response));
+		}
+	};
 
 	public static Handler doRegister = ctx -> {
 		// Post method

@@ -8,4 +8,8 @@ public interface ERSUsersDAOInterface {
 
 	ERSUsers getUserByUserName(String ers_username);
 
+	ERSUsers updateUser(ERSUsers requestData);
+
+	ERSUsers updatePassword(ERSUsers requestData);
+
 }
