@@ -2,11 +2,50 @@
 
 ## Project Details
 
-### Re-created by Gerard Cruz according to specifications.
+- Deployed in a VM in GCP.
+- PostgresDB instance in GCP as well.
+- Can be accessed through (SSL Enabled) [https://gerardcruz.space:8443/](https://pages.github.com/)
 
-**Entity Relationship Diagram (POSTGRES)**
+## Current ERD (Postgres)
 
 ![](./imgs/ERD.png)
+
+## Some Screenshots
+- *GCP VM Instance*
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="./imgs/p1img/GCP_VM_INSTANCE.png" alt="" width="768"/>
+
+- *GCP SQL DB Instance*
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="./imgs/p1img/GCP_SQL_DB_INSTANCE.png" alt="" width="768"/>
+
+- *Running Jar in background*
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="./imgs/p1img/SSH_JAVA_APP_RUNNING_IN_BACKGROUND.png" alt=""/>
+
+- *Initial setup page*
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="./imgs/p1img/INITIAL_SETUP_PAGE.png" alt="" width="768"/>
+
+- *Login page*
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="./imgs/p1img/LOGIN_PAGE.png" alt="" width="768"/>
+
+- *Registration page*
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="./imgs/p1img/REGISTER_PAGE.png" alt="" width="768"/>
+
+- *Employee page*
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="./imgs/p1img/EMPLOYEE_PAGE.png" alt="" width="768"/>
+
+- *New reimbursement request*
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="./imgs/p1img/NEW_REIMBURSEMENT.png" alt="" width="768"/>
+
+- *Finance manager page*
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="./imgs/p1img/FINANCE_MANAGER_PAGE.png" alt="" width="768"/>
 
 ## Executive Summary
 The Expense Reimbursement System (ERS) will manage the process of reimbursing employees for expenses incurred while on company time. All employees in the company can login and submit requests for reimbursement and view their past tickets and pending requests. Finance managers can log in and view all reimbursement requests and past history for all employees in the company. Finance managers are authorized to approve and deny requests for expense reimbursement.
