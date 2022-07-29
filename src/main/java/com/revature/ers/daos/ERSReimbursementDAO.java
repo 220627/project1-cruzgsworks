@@ -647,7 +647,7 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 							+ "er.reimb_author = eu.ers_users_id\r\n"
 							+ "LEFT JOIN ers.ers_users eu2 ON\r\n"
 							+ "er.reimb_resolver = eu2.ers_users_id\r\n"
-							+ "WHERE reimb_status_id = ? " + searchSql;
+							+ "WHERE er.reimb_status_id = ? " + searchSql;
 					ps = conn.prepareStatement(SQL);
 					ps.setInt(1, reimb_status_id);
 				} else {
@@ -692,7 +692,7 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 							+ "er.reimb_author = eu.ers_users_id\r\n"
 							+ "LEFT JOIN ers.ers_users eu2 ON\r\n"
 							+ "er.reimb_resolver = eu2.ers_users_id\r\n"
-							+ "WHERE reimb_author = ? AND reimb_status_id = ?\r\n"
+							+ "WHERE er.reimb_author = ? AND er.reimb_status_id = ?\r\n"
 							+ searchSql;
 					ps = conn.prepareStatement(SQL);
 					ps.setInt(1, author_id);
@@ -714,7 +714,7 @@ public class ERSReimbursementDAO implements ERSReimbursementDAOInteface {
 							+ "er.reimb_author = eu.ers_users_id\r\n"
 							+ "LEFT JOIN ers.ers_users eu2 ON\r\n"
 							+ "er.reimb_resolver = eu2.ers_users_id\r\n"
-							+ "WHERE reimb_author = ?\r\n" 
+							+ "WHERE er.reimb_author = ?\r\n" 
 							+ searchSql;
 					ps = conn.prepareStatement(SQL);
 					ps.setInt(1, author_id);

@@ -67,7 +67,7 @@ public class ERSUsersDAO implements ERSUsersDAOInterface {
 
 			PreparedStatement ps = conn.prepareStatement(SQL);
 			
-			System.out.println(newUser.getUser_role_id());
+			// System.out.println(newUser.getUser_role_id());
 
 			// Fill in values using PreparedStatement
 			ps.setString(1, newUser.getErs_username().toLowerCase());
@@ -77,7 +77,7 @@ public class ERSUsersDAO implements ERSUsersDAOInterface {
 			ps.setString(5, newUser.getUser_email().toLowerCase());
 			ps.setInt(6, newUser.getUser_role_id());
 
-			System.out.println(ps.toString());
+			// System.out.println(ps.toString());
 			
 			ResultSet rs = ps.executeQuery();
 			
