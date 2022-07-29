@@ -77,12 +77,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
     form.addEventListener('keyup', event => {
       event.preventDefault();
       event.stopPropagation();
-      forms[0].classList.remove('invalid-password');
-      forms[0].classList.remove('valid-password');
-      if(password1.value != password2.value) {
-        forms[0].classList.add('invalid-password');
-      } else {
-        forms[0].classList.add('valid-password');
+      if (event.target.type == 'password') {
+        forms[0].classList.remove('invalid-password');
+        forms[0].classList.remove('valid-password');
+        if (password1.value.length > 0 && password2.value.length > 0) {
+          if (password1.value != password2.value) {
+            forms[0].classList.add('invalid-password');
+          } else {
+            forms[0].classList.add('valid-password');
+          }
+        } else {
+          forms[0].classList.add('invalid-password');
+        }
       }
     });
   })

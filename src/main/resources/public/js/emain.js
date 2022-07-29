@@ -631,12 +631,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
     form.addEventListener('keyup', event => {
       event.preventDefault();
       event.stopPropagation();
-      passwordForms[0].classList.remove('invalid-password');
-      passwordForms[0].classList.remove('valid-password');
-      if (password1.value != password2.value) {
-        passwordForms[0].classList.add('invalid-password');
-      } else {
-        passwordForms[0].classList.add('valid-password');
+      if (event.target.type == 'password') {
+        passwordForms[0].classList.remove('invalid-password');
+        passwordForms[0].classList.remove('valid-password');
+        if (password1.value.length > 0 && password2.value.length > 0) {
+          if (password1.value != password2.value) {
+            passwordForms[0].classList.add('invalid-password');
+          } else {
+            passwordForms[0].classList.add('valid-password');
+          }
+        } else {
+          passwordForms[0].classList.add('invalid-password');
+        }
       }
     });
   })
