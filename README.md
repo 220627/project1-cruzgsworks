@@ -4,7 +4,7 @@
 
 - Deployed in a VM in GCP.
 - PostgresDB instance in GCP as well.
-- Can be accessed through (SSL Enabled) [https://gerardcruz.space:8443/](https://pages.github.com/)
+- Can be accessed through (SSL Enabled) [https://gerardcruz.space:8443/](https://gerardcruz.space:8443/)
 
 ## Current ERD (Postgres)
 
