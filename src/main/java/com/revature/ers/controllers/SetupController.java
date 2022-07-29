@@ -23,7 +23,6 @@ import com.revature.ers.models.ERSUserRoles;
 import com.revature.ers.models.ERSUsers;
 import com.revature.ers.models.InitialSetup;
 import com.revature.ers.models.Responses;
-import com.revature.ers.models.RunOnce;
 import com.revature.ers.utils.ConnectionUtil;
 import com.revature.ers.utils.Path;
 
@@ -139,8 +138,6 @@ public class SetupController {
 					} catch (IOException ex) {
 						log.error(ex.getMessage());
 					}
-
-					RunOnce.setRunonce(true);
 
 					log.info("Initial setup success");
 					Responses rp = new Responses(200, "Setup Success", true, setupList);
