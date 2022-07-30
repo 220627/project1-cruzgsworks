@@ -2,11 +2,11 @@
 
 ## Project Details
 
-- Deployed in a VM in GCP.
-- PostgresDB instance in GCP as well.
-- Can be accessed through (SSL Enabled) [https://gerardcruz.space:8443/](https://gerardcruz.space:8443/)
-    - Manager (User/Pass) = revature / revature2022
-    - Employee (User/Pass) = gerardcruz / gerardcruz2022
+* Deployed in a VM in GCP.
+* PostgresDB instance in GCP as well.
+* Can be accessed through (SSL Enabled) [https://gerardcruz.space/](https://gerardcruz.space:8443/)
+    * Manager (User/Pass) = revature / revature2022
+    * Employee (User/Pass) = gerardcruz / gerardcruz2022
 
 ## Current ERD (Postgres)
 
@@ -21,7 +21,7 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="./imgs/p1img/GCP_SQL_DB_INSTANCE.png" alt="" width="768"/>
 
-- *Running Jar in background*
+- *Running Jar in background - Using nohup command with elevated permissions to bind app to port 80 and 443*
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="./imgs/p1img/SSH_JAVA_APP_RUNNING_IN_BACKGROUND.png" alt=""/>
 

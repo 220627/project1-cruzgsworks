@@ -69,8 +69,8 @@ public class Routes {
 			});
 			config.server(() -> {
 
-				int httpPort = 8080;
-				int httpsPort = 8443;
+				int httpPort = 80;
+				int httpsPort = 443;
 
 				Server server = new Server();
 
