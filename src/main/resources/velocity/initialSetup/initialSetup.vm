@@ -114,7 +114,7 @@
             <div class="form-floating mb-3">
               <input type="password" class="form-control" id="inputFMPassword" value="revature2022"
                 placeholder="revature2022" required>
-              <label for="inputFMPassword" class="form-label">ERS Password</label>
+              <label for="inputFMPassword" class="form-label">Confirm Password</label>
               <div class="password-not-match text-danger">
                 Passwords must match
               </div>

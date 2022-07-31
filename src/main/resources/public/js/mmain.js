@@ -277,7 +277,7 @@ let displayReimbursements = async (limit, pageNum, order, column, searchTerm) =>
             "<tr>" +
             '  <td class=\"fit\" scope="row">' + rRow.reimb_id + '</td>' +
             "  <td class=\"fit text-end\">" + formatter.format(rRow.reimb_amount) + "</td>" +
-            "  <td class=\"fit\">" + (rRow.reimb_author > 0 ? (rRow.ersAuthor.user_first_name + " " + rRow.ersAuthor.user_last_name) : "<span class=\"text-secondary\">(None)</span>") + "</td>" +
+            "  <td class=\"fit\"><a href=\"#\">" + (rRow.reimb_author > 0 ? (rRow.ersAuthor.user_first_name + " " + rRow.ersAuthor.user_last_name) : "<span class=\"text-secondary\">(None)</span>") + "</a></td>" +
             "  <td class=\"fit\">" + rRow.reimb_submitted + "</td>" +
             "  <td class=\"fit\">" + (rRow.reimb_resolver > 0 ? (rRow.ersResolver.user_first_name + " " + rRow.ersResolver.user_last_name) : "<span class=\"text-secondary\">(None)</span>") + "</td>" +
             '  <td class="fit">' + (rRow.reimb_resolved != undefined ? rRow.reimb_resolved : "<span class=\"text-secondary\">(None)</span>") + '</td>' +

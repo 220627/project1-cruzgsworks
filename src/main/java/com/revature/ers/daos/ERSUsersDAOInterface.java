@@ -12,4 +12,6 @@ public interface ERSUsersDAOInterface {
 
 	ERSUsers updatePassword(ERSUsers requestData);
 
+	ERSUsers getUserByUserId(int ers_users_id);
+
 }

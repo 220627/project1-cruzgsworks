@@ -31,6 +31,19 @@ public class ERSUsers {
 		this.user_email = user_email;
 		this.user_role_id = user_role_id;
 	}
+	
+	
+
+	public ERSUsers(int ers_users_id, String ers_username, String user_first_name, String user_last_name,
+			String user_email, int user_role_id) {
+		super();
+		this.ers_users_id = ers_users_id;
+		this.ers_username = ers_username;
+		this.user_first_name = user_first_name;
+		this.user_last_name = user_last_name;
+		this.user_email = user_email;
+		this.user_role_id = user_role_id;
+	}
 
 	public ERSUsers() {
 		super();

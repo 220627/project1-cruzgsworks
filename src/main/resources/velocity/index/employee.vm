@@ -319,13 +319,15 @@
               <div class="row">
                 <div class="col">
                   <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="inputFirst" value="$userInfo.user_first_name" placeholder="First Name" required>
+                    <input type="text" class="form-control" id="inputFirst" value="$userInfo.user_first_name"
+                      placeholder="First Name" required>
                     <label for="inputFirst" class="form-label">First Name</label>
                   </div>
                 </div>
                 <div class="col">
                   <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="inputLast" value="$userInfo.user_last_name" placeholder="Last Name" required>
+                    <input type="text" class="form-control" id="inputLast" value="$userInfo.user_last_name"
+                      placeholder="Last Name" required>
                     <label for="inputLast" class="form-label">Last Name</label>
                   </div>
                 </div>
@@ -333,7 +335,8 @@
               <div class="row">
                 <div class="col">
                   <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="inputUsername" value="$userInfo.ers_username" placeholder="Username" required>
+                    <input type="text" class="form-control" id="inputUsername" value="$userInfo.ers_username"
+                      placeholder="Username" required>
                     <label for="inputUsername" class="form-label">ERS Username</label>
                   </div>
                 </div>
@@ -341,8 +344,8 @@
               <div class="row">
                 <div class="col">
                   <div class="form-floating mb-3">
-                    <input type="email" class="form-control" id="inputEmail" value="$userInfo.user_email" placeholder="email@example.com"
-                      required>
+                    <input type="email" class="form-control" id="inputEmail" value="$userInfo.user_email"
+                      placeholder="email@example.com" required>
                     <label for="inputEmail" class="form-label">E-mail</label>
                   </div>
                 </div>

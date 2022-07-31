@@ -183,14 +183,21 @@ public class Routes {
 				get(ERSUsersController.getUserByUserName,
 						new RouteRole[] { Roles.FINANCE_MANAGER });
 			});
+			path("/api/users/{ers_users_id}", () -> {
+				get(ERSUsersController.getUserByUserId,
+						new RouteRole[] { Roles.FINANCE_MANAGER });
+			});
+			// Endpoint to get user information based on cookie
 			path("/api/users/current", () -> {
 				get(ERSUsersController.currentUser,
 						new RouteRole[] { Roles.FINANCE_MANAGER, Roles.EMPLOYEE });
 			});
+			// Endpoint to update user information
 			path("/api/users/update/{ers_users_id}", () -> {
 				put(ERSUsersController.updateUser,
 						new RouteRole[] { Roles.FINANCE_MANAGER, Roles.EMPLOYEE });
 			});
+			// Endpoint to update user password
 			path("/api/users/password/{ers_users_id}", () -> {
 				put(ERSUsersController.updatePassword,
 						new RouteRole[] { Roles.FINANCE_MANAGER, Roles.EMPLOYEE });

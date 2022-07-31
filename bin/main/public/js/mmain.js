@@ -107,7 +107,7 @@ let loadPagination = async (page) => {
   curPage = page;
   // console.log(curPage);
   document.getElementById('rPagination').classList.add('d-none');
-  
+
   const rOrder = document.getElementById('orderBy').value;
   const rColumn = document.getElementById('sortBy').value;
   const rSearch = document.getElementById('searchTerm').value;
@@ -277,7 +277,7 @@ let displayReimbursements = async (limit, pageNum, order, column, searchTerm) =>
             "<tr>" +
             '  <td class=\"fit\" scope="row">' + rRow.reimb_id + '</td>' +
             "  <td class=\"fit text-end\">" + formatter.format(rRow.reimb_amount) + "</td>" +
-            "  <td class=\"fit\">" + (rRow.reimb_author > 0 ? (rRow.ersAuthor.user_first_name + " " + rRow.ersAuthor.user_last_name) : "<span class=\"text-secondary\">(None)</span>") + "</td>" +
+            "  <td class=\"fit\"><a id=\"showAuthorInfo-" + rRow.ersAuthor.ers_users_id + "\" class=\"showAuthorInfo\">" + (rRow.reimb_author > 0 ? (rRow.ersAuthor.user_first_name + " " + rRow.ersAuthor.user_last_name) : "<span class=\"text-secondary\">(None)</span>") + "</a></td>" +
             "  <td class=\"fit\">" + rRow.reimb_submitted + "</td>" +
             "  <td class=\"fit\">" + (rRow.reimb_resolver > 0 ? (rRow.ersResolver.user_first_name + " " + rRow.ersResolver.user_last_name) : "<span class=\"text-secondary\">(None)</span>") + "</td>" +
             '  <td class="fit">' + (rRow.reimb_resolved != undefined ? rRow.reimb_resolved : "<span class=\"text-secondary\">(None)</span>") + '</td>' +
@@ -304,6 +304,18 @@ let displayReimbursements = async (limit, pageNum, order, column, searchTerm) =>
       }
 
       document.getElementById('mainReimbursementsTBody').innerHTML = rowsArr.join("\r\n");
+
+      let showAuthorInfoLinks = document.querySelectorAll('.showAuthorInfo');
+
+      for (let index = 0; index < showAuthorInfoLinks.length; index++) {
+        const element = showAuthorInfoLinks[index];
+
+        let authorLinkId = element.id.split('-');
+
+        element.addEventListener('click', function (event) {
+          showUserInfo(event, authorLinkId[1])
+        });
+      }
 
       // let reimbAction = document.getElementsByClassName('reimb-action');
 
@@ -664,7 +676,40 @@ let doChangePassword = async (param) => {
     });
 };
 
+let myModal = new bootstrap.Modal('#employeeInfoModal', {
+  keyboard: false
+})
+
+let showUserInfo = async (event, ers_users_id) => {
+
+  let curClick = event.target;
+  //console.log(curClick);
+
+  await fetch("/api/users/" + ers_users_id, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json; charset=utf-8",
+    }
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      let userInfo = data.statusObject;
+      // const myModal = document.getElementById('employeeInfoModal');
+      document.getElementById('ro-user-id').value = userInfo.ers_users_id;
+      document.getElementById('ro-first-name').value = userInfo.user_first_name;
+      document.getElementById('ro-last-name').value = userInfo.user_last_name;
+      document.getElementById('ro-email').value = userInfo.user_email;
+      document.getElementById('contact-email-btn').setAttribute('href', 'mailto:' + userInfo.user_email);
+      myModal.show(curClick);
+
+    });
+}
+
 document.addEventListener("DOMContentLoaded", function (event) {
+
   // Log-out button
   document.getElementById("logoutBtn").addEventListener("click", function () {
     deleteAllCookies();

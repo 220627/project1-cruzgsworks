@@ -15,6 +15,40 @@ public class ERSUsersController {
 
 	public static Logger log = LogManager.getLogger();
 
+	public static Handler getUserByUserId = (ctx) -> {
+
+		// Get method
+
+		Gson gson = new Gson();
+
+		int ers_users_id = 0;
+		ERSUsers getUser = null;
+
+		try {
+
+			ers_users_id = Integer.parseInt(ctx.pathParam("ers_users_id"));
+
+			// retrieve user records
+			getUser = new ERSUsersDAO().getUserByUserId(ers_users_id);
+
+		} catch (Exception ex) {
+			log.error(ex.getMessage());
+		}
+
+		// object of responses class
+		Responses response;
+
+		// Response
+		if (getUser != null) {
+			response = new Responses(200, "Retrieved User Information", true, getUser);
+			ctx.status(response.getStatusCode()).json(gson.toJson(response));
+		} else {
+			response = new Responses(400, "Could not find user", false, null);
+			ctx.status(response.getStatusCode()).json(gson.toJson(response));
+		}
+
+	};
+
 	public static Handler updatePassword = (ctx) -> {
 		// Put method
 
@@ -119,16 +153,23 @@ public class ERSUsersController {
 	};
 
 	public static Handler getUserByUserName = (ctx) -> {
-		// Post method
+		// Get method
 
-		// object of gson class
 		Gson gson = new Gson();
 
-		// Get request body
-		ERSUsers requestData = gson.fromJson(ctx.body(), ERSUsers.class);
+		String ers_username = null;
+		ERSUsers getUser = null;
 
-		// retrieve user records
-		ERSUsers getUser = new ERSUsersDAO().getUserByUserName(requestData.getErs_username());
+		try {
+
+			ers_username = ctx.queryParam("ers_username");
+
+			// retrieve user records
+			getUser = new ERSUsersDAO().getUserByUserName(ers_username);
+
+		} catch (Exception ex) {
+			log.error(ex.getMessage());
+		}
 
 		// object of responses class
 		Responses response;
@@ -138,7 +179,7 @@ public class ERSUsersController {
 			response = new Responses(200, "Retrieved User Information", true, getUser);
 			ctx.status(response.getStatusCode()).json(gson.toJson(response));
 		} else {
-			response = new Responses(400, "Could not create user", false, null);
+			response = new Responses(400, "Could not find user", false, null);
 			ctx.status(response.getStatusCode()).json(gson.toJson(response));
 		}
 
