@@ -1,4 +1,0 @@
-2022-07-30 23:47:11 INFO  ERSUsersDAO:40 - Retrieved user - Revature Company
-2022-07-30 23:47:11 INFO  ERSUserRolesDAO:33 - Retrieved role by ID - manager
-2022-07-30 23:47:11 INFO  AuthController:145 - Revature Company has the "manager" role.
-2022-07-30 23:47:11 INFO  ERSUsersDAO:75 - Retrieved user - Gerard Cruz

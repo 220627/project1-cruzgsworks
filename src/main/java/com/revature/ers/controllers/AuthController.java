@@ -92,7 +92,7 @@ public class AuthController {
 	};
 
 	public static Handler serveLoginPage = ctx -> {
-		if (AuthUtil.verifyCookie(ctx.cookie("Authentication")) != null) {
+		if (AuthController.verifyCookie(ctx.cookie("Authentication")) != null) {
 			ctx.redirect(Path.Web.INDEX);
 		} else {
 			ctx.render(Path.Template.LOGIN);
@@ -139,7 +139,7 @@ public class AuthController {
 		// Get role of currently logged on user
 		if (StringUtils.isNotEmpty(ctx.cookie("Authentication"))) {
 			// Make sure authentication cookie is valid
-			ERSUsers curUser = AuthUtil.verifyCookie(ctx.cookie("Authentication"));
+			ERSUsers curUser = AuthController.verifyCookie(ctx.cookie("Authentication"));
 			if (curUser != null) {
 				ERSUserRoles getEur = new ERSUserRolesDAO().getRoleById(curUser.getUser_role_id());
 				log.info(curUser.getUser_first_name() + " " + curUser.getUser_last_name() + " has the \""
@@ -155,6 +155,27 @@ public class AuthController {
 
 		// Default Role
 		return Roles.ANYBODY;
+	}
+
+	public static ERSUsers verifyCookie(String authenticationStr) {
+		// StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+		// encryptor.setPassword(AuthUtil.internalSeed);
+		if (StringUtils.isNoneEmpty(authenticationStr)) {
+			String[] userPass = AuthUtil.doDecrypt(authenticationStr).split(":");
+			// retrieve user records
+			ERSUsers getUser = new ERSUsersDAO().getUserByUserName(userPass[0].toLowerCase());
+			if (getUser != null) {
+				// Compare passwords
+				boolean checkStr = AuthUtil.comparePasswords(userPass[1],
+						getUser.getErs_password());
+	
+				if (checkStr) {
+					return getUser;
+				}
+			}
+		}
+	
+		return null;
 	}
 
 }

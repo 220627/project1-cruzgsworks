@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 import com.revature.ers.daos.ERSUsersDAO;
 import com.revature.ers.models.ERSUsers;
 import com.revature.ers.models.Responses;
-import com.revature.ers.utils.AuthUtil;
 
 import io.javalin.http.Handler;
 
@@ -57,7 +56,7 @@ public class ERSUsersController {
 
 		ERSUsers updatePassword = null;
 		try {
-			ERSUsers curUser = AuthUtil.verifyCookie(ctx.cookie("Authentication"));
+			ERSUsers curUser = AuthController.verifyCookie(ctx.cookie("Authentication"));
 			// Get request body
 			ERSUsers requestData = gson.fromJson(ctx.body(), ERSUsers.class);
 
@@ -94,7 +93,7 @@ public class ERSUsersController {
 
 		ERSUsers getUser = null;
 		try {
-			ERSUsers curUser = AuthUtil.verifyCookie(ctx.cookie("Authentication"));
+			ERSUsers curUser = AuthController.verifyCookie(ctx.cookie("Authentication"));
 
 			getUser = new ERSUsersDAO().getUserByUserName(curUser.getErs_username());
 
@@ -123,7 +122,7 @@ public class ERSUsersController {
 
 		ERSUsers updateUser = null;
 		try {
-			ERSUsers curUser = AuthUtil.verifyCookie(ctx.cookie("Authentication"));
+			ERSUsers curUser = AuthController.verifyCookie(ctx.cookie("Authentication"));
 			// Get request body
 			ERSUsers requestData = gson.fromJson(ctx.body(), ERSUsers.class);
 

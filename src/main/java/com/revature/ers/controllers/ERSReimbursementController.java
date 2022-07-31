@@ -25,7 +25,6 @@ import com.revature.ers.models.ERSReimbursementStatus;
 import com.revature.ers.models.ERSUserRoles; 
 import com.revature.ers.models.ERSUsers;
 import com.revature.ers.models.Responses;
-import com.revature.ers.utils.AuthUtil;
 
 import io.javalin.http.Handler;
 import io.javalin.http.UploadedFile;
@@ -72,7 +71,7 @@ public class ERSReimbursementController {
 			}
 
 			// Determine which user is using this endpoint
-			eu = AuthUtil.verifyCookie(ctx.cookie("Authentication"));
+			eu = AuthController.verifyCookie(ctx.cookie("Authentication"));
 			ERSUserRoles curRole = new ERSUserRolesDAO().getRoleById(eu.getUser_role_id());
 
 			// Check if user is Finance Manager
@@ -113,7 +112,7 @@ public class ERSReimbursementController {
 			requestData = new ERSReimbursementStatusDAO().getReimbursementStatusByStatus(
 					gson.fromJson(ctx.body(), ERSReimbursementStatus.class).getReimb_status());
 
-			curUser = AuthUtil.verifyCookie(ctx.cookie("Authentication"));
+			curUser = AuthController.verifyCookie(ctx.cookie("Authentication"));
 
 			int reimb_id = Integer.parseInt(ctx.pathParam("reimb_id"));
 
@@ -151,7 +150,7 @@ public class ERSReimbursementController {
 			ERSReimbursementStatus ers = new ERSReimbursementStatusDAO()
 					.getReimbursementStatusByStatus(ctx.queryParam("reimb_status"));
 
-			eu = AuthUtil.verifyCookie(ctx.cookie("Authentication"));
+			eu = AuthController.verifyCookie(ctx.cookie("Authentication"));
 
 			reimbRequest = new ERSReimbursementDAO()
 					.getAllReimbursementRequests(ers.getReimb_status_id());
@@ -182,7 +181,7 @@ public class ERSReimbursementController {
 
 			int reimb_id = Integer.parseInt(ctx.pathParam("reimb_id"));
 
-			eu = AuthUtil.verifyCookie(ctx.cookie("Authentication"));
+			eu = AuthController.verifyCookie(ctx.cookie("Authentication"));
 
 			reimbRequest = new ERSReimbursementDAO()
 					.getReceipt(reimb_id, eu.getErs_users_id());
@@ -223,7 +222,7 @@ public class ERSReimbursementController {
 			ERSReimbursementStatus ers = new ERSReimbursementStatusDAO()
 					.getReimbursementStatusByStatus(ctx.queryParam("reimb_status"));
 
-			eu = AuthUtil.verifyCookie(ctx.cookie("Authentication"));
+			eu = AuthController.verifyCookie(ctx.cookie("Authentication"));
 
 			reimbRequest = new ERSReimbursementDAO()
 					.getReimbursementRequest(ers.getReimb_status_id(), eu.getErs_users_id());
@@ -265,7 +264,7 @@ public class ERSReimbursementController {
 			String rDescription = StringUtils.isNotEmpty(ctx.formParam("rDescription")) ? ctx.formParam("rDescription")
 					: null;
 
-			curUser = AuthUtil.verifyCookie(ctx.cookie("Authentication"));
+			curUser = AuthController.verifyCookie(ctx.cookie("Authentication"));
 
 			myReimb = new ERSReimbursement(rAmount, new Timestamp(System.currentTimeMillis()),
 					rDescription, myReceipt, curUser.getErs_users_id(),
@@ -293,7 +292,7 @@ public class ERSReimbursementController {
 
 		int pages = 0;
 
-		ERSUsers curUser = AuthUtil.verifyCookie(ctx.cookie("Authentication"));
+		ERSUsers curUser = AuthController.verifyCookie(ctx.cookie("Authentication"));
 		ERSUserRoles curRole = new ERSUserRolesDAO().getRoleById(curUser.getUser_role_id());
 		String reimb_status = ctx.queryParam("reimb_status");
 		int reimb_status_id = 0;

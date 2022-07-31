@@ -5,7 +5,6 @@ import java.util.Map;
 import com.revature.ers.daos.ERSUserRolesDAO;
 import com.revature.ers.models.ERSUserRoles;
 import com.revature.ers.models.ERSUsers;
-import com.revature.ers.utils.AuthUtil;
 import com.revature.ers.utils.Path;
 import com.revature.ers.utils.ViewUtil;
 
@@ -15,7 +14,7 @@ public class IndexController {
 	public static Handler serveIndexPage = ctx -> {
 		Map<String, Object> model = ViewUtil.baseModel(ctx);
 
-		ERSUsers curUser = AuthUtil.verifyCookie(ctx.cookie("Authentication"));
+		ERSUsers curUser = AuthController.verifyCookie(ctx.cookie("Authentication"));
 
 		if (curUser != null) {
 			ERSUserRoles getEur = new ERSUserRolesDAO().getRoleById(curUser.getUser_role_id());
