@@ -120,10 +120,12 @@ public class AuthController {
 
 			// Response
 			if (comparePasswords) {
+				log.info("Successful login by " + getUser.getUser_first_name() + " " + getUser.getUser_last_name());
 				response = new Responses(200, "Login Successful", true, getUser);
 				ctx.status(response.getStatusCode()).json(gson.toJson(response)).cookie("Authentication",
 						AuthUtil.doEncrypt(requestData.getErs_username() + ":" + requestData.getErs_password()));
 			} else {
+				log.info("Login failed. Incorrect credentials.");
 				response = new Responses(400, "Incorrect Username or Password", false, getUser);
 				ctx.status(response.getStatusCode()).json(gson.toJson(response));
 			}
