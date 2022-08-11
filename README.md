@@ -4,7 +4,7 @@
 
 * Deployed in a VM in GCP.
 * PostgresDB instance in GCP as well.
-* Can be accessed through (SSL Enabled) [https://gerardcruz.space/](https://gerardcruz.space:8443/)
+* Can be accessed through (SSL Enabled) [https://gerardcruz.space/](https://gerardcruz.space/)
     * Manager (User/Pass) = revature / revature2022
     * Employee (User/Pass) = gerardcruz / gerardcruz2022
 
